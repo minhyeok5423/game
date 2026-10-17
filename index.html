@@ -151,7 +151,26 @@ button:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
 #pp, #bag, #eq, #gc, #dg, #tn, #tnb { overscroll-behavior: contain; }
 .ppb, .bgb, .dgb, .stb, .tnbx { -webkit-overflow-scrolling: touch; }
 button { -webkit-appearance: none; }
+/* v2.5.2: 길게 눌렀을 때 텍스트 선택/복사 팝업 차단 (iOS Safari는 -webkit- 접두어 필요) */
+html, body, *, *::before, *::after {
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+}
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text; user-select: text;
+  -webkit-touch-callout: default;
+}
+img, svg { -webkit-user-drag: none; }
 </style>
+<script>
+/* v2.5.2: 입력창을 제외한 모든 곳에서 길게 누르기 메뉴·텍스트 선택 시작을 막는다 */
+(function(){
+  var ok=function(t){return t&&t.closest&&t.closest('input,textarea,[contenteditable="true"]');};
+  document.addEventListener('contextmenu',function(e){if(!ok(e.target))e.preventDefault();},true);
+  document.addEventListener('selectstart',function(e){if(!ok(e.target))e.preventDefault();},true);
+  document.addEventListener('dragstart',function(e){if(!ok(e.target))e.preventDefault();},true);
+})();
+</script>
 </head><body>
 <div id="rot">📱 가로 화면으로 돌려 주세요</div><div id="ash"></div><button id="mt" onclick="mute=!mute;this.textContent=mute?'🔇':'🔊';au()">🔊</button><button id="vt" onclick="vo=!vo;this.style.opacity=vo?1:.4;if(!vo)try{speechSynthesis.cancel()}catch(e){}">🗣</button><button id="bm" onclick="bgOn=!bgOn;this.style.opacity=bgOn?1:.4;au();start();if(MG)MG.gain.setTargetAtTime(bgOn?.5:0,AC.currentTime,.15)">🎵</button>
 <div id="lobby" class="sc on"><button id="chb" class="glb" onclick="document.getElementById('chp').classList.toggle('on')">🛠 치트</button><div id="chp"><button onclick="CH(0)">🪙 코인 +10000</button><button onclick="CH(1)">📜 두루마리 +1000</button><button onclick="CH(2)">🔓 스토리·스테이지 해금</button><button onclick="CH(3)">🕳 경험치·코인 던전 해금</button><button onclick="CH(4)">🌟 S등급 지급</button><button onclick="CH(7)">👥 전 캐릭터 획득</button><button onclick="CH(8)">⬆ 전원 만렙</button></div>
@@ -988,7 +1007,7 @@ const ENC=[{t:'프롤로그 · 이름 없는 길',so:1,xp:0,e:[],bg:'forest'},{t
 const DGE=[{t:'경험치 던전 · 초급',xp:0,sc:2,e:[[12]],bg:'wall'},{t:'경험치 던전 · 중급',xp:0,sc:4,e:[[13]],bg:'wall'},{t:'경험치 던전 · 상급',xp:0,sc:8,e:[[14]],bg:'top'},{t:'경험치 던전 · 최상급',xp:0,sc:16,e:[[31]],bg:'top'},{t:'코인 던전 · 초급',xp:0,sc:2,e:[[15]],bg:'village'},{t:'코인 던전 · 중급',xp:0,sc:4,e:[[16]],bg:'village'},{t:'코인 던전 · 상급',xp:0,sc:8,e:[[17]],bg:'archive'},{t:'코인 던전 · 최상급',xp:0,sc:16,e:[[32]],bg:'archive'}],EN=k=>k>=100?DGE[k-100]:ENC[k];
 const SS=[...ST.keys()].filter(i=>ST[i][2]=='T').concat(ST.length);
 const G={lv:{chielb:1,neri:1,raba:1,rian:1,ass:1,mag:1,buf:1,whp:1,gsw:1},xp:{chielb:0,neri:0,raba:0,rian:0,ass:0,mag:0,buf:0,whp:0,gsw:0},j:{chielb:1},party:['chielb'],sc:0,cl:ENC.map(()=>0),ch:1,it:[0,0,0,0],bt:0,eq:[],nid:0,coin:0,dup:{},last:[],end:0},XP=220,LVMAX=40,need=l=>100*l,mul=i=>(1+.09*(G.lv[i]-1))*(GM[GR[i]]||1);
-const by=i=>S.U.find(u=>u.id==i),log=t=>S.lg.push(t),pop=(i,t)=>S.pp[i]=t;
+const by=i=>S.U.find(u=>u.id==i),log=t=>S.lg.push(t),pop=(i,t)=>{S.pp[i]=t;try{const cu=S.cur,x=String(t),v=parseInt(x.replace(/\D/g,'')),tg=by(i);if(cu&&cu.side=='a'&&v&&tg&&typeof sa=='function'){if(x[0]=='-'&&tg.side=='b')sa(cu.id).d+=v;if(x[0]=='+'&&tg.side=='a')sa(cu.id).h+=v}}catch(e){}};
 for(let i=0;i<16;i++){const e=document.createElement('i'),z=2+Math.random()*3;e.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;animation-duration:${6+Math.random()*8}s;animation-delay:-${Math.random()*10}s`;$('#ash').append(e)}
 $('#fx').onclick=()=>skip=true;
 let AC,mute=false,lh=0;
@@ -1123,7 +1142,7 @@ function rollG(){const x=Math.random();let g=0,a=0;for(;g<3;g++){a+=GP[g];if(x<a
 function pull(n){const cost=n==10?900:100*n;if(G.coin<cost){toast('코인이 부족해요');return}G.coin-=cost;window.PB={n:n,i:0,ok:0};const R=[];for(let i=0;i<n;i++){const id=rollG(),dup=!!G.j[id];let rf=0;if(dup)rf=__dupGet(id);else{G.j[id]=1;G.lv[id]=Math.max(1,G.lv.chielb-1);G.xp[id]=0}R.push({id,dup,rf})}G.last=R;sfx('ui','ok');if(R.some(r=>GR[r.id]==4))sfx('win');rGc()}
 function openGc(){rGc();$('#gc').className='on'}
 function closeGc(){$('#gc').className='';rLobby()}
-function rGc(){const R=G.last||[],cnt=g=>GPOOL.filter(i=>GR[i]==g).length;$('#gc').innerHTML=`<div class="bgb"><button class="cx" onclick="closeGc()">✕</button><h3>캐릭터 뽑기 <small style="color:var(--ac)">🪙 ${G.coin}</small></h3><div class="gr">${GN.map((n,g)=>`<span style="border-color:${GC[g]};color:${GC[g]}">${n} ${Math.round(GP[g]*100)}% <small>${cnt(g)}종</small></span>`).join('')}</div><p style="color:var(--mu);font-size:12px;margin:6px 0">S급 확정까지 ${Math.max(1,80-(G.ps||0))}회 · 10회 뽑기는 B~A급 이상 1개 보장 · 60회부터 S급 확률 소폭 상승 / 이미 가진 캐릭터가 나오면 중복 처리돼요.</p><div class="gl">${R.map(r=>`<div class="pc" style="border-color:${GC[GR[r.id]]}"><span class="ic" style="background:${C[r.id].col}">${C[r.id].ic}</span><br><b>${C[r.id].n}</b><small style="color:${GC[GR[r.id]]}">${GN[GR[r.id]]}등급 · ${r.dup?(r.rf?'🪙 +'+r.rf+' (조각 가득)':'🔷 조각 +1'):'신규!'}</small></div>`).join('')}</div><div class="rb"><button onclick="pull(1)">1회 · 🪙100</button><button onclick="pull(10)">10회 · 🪙900</button></div></div>`}
+function rGc(){const R=G.last||[],cnt=g=>GPOOL.filter(i=>GR[i]==g).length;$('#gc').innerHTML=`<div class="bgb"><button class="cx" onclick="closeGc()">✕</button><h3>캐릭터 뽑기 <small style="color:var(--ac)">🪙 ${G.coin}</small></h3><div class="gr">${GN.map((n,g)=>`<span style="border-color:${GC[g]};color:${GC[g]}">${n} ${+(GP[g]*100).toFixed(1)}% <small>${cnt(g)}종</small></span>`).join('')}</div><p style="color:var(--mu);font-size:12px;margin:6px 0">S급 확정까지 ${Math.max(1,80-(G.ps||0))}회 · 10회 뽑기는 B~A급 이상 1개 보장 · 60회부터 S급 확률 크게 상승 / 이미 가진 캐릭터가 나오면 중복 처리돼요.</p><div class="gl">${R.map(r=>`<div class="pc" style="border-color:${GC[GR[r.id]]}"><span class="ic" style="background:${C[r.id].col}">${C[r.id].ic}</span><br><b>${C[r.id].n}</b><small style="color:${GC[GR[r.id]]}">${GN[GR[r.id]]}등급 · ${r.dup?(r.rf?'🪙 +'+r.rf+' (조각 가득)':'🔷 조각 +1'):'신규!'}</small></div>`).join('')}</div><div class="rb"><button onclick="pull(1)">1회 · 🪙100</button><button onclick="pull(10)">10회 · 🪙900</button></div></div>`}
 function adv(){clearTimeout(AT);if(auto&&$('#story').classList.contains('on')){G.sc++;line()}}
 function sched(s){const tk=UT,n=s[1].length,base=Math.max(1500,n*60+900),nx=d=>{if(tk!=UT)return;clearTimeout(AT);AT=setTimeout(adv,d)};let on=0;const ok=say(s[0],s[1],()=>nx(450),()=>{on=1},()=>nx(Math.max(300,base-1600)));AT=setTimeout(adv,ok?n*150+3000:base);if(ok)setTimeout(()=>{if(tk==UT&&!on)nx(Math.max(300,base-1600))},1600)}
 function toggleAuto(){auto=!auto;clearTimeout(AT);line()}
@@ -1319,7 +1338,7 @@ bt.querySelectorAll('.al .u').forEach((el,i)=>{const u=Aa[i];if(!u)return;const 
 bt.querySelectorAll('.bsw .bs').forEach((el,i)=>{const e=Ee[i];if(!e)return;let tm;el.onpointerdown=()=>{tm=setTimeout(()=>{LP=1;inf(esk(e))},500)};el.onpointerup=el.onpointerleave=el.onpointercancel=()=>clearTimeout(tm);el.querySelectorAll('.chips em').forEach(c=>c.onclick=ev=>{ev.stopPropagation();inf(`<b>${e.n}</b><p>${c.textContent}</p><p>${cdsc(c.textContent)}</p>`)})});
 const c=S.cur;if(c&&c.id=='gsw'){const s=bt.querySelector('.sk.u small');if(s&&!/대기/.test(s.textContent))s.textContent='전체 '+Math.round(235*fm(c))+'%'}}
 $('#bt').addEventListener('click',ev=>{if(LP){LP=0;ev.stopPropagation();ev.preventDefault()}},true);
-{const R=render;render=function(){const cu=S.cur;if(cu&&cu.side=='a'&&S.pp)for(const i in S.pp){const x=String(S.pp[i]),v=parseInt(x.replace(/\D/g,'')),t=by(i);if(!v||!t)continue;if(x[0]=='-'&&t.side=='b')sa(cu.id).d+=v;if(x[0]=='+'&&t.side=='a')sa(cu.id).h+=v}R();deco()}}
+{const R=render;render=function(){R();deco()}}
 /* D. 코인 감소 + 클리어 화면(보상 · 최고 활약 · 그래프) */
 document.head.insertAdjacentHTML('beforeend','<style>#ts{z-index:200}.nd.cl{overflow:visible}</style>');addEventListener('pointerup',()=>setTimeout(()=>{LP=0},60));
 let PEND=null;const showPend=()=>{if(!PEND)return;const h=PEND;PEND=null;try{speechSynthesis.cancel()}catch(e){}$('#res').innerHTML=h;$('#res').className='on'};
@@ -1335,7 +1354,7 @@ const H=`<div class="bx" style="max-height:90vh;overflow:auto;text-align:left"><
 
 /* ===== 라운드3: D등급 · 보스 외형 · 뽑기 캐릭터 연출/음성 ===== */
 const DD=[['dd1','재의 들개','🐺','#8a6a5a',700,110,104,['물어뜯기','도약 물기','울부짖음'],'재에 물든 들개. 빠르지만 약하다'],['dd2','재의 병정','🗡','#7a7f88',900,105,90,['창 찌르기','방패 밀치기','병정의 호령'],'재의 병정. 튼튼하지만 둔하다'],['dd3','재의 사냥꾼','🏹','#9a7a5a',650,125,100,['재 화살','조준 사격','난사'],'재의 사냥꾼. 약한 활잡이'],['dd4','먹빛 그림자','🌑','#5a5a7a',600,115,108,['번지는 먹','먹 뿜기','그림자 덮치기'],'먹빛 그림자. 가볍고 잘 흩어진다']];
-window.DM={};GN.unshift('D');GC.unshift('#6b6f76');GM.unshift(.92);GP.splice(0,GP.length,.41,.325,.185,.06,.02);for(const k in GR)GR[k]++;
+window.DM={};GN.unshift('D');GC.unshift('#6b6f76');GM.unshift(.92);GP.splice(0,GP.length,.435,.335,.185,.04,.005);for(const k in GR)GR[k]++;
 DD.forEach(([id,n,ic,col,hp,atk,spd,sk,ds])=>{C[id]={n,ic,col,spd,atk,hp,ds};GR[id]=0;ALL.push(id);GPOOL.push(id);DM[id]={b:90,s:140,u:200};SK[id]={b:{n:sk[0],c:'n',cd:0},s:{n:sk[1],c:'e',cd:2},u:{n:sk[2],c:'u',cd:4}};DT[id]={role:ds,sk:[[sk[0],'일반','쿨다운 없음','공격력 90%','대상에게 공격력의 90% 피해를 줍니다.'],[sk[1],'강화','쿨다운 2턴','공격력 140%','대상에게 공격력의 140% 피해를 줍니다.'],[sk[2],'필살','쿨다운 4턴 (전투 시작 시 2턴)','공격력 200% · 연출 없음','대상에게 공격력의 200% 피해를 줍니다.']]}});
 /* ===== v1.9n: D등급 추가 — 3~4장 일반 몬스터 11종 (일반 공격 · 스킬 1 · 궁극기 1, 궁극기 연출 없음: id가 dd로 시작하면 컷인 생략) =====
    [id, 이름, 아이콘, 색, HP, 공격력, 속도, [일반, 스킬, 궁극기], 설명, {b,s,u 배율}] */
@@ -1359,7 +1378,7 @@ rollG=function(){const B=window.PB||{n:1,i:0,ok:0};B.i++;G.ps=(G.ps||0)+1;let g=
 /* 등급: 0=D 1=C 2=B 3=A 4=S · 천장: 80회 안에 S 확정 / 60회부터 S 확률 미세 증가 / 10연: B~A 이상 1개 보장 */
 if(G.ps>=80)g=4;
 else if(B.n==10&&B.i==10&&!B.ok)g=Math.random()<.7?2:3;
-if(g<0){const bonus=G.ps>=60?(G.ps-59)*.0015:0,P=GP.slice();P[4]+=bonus;P[0]-=bonus*.5;P[1]-=bonus*.3;P[2]-=bonus*.2;const x=Math.random();let a=0;for(g=0;g<4;g++){a+=P[g];if(x<a)break}}
+if(g<0){const bonus=G.ps>=60?(G.ps-59)*.005:0,P=GP.slice();P[4]+=bonus;P[0]-=bonus*.5;P[1]-=bonus*.3;P[2]-=bonus*.2;const x=Math.random();let a=0;for(g=0;g<4;g++){a+=P[g];if(x<a)break}}
 if(g==4)G.ps=0;if(g>=2)B.ok=1;
 const pl=GPOOL.filter(i=>GR[i]==g);return pl[Math.random()*pl.length|0]};
 const BS={3:'<circle cx="50" cy="30" r="26" fill="none" stroke="#c9a15b" stroke-width="1.2" opacity=".7"/><path d="M50 8C38 8 34 20 36 30 28 46 24 80 18 116H82C76 80 72 46 64 30 66 20 62 8 50 8Z" fill="#0e0d14"/><path d="M36 14L42 4 50 12 58 4 64 14Z" fill="#c9a15b"/><path d="M42 24Q50 18 58 24V36Q50 42 42 36Z" fill="#e8e2d4"/><circle cx="46" cy="30" r="1.8" fill="#e0603a"/><circle cx="54" cy="30" r="1.8" fill="#e0603a"/><rect x="36" y="58" width="28" height="22" rx="2" fill="#3a2a2a" stroke="#c9a15b"/><path d="M42 64H58M42 69H58M42 74H54" stroke="#c9a15b" stroke-width="1.2"/><path d="M18 70L8 86 18 92 28 80ZM82 70L92 86 82 92 72 80Z" fill="#d8d2c4"/>',1:'<path d="M50 6C34 6 26 22 28 40 18 64 10 96 8 116H92C90 96 82 64 72 40 74 22 66 6 50 6Z" fill="#241a1c"/><path d="M36 30Q50 20 64 30L62 52Q50 60 38 52Z" fill="#0a0708"/><circle cx="44" cy="40" r="2.6" fill="#ff7a3a"/><circle cx="56" cy="40" r="2.6" fill="#ff7a3a"/><path d="M84 8L92 12 76 100 68 96Z" fill="#c9ced8" stroke="#6a7282"/><path d="M62 92H86" stroke="#c9a15b" stroke-width="5"/><path d="M12 60Q4 80 14 100M20 70Q12 88 22 104" stroke="#8a8f99" stroke-width="2" fill="none" stroke-dasharray="3 3"/>',2:'<circle cx="50" cy="26" r="24" fill="none" stroke="#c8503a" stroke-width="1.5" opacity=".7"/><path d="M50 12C40 12 38 22 40 30 34 44 30 76 26 116H74C70 76 66 44 60 30 62 22 60 12 50 12Z" fill="#14121a"/><path d="M42 22Q50 16 58 22V34Q50 40 42 34Z" fill="#d8d4cc"/><circle cx="46" cy="28" r="1.8" fill="#c8503a"/><circle cx="54" cy="28" r="1.8" fill="#c8503a"/><path d="M26 70L14 84 24 90 34 78ZM74 70L86 84 76 90 66 78Z" fill="#f4f1ea"/><rect x="38" y="56" width="24" height="18" rx="2" fill="#6a2a2a" stroke="#d0b070"/><circle cx="50" cy="65" r="4" fill="none" stroke="#e0603a"/>'};
@@ -1372,7 +1391,7 @@ document.head.insertAdjacentHTML('beforeend','<style>#fx::before{content:"";posi
 /* 뽑기 캐릭터 상세 보기 */
 function gInfo(id){const c=C[id],m=GM[GR[id]],d=DT[id],im=CIL[id]?CIL[id].replace('<svg','<svg style="width:96px;height:auto"'):`<span class="ic big" style="background:${c.col}">${c.ic}</span>`;inf(`<div style="display:flex;gap:12px;align-items:center"><div style="flex:none">${im}</div><div><b>${c.n}</b> <small style="color:${GC[GR[id]]}">${GN[GR[id]]}등급</small><br><small style="color:var(--mu)">${d.role}</small><br>${STUN_U.includes(id)?`<small style="color:#7fd4ff">⚡ 기절 저항 감소 ${STP[GR[id]]??50}% (등급 효과)</small><br>`:''}HP ${Math.round(c.hp*m)} · 공격력 ${Math.round(c.atk*m)} · 속도 ${c.spd}<br><small style="color:var(--mu)">${G.j[id]?'보유 중':'미보유'} · Lv.1 기준</small></div></div>`+d.sk.map(k=>`<p><b>${k[0]}</b> <small style="color:var(--ac)">${k[1]}</small> <small style="color:var(--mu)">${k[2]}</small><br>${k[4]}</p>`).join(''))}
 {const R=rGc;rGc=function(){R();const g=$('#gc');if(!g)return;const ids=GPOOL.slice().sort((a,b)=>GRK(b)-GRK(a));g.querySelectorAll('.gl.pl .pc').forEach((el,i)=>{el.style.cursor='pointer';el.onclick=()=>gInfo(ids[i])});g.querySelectorAll('.gl:not(.pl) .pc').forEach((el,i)=>{const r=(G.last||[])[i];if(r)el.onclick=()=>gInfo(r.id)});const h=g.querySelector('.gr');if(h)h.insertAdjacentHTML('afterend','<div style="color:var(--mu);font-size:11px">캐릭터를 누르면 상세 정보, 등급 칸을 꾹 누르면 그 등급의 캐릭터 목록을 볼 수 있어요</div>');g.querySelectorAll('.gr span').forEach((el,gr)=>{let tm;el.oncontextmenu=()=>false;el.onpointerdown=()=>{tm=setTimeout(()=>gGrade(gr),450)};el.onpointerup=el.onpointerleave=el.onpointercancel=()=>clearTimeout(tm)})}}
-function gGrade(g){const L=GPOOL.filter(i=>GR[i]==g),p=GP[g]*100;inf(`<b style="color:${GC[g]}">${GN[g]}등급</b> <small style="color:var(--mu)">총 ${Math.round(p)}% · ${L.length}종</small>`+L.map(i=>`<p style="display:flex;gap:8px;align-items:center"><span style="width:40px;flex:none">${CIL[i]?CIL[i].replace('<svg','<svg style="width:40px;height:auto"'):`<span class="ic" style="background:${C[i].col}">${C[i].ic}</span>`}</span><span><b>${C[i].n}</b> <small style="color:var(--ac)">${(p/L.length).toFixed(1)}%</small><br><small style="color:var(--mu)">${C[i].ds}</small></span></p>`).join(''))}
+function gGrade(g){const L=GPOOL.filter(i=>GR[i]==g),p=GP[g]*100;inf(`<b style="color:${GC[g]}">${GN[g]}등급</b> <small style="color:var(--mu)">총 ${+p.toFixed(1)}% · ${L.length}종</small>`+L.map(i=>`<p style="display:flex;gap:8px;align-items:center"><span style="width:40px;flex:none">${CIL[i]?CIL[i].replace('<svg','<svg style="width:40px;height:auto"'):`<span class="ic" style="background:${C[i].col}">${C[i].ic}</span>`}</span><span><b>${C[i].n}</b> <small style="color:var(--ac)">${(p/L.length).toFixed(1)}%</small><br><small style="color:var(--mu)">${C[i].ds}</small></span></p>`).join(''))}
 
 
 /* ===== 라운드4: 뽑기 캐릭터 5종 추가 (카데나 · 바르크 · 제피르 · 레이카 · 핍) ===== */
@@ -1955,7 +1974,7 @@ function rvShow(i){
  RV.i=i;RV.ph=1;rvE.style.setProperty('--gc',GC[g]);rvE.className='on ph1';
  rvQ('.rvn').textContent=RV.L.length>1?(i+1)+' / '+RV.L.length:'';
  rvQ('.rvsk').style.display=RV.L.length>1&&i<RV.L.length-1?'':'none';
- rvQ('.rvgr').textContent=GN[g]+'등급'+(g==6?' · Novel':'');
+ rvQ('.rvgr').textContent=GN[g]+'등급'+(g==6?' · Novel':g==7?' · Mythic Remnant':'');
  rvQ('.rvil').innerHTML=CIL[id]?CIL[id].replace('<svg','<svg style="width:min(58vw,230px);height:auto;max-height:36vh"'):`<span class="rvic" style="background:${c.col}">${c.ic}</span>`;
  rvQ('.rvnm').textContent=c.n;
  const t=rvQ('.rvtg');t.textContent=r.dup?(r.rf?'조각 가득 · 🪙 +'+r.rf:'🔷 '+c.n+' 조각 +1'):'NEW!';t.style.color=r.dup?'var(--mu)':'var(--ac)';
@@ -5515,7 +5534,7 @@ setTimeout(lobbyBtn,0);
 (function(){try{
 const NG=6;
 GN[NG]='N';GC[NG]='#a0723d';GM[NG]=1;GP[5]=GP[5]||0;GP[NG]=0;STP[NG]=0;
-window.NG=NG;window.GRK=i=>GR[i]==NG?-1:GR[i];
+window.NG=NG;window.GRK=i=>{const g=GR[i];return g==6?4.5:g==7?5.5:g}; /* 정렬 서열: D<C<B<A<S<N<SS<M */
 /* [id,이름,아이콘,색,속도,공격력,HP,역할,설명,스킬명3,DT,DM] */
 const D=[
 ['rowen','로웬','🔖','#b07a45',108,200,1400,'단일 딜러 · 표식 연계','적에게 생긴 기록과 현실의 불일치를 추적해 표식으로 바꾸는 전투원. 표식을 쌓은 뒤 한 번에 소모해 큰 피해를 입힌다.',
@@ -5821,12 +5840,12 @@ barken:['#a9792f','#e0c29c','#382c20','#ffd890',
 Object.keys(Z).forEach(id=>{const z=Z[id];CIL[id]=ciS(z[0],z[1],z[2],z[3],z[4],z[5],z[6],z[7])});
 
 /* N등급은 뽑기 풀에 없음 — 뽑기 창의 작은 버튼으로 코인 구매 */
-const PRICE={seia:600,mukheun:700,erdan:700,eden:800,raon:800,sion:850,cond:850,rowen:900,serban:900,kairen:950,barken:1000,varg:1000};
+const PRICE={rowen:4600,serban:5400,mukheun:3700,cond:5000,kairen:6200,erdan:4200,seia:3800,raon:4100,eden:4200,varg:6900,sion:4700,barken:4800};
 window.NVP=PRICE;
 document.head.insertAdjacentHTML('beforeend','<style>#nvs{display:none;position:fixed;inset:0;z-index:88;background:#000b;align-items:center;justify-content:center}#nvs.on{display:flex}#nvs .nvb2{background:var(--pn);border:1px solid '+GC[NG]+';border-radius:12px;padding:12px 14px;width:min(94vw,560px);max-height:88vh;overflow:auto;position:relative}#nvs .nvi{display:flex;gap:10px;align-items:center;border:1px solid var(--ln);border-radius:8px;padding:6px 8px;margin:6px 0;background:#0005}#nvs .nvi.own{opacity:.55}#nvs .nvi small{color:var(--mu)}.nvbtn{min-height:26px;padding:0 9px;font-size:11px;margin-left:8px;border-color:'+GC[NG]+';color:'+GC[NG]+'}</style>');
 const nvEl=()=>{let e=document.getElementById('nvs');if(!e){e=document.createElement('div');e.id='nvs';e.onclick=ev=>{if(ev.target===e)nvClose()};document.body.appendChild(e)}return e};
 window.nvClose=()=>{nvEl().className='';try{rGc()}catch(e){}};
-window.nvBuy=id=>{const p=PRICE[id];if(G.j[id])return;if(G.coin<p){toast('코인이 부족해요');return}G.coin-=p;G.j[id]=1;G.lv[id]=1;G.xp[id]=0;try{sfx('ui','ok')}catch(e){}toast(`🟤 ${C[id].n} 구매! (-🪙${p})`);try{$('#coin').textContent='🪙 '+G.coin}catch(e){}try{rLobby()}catch(e){}nvOpen()};
+window.shopRv=function(id){try{if(!(GL[id]||RVX[id]))RVX[id]=C[id].n+'이야. 잘 부탁해.';RV.L=[{id,dup:false}];rvShow(0)}catch(e){}};window.nvBuy=id=>{const p=PRICE[id];if(G.j[id])return;if(G.coin<p){toast('코인이 부족해요');return}G.coin-=p;G.j[id]=1;G.lv[id]=1;G.xp[id]=0;try{sfx('ui','ok')}catch(e){}toast(`🟤 ${C[id].n} 구매! (-🪙${p})`);try{$('#coin').textContent='🪙 '+G.coin}catch(e){}try{rLobby()}catch(e){}nvOpen();shopRv(id)};
 window.nvOpen=()=>{const e=nvEl();e.innerHTML=`<div class="nvb2"><button class="cx" onclick="nvClose()">✕</button><h3 style="margin:2px 0">N등급 상점 <small style="color:${GC[NG]}">Novel</small> <small style="color:var(--ac)">🪙 ${G.coin}</small></h3><div style="color:var(--mu);font-size:11px;margin-bottom:4px">N등급 캐릭터는 뽑기에 나오지 않고 코인으로 구매해요. 캐릭터를 누르면 상세 정보를 볼 수 있어요.</div>`+NOVEL_IDS.slice().sort((a,b)=>PRICE[a]-PRICE[b]).map(id=>{const c=C[id],own=!!G.j[id];return`<div class="nvi${own?' own':''}"><span style="flex:none;width:56px;cursor:pointer" onclick="gInfo('${id}')">${CIL[id].replace('<svg','<svg style="width:56px;height:auto"')}</span><span style="flex:1;font-size:12px;cursor:pointer" onclick="gInfo('${id}')"><b style="font-size:13px">${c.n}</b> <small style="color:${GC[NG]}">N등급</small><br><small>HP ${c.hp} · 공격력 ${c.atk} · 속도 ${c.spd}</small><br><small>${DT[id].role.split(' — ')[0]}</small></span><button ${own||G.coin<PRICE[id]?'disabled':''} onclick="nvBuy('${id}')" style="min-height:34px;padding:0 10px;font-size:12px">${own?'보유 중':'🪙 '+PRICE[id]}</button></div>`}).join('')+'</div>';e.className='on'};
 {const R=rGc;rGc=function(){R.apply(this,arguments);const g=$('#gc');if(!g)return;
  g.querySelectorAll('.gr span').forEach(el=>{if(/^N\b/.test(el.textContent.trim()))el.remove()});
@@ -5987,12 +6006,12 @@ m_jud:['#d6bd6e','#e8d2b4','#3a3220','#fff0a8',
 Object.keys(Z).forEach(id=>{const z=Z[id];CIL[id]=ciS(z[0],z[1],z[2],z[3],z[4],z[5],z[6],z[7])});
 
 /* M등급: 뽑기에 나오지 않고 코인 상점에서 구매 (N등급 상점 옆) */
-const PRICE={m_exe:2000,m_aud:2200,m_lord:2500,m_king:2800,m_jud:3200};
+const PRICE={m_exe:6100,m_aud:5600,m_lord:8600,m_king:5800,m_jud:7600};
 window.MVP=PRICE;
 document.head.insertAdjacentHTML('beforeend','<style>#mvs{display:none;position:fixed;inset:0;z-index:88;background:#000b;align-items:center;justify-content:center}#mvs.on{display:flex}#mvs .nvb2{background:var(--pn);border:1px solid '+GC[MG]+';border-radius:12px;padding:12px 14px;width:min(94vw,560px);max-height:88vh;overflow:auto;position:relative}#mvs .nvi{display:flex;gap:10px;align-items:center;border:1px solid var(--ln);border-radius:8px;padding:6px 8px;margin:6px 0;background:#0005}#mvs .nvi.own{opacity:.55}#mvs .nvi small{color:var(--mu)}.mvbtn{min-height:26px;padding:0 9px;font-size:11px;margin-left:8px;border-color:'+GC[MG]+';color:'+GC[MG]+'}</style>');
 const mvEl=()=>{let e=document.getElementById('mvs');if(!e){e=document.createElement('div');e.id='mvs';e.onclick=ev=>{if(ev.target===e)mvClose()};document.body.appendChild(e)}return e};
 window.mvClose=()=>{mvEl().className='';try{rGc()}catch(e){}};
-window.mvBuy=id=>{const p=PRICE[id];if(G.j[id])return;if(G.coin<p){toast('코인이 부족해요');return}G.coin-=p;G.j[id]=1;G.lv[id]=1;G.xp[id]=0;try{sfx('ui','ok')}catch(e){}toast(`🟣 ${C[id].n} 구매! (-🪙${p})`);try{$('#coin').textContent='🪙 '+G.coin}catch(e){}try{rLobby()}catch(e){}mvOpen()};
+window.mvBuy=id=>{const p=PRICE[id];if(G.j[id])return;if(G.coin<p){toast('코인이 부족해요');return}G.coin-=p;G.j[id]=1;G.lv[id]=1;G.xp[id]=0;try{sfx('ui','ok')}catch(e){}toast(`🟣 ${C[id].n} 구매! (-🪙${p})`);try{$('#coin').textContent='🪙 '+G.coin}catch(e){}try{rLobby()}catch(e){}mvOpen();shopRv(id)};
 window.mvOpen=()=>{const e=mvEl();e.innerHTML=`<div class="nvb2"><button class="cx" onclick="mvClose()">✕</button><h3 style="margin:2px 0">M등급 상점 <small style="color:${GC[MG]}">Mythic Remnant</small> <small style="color:var(--ac)">🪙 ${G.coin}</small></h3><div style="color:var(--mu);font-size:11px;margin-bottom:4px">1~5장 보스와 중간보스의 잔영(약화된 모습)입니다. 뽑기에는 나오지 않고 코인으로만 구매할 수 있어요. 캐릭터를 누르면 상세 정보를 볼 수 있어요.</div>`+MYTH_IDS.slice().sort((a,b)=>PRICE[a]-PRICE[b]).map(id=>{const c=C[id],own=!!G.j[id];return`<div class="nvi${own?' own':''}"><span style="flex:none;width:56px;cursor:pointer" onclick="gInfo('${id}')">${CIL[id].replace('<svg','<svg style="width:56px;height:auto"')}</span><span style="flex:1;font-size:12px;cursor:pointer" onclick="gInfo('${id}')"><b style="font-size:13px">${c.n}</b> <small style="color:${GC[MG]}">M등급</small><br><small>${DT[id].role.split(' — ')[0]}</small><br><small>HP ${Math.round(c.hp*GM[MG])} · 공격력 ${Math.round(c.atk*GM[MG])} · 속도 ${c.spd}</small></span>${own?'<small style="flex:none">보유 중</small>':`<button style="flex:none" onclick="mvBuy('${id}')">🪙 ${PRICE[id]}</button>`}</div>`}).join('')+'</div>';e.className='on'};
 {const R=rGc;rGc=function(){R.apply(this,arguments);const g=$('#gc');if(!g)return;
  g.querySelectorAll('.gr span').forEach(el=>{if(/^M\b/.test(el.textContent.trim()))el.remove()});
@@ -6064,7 +6083,7 @@ D.forEach(([id,n,ic,col,spd,atk,hp,role,ds,sk,dt,dm])=>{
  DT[id]={role:role+' — '+ds,sk:dt};if(G.lv[id]==null)G.lv[id]=1;if(G.xp[id]==null)G.xp[id]=0;
  if(window.MYTH_IDS&&MYTH_IDS.indexOf(id)<0)MYTH_IDS.push(id)});
 /* 코인 상점 가격 (중간보스는 보스 잔영보다 저렴) */
-if(window.MVP)Object.assign(MVP,{m_cap:600,m_hun:700,m_scr:800,m_sta:1000,m_pri:1100,m_gua:1200});
+if(window.MVP)Object.assign(MVP,{m_cap:4600,m_hun:4200,m_scr:4100,m_sta:6100,m_pri:4100,m_gua:5100});
 PKS.m_gua=['s'];
 }catch(e){console.error('m-mid-data',e)}})();
 
@@ -6670,7 +6689,7 @@ const DX_GRADE_COLORS={0:'#6b6f76',1:'#9aa0a8',2:'#5c9ec7',3:'#a78bd6',4:'#e0b44
 const gc=i=>DX_GRADE_COLORS[Number(GR[i])]||GC[GR[i]]||'#888',gn=i=>DX_GRADE_NAMES[Number(GR[i])]||GN[GR[i]]||'?',nf=n=>Math.round(n).toLocaleString('ko-KR');
 const ml=i=>(1+.09*(DX.lv-1))*(GM[GR[i]]||1);
 const st=i=>({hp:Math.round(C[i].hp*ml(i)),atk:Math.round(C[i].atk*ml(i)),spd:C[i].spd});
-const list=()=>ALL.filter(i=>C[i]&&SK[i]).sort((a,b)=>GR[b]-GR[a]);
+const list=()=>ALL.filter(i=>C[i]&&SK[i]).sort((a,b)=>GRK(b)-GRK(a));
 
 /* ---- 훈련장용 허수아비 · 가상 스테이지 등록 ---- */
 const EI=E.push(['허수아비','🎯',999999,0,1,0,'가만히 서 있기',0,0,0])-1;
@@ -7677,6 +7696,30 @@ document.head.insertAdjacentHTML('beforeend','<style>#mt,#vt,#bm{display:none!im
 })();
 </script>
 
+<script>
+/* v2.5.3: 모바일 효과음 안정화 — iOS 무음 스위치 우회, 첫 터치 오디오 잠금 해제, 중단 후 자동 복구 */
+(function(){
+  try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  var primed=false;
+  function wake(){
+    try{
+      var a=au();if(!a)return;
+      if(a.state!=='running'){try{a.resume()}catch(e){}}
+      if(!primed){
+        primed=true;
+        var b=a.createBuffer(1,1,22050),s=a.createBufferSource();
+        s.buffer=b;s.connect(a.destination);s.start(0);
+      }
+    }catch(e){}
+  }
+  ['touchstart','touchend','pointerdown','click','keydown'].forEach(function(ev){
+    addEventListener(ev,wake,{passive:true,capture:true});
+  });
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){try{var a=au();if(a&&a.state!=='running')a.resume()}catch(e){}}});
+  addEventListener('pageshow',function(){try{var a=au();if(a&&a.state!=='running')a.resume()}catch(e){}});
+  setInterval(function(){try{if(typeof AC!=='undefined'&&AC&&AC.state!=='running'&&!document.hidden)AC.resume().catch(function(){})}catch(e){}},2000);
+})();
+</script>
 <style id="lobbyUi">
 /* ===== 로비 UI 개편: 반투명 유리 · 둥근 아이콘 · 화면 가림 최소화 ===== */
 body #lobby{--gl:rgba(22,18,28,.52);--gb:rgba(255,255,255,.16);--L:calc(env(safe-area-inset-left,0px) + 14px);--R:calc(env(safe-area-inset-right,0px) + 14px);--B:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -7739,7 +7782,7 @@ const L0=line;line=function(){try{if(G.sc>CXS.get('mx',0))CXS.set('mx',G.sc)}cat
 const seen=()=>Math.max(CXS.get('mx',0),G.sc||0);
 const grade=i=>{const g=GR[i];return{n:GN[g]!=null?GN[g]:'?',c:GC[g]||'#9aa0a8'}};
 function pCh(){
- const L=[...ALL].filter(i=>C[i]).sort((a,b)=>(GR[b]||0)-(GR[a]||0)),own=L.filter(i=>G.j[i]).length;
+ const L=[...ALL].filter(i=>C[i]).sort((a,b)=>(GRK(b)||0)-(GRK(a)||0)),own=L.filter(i=>G.j[i]).length;
  return`<p>보유 ${own} / ${L.length}</p><div class="dzg">`+L.map(i=>{const c=C[i],g=grade(i),o=G.j[i];return`<button class="dzi${o?'':' lk'}" onclick="CXO.pick('${i}')" style="border-color:${g.c}"><span class="ic" style="background:${c.col}">${c.ic}</span><b>${esc(c.n)}</b><small style="color:${g.c}">${g.n}${o?'':' · 미획득'}</small></button>`}).join('')+'</div>'}
 function pDet(i){
  const c=C[i],g=grade(i),d=DT[i]||{},o=G.j[i];
@@ -8337,7 +8380,7 @@ function gachaTut(){
   run([
     {text:'🎁 튜토리얼 보상으로 <b>코인 100개</b>를 받았어요!<br>코인으로는 <b>뽑기</b>를 해서 새로운 동료를 모집할 수 있어요.'},
     {t:'#gbtn',mode:'act',text:'<b>뽑기</b> 버튼을 눌러요.'},
-    {wait:'#gc.on',t:'#gc .gr',text:()=>`캐릭터에는 등급이 있어요.<br>${GN.map((n,g)=>`<b>${n}</b> ${Math.round(GP[g]*100)}%`).join(' · ')}<br>이미 가진 캐릭터가 또 나오면 <b>조각</b>이 쌓여요.`},
+    {wait:'#gc.on',t:'#gc .gr',text:()=>`캐릭터에는 등급이 있어요.<br>${GN.map((n,g)=>`<b>${n}</b> ${+(GP[g]*100).toFixed(1)}%`).join(' · ')}<br>이미 가진 캐릭터가 또 나오면 <b>조각</b>이 쌓여요.`},
     {t:'#gc .rb button:first-child',mode:'act',text:'<b>1회 · 🪙100</b>을 눌러 뽑아 보세요!<br><small>(10회 · 🪙900은 B~A급 이상 1개가 보장돼요)</small>'},
     {wait:'#gcrv.on',timeout:4000},                  /* 뽑기 연출 시작 대기 */
     {wait:()=>!$q('#gcrv.on'),timeout:120000,delay:250},   /* 연출이 끝날 때까지 기다림 */
@@ -8556,7 +8599,7 @@ const rdLS=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')||{}}catch(
 G.ach=G.ach||{};const A=G.ach;A.c=A.c||{};A.seen=A.seen||{};A.hi=A.hi||{};A.n=A.n||{bat:0,win:0,pull:0};
 const coinUp=()=>{try{Q('#coin').textContent='🪙 '+G.coin}catch(e){}};
 const own=()=>ALL.filter(i=>G.j[i]);
-const gi=n=>GN.indexOf(n),gge=(i,n)=>(GR[i]||0)>=gi(n);
+const gi=n=>GN.indexOf(n),gge=(i,n)=>{const g=GR[i]||0;return g<=5&&g>=gi(n)}; /* N·M등급(6,7)은 D~SS 서열 밖이라 S/SS 이상 집계에서 제외 */
 const lastSt=n=>Math.min(n,ENC.length-1);
 const bestUp=()=>G.eq.reduce((m,x)=>Math.max(m,x.up||0),0);
 const maxR=()=>G.eq.reduce((m,x)=>Math.max(m,x.r||0),0);
