@@ -6300,7 +6300,7 @@ m_jud:['#d6bd6e','#e8d2b4','#3a3220','#fff0a8',
 Object.keys(Z).forEach(id=>{const z=Z[id];CIL[id]=ciS(z[0],z[1],z[2],z[3],z[4],z[5],z[6],z[7])});
 
 /* M등급: 뽑기에 나오지 않고 코인 상점에서 구매 (N등급 상점 옆) */
-const PRICE={m_exe:6100,m_aud:5600,m_lord:8600,m_king:5800,m_jud:7600};
+const PRICE={m_exe:15200,m_aud:14000,m_lord:21500,m_king:14500,m_jud:19000};
 window.MVP=PRICE;
 document.head.insertAdjacentHTML('beforeend','<style>#mvs{display:none;position:fixed;inset:0;z-index:88;background:#000b;align-items:center;justify-content:center}#mvs.on{display:flex}#mvs .nvb2{background:var(--pn);border:1px solid '+GC[MG]+';border-radius:12px;padding:12px 14px;width:min(94vw,560px);max-height:88vh;overflow:auto;position:relative}#mvs .nvi{display:flex;gap:10px;align-items:center;border:1px solid var(--ln);border-radius:8px;padding:6px 8px;margin:6px 0;background:#0005}#mvs .nvi.own{opacity:.55}#mvs .nvi small{color:var(--mu)}.mvbtn{min-height:26px;padding:0 9px;font-size:11px;margin-left:8px;border-color:'+GC[MG]+';color:'+GC[MG]+'}</style>');
 const mvEl=()=>{let e=document.getElementById('mvs');if(!e){e=document.createElement('div');e.id='mvs';e.onclick=ev=>{if(ev.target===e)mvClose()};document.body.appendChild(e)}return e};
@@ -6379,7 +6379,7 @@ D.forEach(([id,n,ic,col,spd,atk,hp,role,ds,sk,dt,dm])=>{
  DT[id]={role:role+' — '+ds,sk:dt};if(G.lv[id]==null)G.lv[id]=1;if(G.xp[id]==null)G.xp[id]=0;
  if(window.MYTH_IDS&&MYTH_IDS.indexOf(id)<0)MYTH_IDS.push(id)});
 /* 코인 상점 가격 (중간보스는 보스 잔영보다 저렴) */
-if(window.MVP)Object.assign(MVP,{m_cap:4600,m_hun:4200,m_scr:4100,m_sta:6100,m_pri:4100,m_gua:5100});
+if(window.MVP)Object.assign(MVP,{m_cap:11500,m_hun:10500,m_scr:10200,m_sta:15200,m_pri:10200,m_gua:12800});
 PKS.m_gua=['s'];
 }catch(e){console.error('m-mid-data',e)}})();
 
@@ -11141,6 +11141,52 @@ Object.keys(LN).forEach(id=>{if(!C[id])return;const l=LN[id];VL[id]={b:l.b,s:l.s
  if(USX[SX[id]])USX[id]=USX[SX[id]]});
 }catch(e){console.error('heritage-art',e)}})();
 </script>
+<script>/*#### [102_creature-art] 비인간 캐릭터·보스 일러스트 ####*/
+(function(){try{
+const wrap=(id,col,inner)=>`<svg viewBox="0 0 200 240"><defs><radialGradient id="gc_${id}"><stop offset="0" stop-color="${col}" stop-opacity=".62"/><stop offset=".6" stop-color="${col}" stop-opacity=".18"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="110" r="110" fill="url(#gc_${id})"/><circle cx="100" cy="112" r="94" fill="none" stroke="${col}" stroke-opacity=".2"/>${inner}</svg>`;
+const eyes=(x1,x2,y,c,r)=>`<ellipse cx="${x1}" cy="${y}" rx="${r||5}" ry="${(r||5)+1.5}" fill="${c}"/><ellipse cx="${x2}" cy="${y}" rx="${r||5}" ry="${(r||5)+1.5}" fill="${c}"/><circle cx="${x1}" cy="${y}" r="2.4" fill="#120c0c"/><circle cx="${x2}" cy="${y}" r="2.4" fill="#120c0c"/><circle cx="${x1+1.5}" cy="${y-2}" r="1" fill="#fff"/><circle cx="${x2+1.5}" cy="${y-2}" r="1" fill="#fff"/>`;
+/* 짐승 (곰·늑대·여우·양) */
+const beast=o=>{const ear=o.ear==='round'?`<circle cx="66" cy="54" r="15" fill="${o.c1}"/><circle cx="134" cy="54" r="15" fill="${o.c1}"/><circle cx="66" cy="54" r="7" fill="${o.c2}"/><circle cx="134" cy="54" r="7" fill="${o.c2}"/>`:`<path d="M60 70L52 16 92 48Z" fill="${o.c1}"/><path d="M140 70L148 16 108 48Z" fill="${o.c1}"/><path d="M62 62L58 30 82 50Z" fill="${o.c2}"/><path d="M138 62L142 30 118 50Z" fill="${o.c2}"/>`;
+const sn=o.snout==='long'?`<ellipse cx="100" cy="102" rx="21" ry="16" fill="${o.c2}"/><ellipse cx="100" cy="93" rx="7" ry="5" fill="#1a1010"/>`:`<ellipse cx="100" cy="102" rx="17" ry="12" fill="${o.c2}"/><ellipse cx="100" cy="96" rx="6" ry="4.4" fill="#1a1010"/>`;
+const horn=o.horn?`<path d="M62 62Q16 36 26 94Q40 108 54 88Q44 70 72 74Z" fill="#e8dcc0" stroke="#7a5a3a" stroke-width="3"/><path d="M138 62Q184 36 174 94Q160 108 146 88Q156 70 128 74Z" fill="#e8dcc0" stroke="#7a5a3a" stroke-width="3"/>`:'';
+return `<path d="M22 240V190Q28 144 74 134H126Q172 144 178 190V240Z" fill="${o.cl}"/><path d="M72 134Q100 172 128 134Z" fill="${o.c2}"/>${horn}${ear}<ellipse cx="100" cy="84" rx="40" ry="36" fill="${o.c1}"/>${o.wool?`<g fill="${o.c2}"><circle cx="70" cy="56" r="14"/><circle cx="86" cy="46" r="14"/><circle cx="104" cy="44" r="14"/><circle cx="122" cy="48" r="14"/><circle cx="134" cy="62" r="13"/></g>`:''}${sn}${eyes(84,116,78,o.e)}<path d="M92 110Q100 115 108 110" stroke="#2a1a14" stroke-width="2" fill="none" stroke-linecap="round"/>${o.x||''}`};
+/* 새 (앵무·도도) */
+const bird=o=>`<path d="M52 130Q12 150 30 216Q52 192 58 168Z" fill="${o.c3}"/><path d="M148 130Q188 150 170 216Q148 192 142 168Z" fill="${o.c3}"/><ellipse cx="100" cy="156" rx="52" ry="62" fill="${o.c1}"/><ellipse cx="100" cy="166" rx="32" ry="44" fill="${o.c2}"/>${o.crest?`<path d="M88 48L78 12 98 40 100 4 106 40 124 12 114 48Z" fill="${o.c3}"/>`:''}<circle cx="100" cy="80" r="37" fill="${o.c1}"/><circle cx="76" cy="72" r="9" fill="#fff"/><circle cx="124" cy="72" r="9" fill="#fff"/><circle cx="78" cy="73" r="4.5" fill="#120c0c"/><circle cx="122" cy="73" r="4.5" fill="#120c0c"/>${o.hook?`<path d="M80 84Q100 76 120 84Q128 112 100 126Q92 118 98 108Q82 104 80 84Z" fill="${o.b}"/>`:`<path d="M88 82Q100 72 112 82Q112 106 100 120Q88 106 88 82Z" fill="${o.b}"/>`}<path d="M82 214V234M118 214V234M72 234H92M108 234H128" stroke="${o.b}" stroke-width="4" stroke-linecap="round"/>${o.x||''}`;
+/* 날개 (천사·몽마) */
+const wing=o=>`<path d="M72 132Q-2 104 4 28Q62 46 86 112Z" fill="${o.w}" stroke="${o.w2}" stroke-width="2"/><path d="M128 132Q202 104 196 28Q138 46 114 112Z" fill="${o.w}" stroke="${o.w2}" stroke-width="2"/><path d="M14 44Q44 60 70 108M24 62Q50 76 74 112M186 44Q156 60 130 108M176 62Q150 76 126 112" stroke="${o.w2}" stroke-width="2" fill="none" opacity=".6"/><path d="M30 240V190Q34 146 76 136H124Q166 146 170 190V240Z" fill="${o.cl}"/>${o.horn?`<path d="M72 54Q52 26 66 12Q80 34 88 50Z M128 54Q148 26 134 12Q120 34 112 50Z" fill="${o.h}"/>`:`<ellipse cx="100" cy="24" rx="28" ry="8" fill="none" stroke="#f4d77a" stroke-width="4"/>`}<ellipse cx="100" cy="84" rx="33" ry="37" fill="${o.sk}"/><path d="M66 78C60 38 140 38 134 78 124 56 112 50 100 50 88 50 76 56 66 78Z" fill="${o.hr}"/>${o.sleep?`<path d="M78 84Q86 90 94 84M106 84Q114 90 122 84" stroke="#2a1a30" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M92 106Q100 110 108 106" stroke="#8a4a56" stroke-width="2" fill="none"/>`:eyes(86,114,84,o.e,5)+`<path d="M92 106Q100 111 108 106" stroke="#8a4a46" stroke-width="2" fill="none"/>`}${o.x||''}`;
+/* 석상·골렘 */
+const stone=o=>`<path d="M12 240V176L40 128H160L188 176V240Z" fill="${o.c1}" stroke="${o.c2}" stroke-width="4"/><path d="M40 128L60 176M160 128L140 176" stroke="${o.c2}" stroke-width="3"/><circle cx="100" cy="188" r="18" fill="none" stroke="${o.e}" stroke-width="3"/><path d="M100 174V202M86 188H114" stroke="${o.e}" stroke-width="3"/><rect x="60" y="34" width="80" height="86" rx="10" fill="${o.c1}" stroke="${o.c2}" stroke-width="4"/><rect x="60" y="60" width="80" height="14" fill="${o.c2}"/><rect x="72" y="76" width="22" height="9" rx="2" fill="${o.e}"/><rect x="106" y="76" width="22" height="9" rx="2" fill="${o.e}"/><path d="M80 104H120M88 98V110M100 98V110M112 98V110" stroke="${o.c2}" stroke-width="3"/><path d="M68 40L80 56 74 70M132 40L124 52 130 66" stroke="${o.c2}" stroke-width="2" fill="none"/>${o.x||''}`;
+/* 후드 망령 */
+const wraith=o=>`<path d="M100 12Q38 20 34 100L18 240H182L166 100Q162 20 100 12Z" fill="${o.c1}"/><path d="M34 100L18 240M166 100L182 240" stroke="${o.c2}" stroke-width="4" fill="none"/><path d="M100 38Q62 44 62 90Q66 124 100 132Q134 124 138 90Q138 44 100 38Z" fill="#050408"/><ellipse cx="86" cy="84" rx="7" ry="5" fill="${o.e}"/><ellipse cx="114" cy="84" rx="7" ry="5" fill="${o.e}"/><ellipse cx="86" cy="84" rx="12" ry="9" fill="${o.e}" opacity=".25"/><ellipse cx="114" cy="84" rx="12" ry="9" fill="${o.e}" opacity=".25"/>${o.x||''}`;
+/* 왕관 해골 */
+const crown=o=>`<path d="M12 240V172Q30 130 74 126H126Q170 130 188 172V240Z" fill="${o.cl}"/><path d="M74 126Q100 164 126 126" stroke="${o.c2}" stroke-width="5" fill="none"/><ellipse cx="100" cy="90" rx="35" ry="41" fill="${o.c1}"/>${o.blank?`<path d="M100 52V70M96 112L100 124 104 112" stroke="#b8b8c4" stroke-width="2" fill="none"/>`:`<ellipse cx="86" cy="86" rx="9" ry="11" fill="#060508"/><ellipse cx="114" cy="86" rx="9" ry="11" fill="#060508"/><circle cx="86" cy="87" r="3" fill="${o.e}"/><circle cx="114" cy="87" r="3" fill="${o.e}"/><path d="M100 98L94 112H106Z" fill="#060508"/><path d="M82 124H118M90 120V128M100 120V128M110 120V128" stroke="#060508" stroke-width="2"/>`}<path d="M60 56L66 18 84 42 100 10 116 42 134 18 140 56Z" fill="${o.g}" stroke="#7a5a1a" stroke-width="2"/><circle cx="100" cy="30" r="4" fill="${o.e}"/>${o.x||''}`;
+/* 공허·정령 */
+const orb=o=>`<g fill="none" stroke="${o.c1}" stroke-width="3" opacity=".7"><ellipse cx="100" cy="112" rx="80" ry="26" transform="rotate(-20 100 112)"/><ellipse cx="100" cy="112" rx="80" ry="26" transform="rotate(30 100 112)"/></g><path d="M40 230Q52 170 70 150M160 230Q148 170 130 150M100 240V180" stroke="${o.c1}" stroke-width="10" stroke-linecap="round" opacity=".55" fill="none"/><circle cx="100" cy="108" r="52" fill="${o.c2}" stroke="${o.c1}" stroke-width="5"/><circle cx="100" cy="108" r="34" fill="${o.c1}" opacity=".22"/><ellipse cx="84" cy="102" rx="6" ry="9" fill="${o.e}"/><ellipse cx="116" cy="102" rx="6" ry="9" fill="${o.e}"/>${o.x||''}`;
+const FN={beast,bird,wing,stone,wraith,crown,orb};
+const MAP={
+gom:['beast',{c1:'#7a5230',c2:'#c9a47a',cl:'#3a2a1a',e:'#ffd890',ear:'round',snout:'short',x:'<path d="M76 62L84 74M70 66L78 76" stroke="#3a2210" stroke-width="2.5"/>'}],
+ruga:['beast',{c1:'#8a8f9a',c2:'#d8dce4',cl:'#2a2e38',e:'#ffe070',ear:'point',snout:'long',x:'<path d="M120 62L132 78" stroke="#4a4e58" stroke-width="3"/>'}],
+til:['beast',{c1:'#d9803c',c2:'#fff2dc',cl:'#5a2a16',e:'#ffe08a',ear:'point',snout:'long'}],
+khan:['beast',{c1:'#d9c3a0',c2:'#f4ebd8',cl:'#4a1f18',e:'#ffb090',ear:'round',snout:'short',horn:1,wool:1}],
+mimo:['bird',{c1:'#2fa88a',c2:'#8fe0b8',c3:'#d83a3a',b:'#f2c23a',crest:1}],
+dod:['bird',{c1:'#8a8678',c2:'#c9c4b0',c3:'#6a665a',b:'#d9b23a',hook:1,x:'<circle cx="168" cy="196" r="15" fill="#2a2a30" stroke="#8a8a96" stroke-width="2"/><path d="M168 181Q172 170 182 168" stroke="#e8793a" stroke-width="3" fill="none"/><circle cx="183" cy="167" r="3" fill="#ffb060"/>'}],
+ika:['wing',{w:'#f4f1ea',w2:'#c9c2b0',cl:'#e8e2d4',sk:'#f2dcc8',hr:'#f0d890',e:'#9fd0ff'}],
+morphe:['wing',{w:'#3a2a5a',w2:'#8a6ac0',cl:'#1e1530',sk:'#cdbfe0',hr:'#5a3a8a',horn:1,h:'#2a1a3a',sleep:1}],
+varg:['stone',{c1:'#6a665e',c2:'#3a3832',e:'#e8a050'}],
+kairen:['stone',{c1:'#7a6a50',c2:'#3a3020',e:'#9ad0ff'}],
+m_sta:['stone',{c1:'#8a8478',c2:'#4a463c',e:'#ffd08a'}],
+m_gua:['stone',{c1:'#b8b8c4',c2:'#6a6a7a',e:'#bfe6ff'}],
+m_exe:['wraith',{c1:'#2a1818',c2:'#c0402a',e:'#ff5a3a',x:'<path d="M30 190L10 130 40 126Z" fill="#3a3a44" stroke="#9aa0ae" stroke-width="2"/><path d="M20 236L38 150" stroke="#5a3a1a" stroke-width="6" stroke-linecap="round"/>'}],
+m_aud:['wraith',{c1:'#1a2430',c2:'#6fb7c9',e:'#aef0ff',x:'<rect x="146" y="150" width="34" height="46" rx="4" fill="#e8dcc0" stroke="#7a5a2a" stroke-width="2"/><path d="M152 162H174M152 172H174M152 182H168" stroke="#7a5a2a" stroke-width="2"/>'}],
+m_scr:['wraith',{c1:'#241a2c',c2:'#a78bd6',e:'#d8c0ff',x:'<path d="M168 236L186 146Q176 150 170 160Z" fill="#e8dcc0" stroke="#7a5a2a" stroke-width="2"/>'}],
+m_pri:['wraith',{c1:'#2a1020',c2:'#d0406a',e:'#ff7a9a',x:'<circle cx="100" cy="176" r="10" fill="#a82a3a" stroke="#ff9aa8" stroke-width="2"/>'}],
+m_king:['crown',{c1:'#f2f2f6',c2:'#c9c9d4',cl:'#d8d8e2',g:'#e8e8f0',e:'#cfd0e0',blank:1}],
+m_lord:['crown',{c1:'#cfc8b8',c2:'#8a6a1a',cl:'#2a1a12',g:'#c9a15b',e:'#ff5a3a'}],
+m_jud:['crown',{c1:'#d8d2c0',c2:'#c9a15b',cl:'#1a1a2a',g:'#c9a15b',e:'#ffd070',x:'<path d="M100 160V210M70 176H130M70 176L58 202H82ZM130 176L118 202H142Z" stroke="#c9a15b" stroke-width="3" fill="none"/>'}],
+raon:['orb',{c1:'#e8793a',c2:'#06050a',e:'#ffb060'}]};
+Object.keys(MAP).forEach(id=>{if(!C[id]||!CIL[id])return;const m=MAP[id];CIL[id]=wrap(id,C[id].col||'#c9a15b',FN[m[0]](m[1]))});
+}catch(e){console.error('creature-art',e)}})();
+</script>
 
 <style id="ash-skin">/*#### [098_ash-skin] ####*/
 
@@ -11164,4 +11210,22 @@ html body #lobby button.glb:not(#mmb),html body #lobby button.bg:not(#sbtn){back
 html body #lobby button#sbtn{border-color:#c9a15b!important;box-shadow:inset 0 0 0 1px #000a,inset 0 1px 0 #ffffff33,0 0 16px #e8790544,0 2px 0 #000c}
 html body #lobby button#dbtn,html body #lobby button#tbtn,html body #lobby button#sbtn,html body #lobby button#gbtn,html body #lobby button#bagb{border-radius:4px!important;border-width:1px!important}
 html body #lobby button#dbtn,html body #lobby button#tbtn{border-color:#5e4d36!important}
-</style></body></html>
+</style><style id="lobby-spacing">/*#### [101_lobby-spacing] 아이폰 로비: 아이콘 간격 넓힘 ####*/
+html body #lobby{--L:calc(env(safe-area-inset-left,0px) + 24px);--R:calc(env(safe-area-inset-right,0px) + 24px);--B:calc(env(safe-area-inset-bottom,0px) + 20px)}
+/* 상단: 바를 화면 폭 끝까지 펴고, 아이콘을 균등 간격으로 */
+html body #lobby .top{left:calc(env(safe-area-inset-left,0px) + 12px)!important;right:calc(env(safe-area-inset-right,0px) + 12px)!important;justify-content:space-between!important;gap:6px!important;padding:6px 12px!important}
+html body #lobby .top button{width:44px!important;height:42px!important}
+html body #lobby #wkb{margin-left:0!important}
+/* 왼쪽 아래: 타일 사이를 22px씩 띄움 */
+html body #lobby .bg.l{width:60px!important;height:60px!important}
+html body #lobby .bg[onclick="show('party')"]{left:var(--L)!important}
+html body #lobby #bagb{left:calc(var(--L) + 82px)!important}
+html body #lobby #gbtn{left:calc(var(--L) + 164px)!important}
+html body #lobby .bg[onclick="openPt()"]{left:calc(var(--L) + 246px)!important}
+/* 오른쪽 아래: 스토리 버튼은 한 줄로, 던전·토너먼트와 간격 확보 */
+html body #lobby #sbtn{width:212px!important;height:54px!important;white-space:nowrap!important}
+html body #lobby #dbtn,html body #lobby #tbtn{bottom:calc(var(--B) + 74px)!important}
+html body #lobby #tbtn{right:var(--R)!important}
+html body #lobby #dbtn{right:calc(var(--R) + 124px)!important}
+</style>
+</body></html>
