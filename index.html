@@ -7181,7 +7181,7 @@ function build(){
   el.innerHTML=`<div class="dxtop"><button id="dxback">‹ 로비</button><b>훈련소</b>
   <input type="text" id="dxq" placeholder="이름 검색" autocomplete="off">
   <span class="dxch" id="dxch"></span>
-  <label class="dxlv">Lv <input type="range" class="dxrg" min="1" max="40" value="${DX.lv}"><b class="dxlvn">${DX.lv}</b></label></div>
+  <label class="dxlv">Lv <input type="range" class="dxrg" min="1" max="60" value="${DX.lv}"><b class="dxlvn">${DX.lv}</b></label></div>
   <div class="dxgrid" id="dxgrid"></div>
   <div class="dxtray" id="dxtray"></div>`;
   document.body.appendChild(el);
@@ -7259,7 +7259,7 @@ function detail(i,keep){
   <div class="dxl"><span class="ic big" style="background:${c.col}">${c.ic}</span>
   <h3>${esc(c.n)} <small style="color:${gc(i)}">${gn(i)}등급</small></h3>
   <small style="color:var(--mu)">${esc(c.ds||'')}</small>
-  <label class="dxlv" style="margin-top:8px">Lv <input type="range" class="dxrg" min="1" max="40" value="${DX.lv}"><b class="dxlvn">${DX.lv}</b></label>
+  <label class="dxlv" style="margin-top:8px">Lv <input type="range" class="dxrg" min="1" max="60" value="${DX.lv}"><b class="dxlvn">${DX.lv}</b></label>
   <div class="stg" id="dxst"></div>
   <p style="color:var(--mu);margin:6px 0;font-size:12px">${d.role||''}</p>
   <div class="dxbt"><button class="tg">${on?'✓ 훈련 팀에서 빼기':'＋ 훈련 팀에 추가'}</button><button class="go solo">🎯 이 캐릭터로 훈련</button></div></div>
@@ -7682,12 +7682,12 @@ const ARCH={
  ctrl:{n:'디버프·제어',dm:.04,vl:.025,cd:1},
  drain:{n:'흡혈·역전',dm:.05,ls:.035}};
 const AMAP={
- tank:'raba brk hark ade gom kairen serban m_lord m_sta m_gua aeg rosetta bellkeeper jud miraSleep sil',
- heal:'rian ser orn ast har iseul m_pri noa',
- buff:'buf lyr dor tem sei seia mukheun m_cap erda tor',
- ctrl:'whp cad mia ren hayan m_aud m_jud rex raon margr m_king',
- drain:'car gsw ebr cond bar lib kai',
- aoe:'mag sir ray ven varg tha m_scr dod lum'};
+ tank:'raba brk hark ade gom kairen serban m_lord m_sta m_gua aeg rosetta bellkeeper jud miraSleep sil ayna nua glina ika m_whi',
+ heal:'rian ser orn ast har iseul noa elma karis habel',
+ buff:'buf lyr dor tem sei seia mukheun m_cap erda tor arka hesti adela m_flg',
+ ctrl:'whp cad mia ren hayan m_aud m_jud rex raon margr m_king kalen popo morphe mael janus gaia morga ieun',
+ drain:'car gsw ebr cond bar lib kai m_pri',
+ aoe:'mag sir ray ven varg tha m_scr dod lum mara bia sol yuhyang delta m_lht'};
 const AOF={};Object.keys(AMAP).forEach(k=>AMAP[k].split(' ').forEach(i=>AOF[i]=k));
 const archOf=i=>AOF[i]||'dps';
 const pc=v=>Math.round(v*1000)/10;
@@ -9053,7 +9053,7 @@ dd1:Y,dd2:F,dd3:G_,dd4:Y,dd5:A,dd6:W,dd7:W,dd8:A,dd9:W,dd10:G_,dd11:F,dd12:A,dd1
 cad:Y,brk:A,zep:G_,ray:A,pip:W,dod:F,ven:G_,sir:W,car:W,tem:A,ser:A,ros:G_,ign:F,ade:W,lyr:G_,hlg:Y,tha:W,jud:Y,kai:Y,ebr:F,kan:F,fis:W,lum:G_,sil:G_,ork:F,orn:G_,pyn:F,ren:Y,sei:A,lib:A,har:Y,
 margr:A,hayan:Y,isop:G_,rosetta:W,volke:F,iseul:G_,tam:A,bar:Y,neon:F,miraSleep:W,gom:G_,rex:Y,erda:Y,bellkeeper:A,ecl:Y,aeg:A,ast:A,
 rowen:Y,serban:F,mukheun:Y,cond:F,kairen:W,erdan:G_,seia:W,raon:Y,eden:A,varg:F,sion:F,barken:Y,
-m_exe:F,m_aud:G_,m_lord:A,m_king:Y,m_jud:W,m_cap:F,m_hun:G_,m_scr:Y,m_sta:A,m_pri:Y,m_gua:W,noa:A,dor:F,mia:G_,hark:W,bor:G_,sol:F,tor:Y};
+m_exe:F,m_aud:G_,m_lord:A,m_king:Y,m_jud:W,m_cap:F,m_hun:G_,m_scr:Y,m_sta:A,m_pri:Y,m_gua:W,noa:A,dor:F,mia:G_,hark:W,bor:G_,sol:F,tor:Y,hau:Y,aur:A};
 /* 적 속성 (이름) */
 const ELN={'재에 물든 들개':Y,'우두머리 들개':Y,'샘의 오염체':W,'재의 그림자 군집':Y,'재의 병정':F,'병정 대장':F,'재의 사냥꾼':G_,'재의 집행자':F,'재의 서기관':Y,'먹빛 그림자':Y,'재의 사냥개':Y,'재의 감사관':G_,
 '재의 용 · 초급':F,'재의 용 · 중급':F,'재의 용 · 상급':F,'재의 용 · 최상급':F,'황금 동전 · 초급':A,'황금 동전 · 중급':A,'황금 동전 · 상급':A,'황금 동전 · 최상급':A,
@@ -12642,5 +12642,298 @@ if(typeof stun==='function'&&typeof STP!=='undefined'){const S0=stun;stun=functi
 
 console.log('new6-chars: 하벨·유향·모르가·이은·아델라·에뉴마 등록 완료');
 }catch(e){console.error('new6-chars',e)}})();
+</script>
+<style id="aur-css">
+#fs.aur .bg{background:radial-gradient(circle at 32% 52%,#8a5a14 0,#2a1806 45%,#060403 85%)!important}
+#fs.aur .aring{position:absolute;left:-6vh;top:7vh;width:86vh;height:86vh;border-radius:50%;border:.6vh solid #ffd56a;box-shadow:0 0 7vh #ffb23a,inset 0 0 7vh #ffb23a77;z-index:2;opacity:0;animation:aur-spin 9s linear infinite}
+#fs.aur .aring.r2{left:2vh;top:15vh;width:70vh;height:70vh;border:.5vh dashed #fff0b8;animation-direction:reverse;animation-duration:14s;box-shadow:none}
+#fs.aur .aring.r3{left:10vh;top:23vh;width:54vh;height:54vh;border:.3vh solid #ffe9a0;animation-duration:20s;box-shadow:0 0 3vh #ffd56a88}
+#fs.aur[data-p="1"] .aring,#fs.aur[data-p="2"] .aring,#fs.aur[data-p="3"] .aring,#fs.aur[data-p="4"] .aring{opacity:.85;transition:opacity .5s}
+@keyframes aur-spin{to{transform:rotate(360deg)}}
+#fs.aur .aem{position:absolute;bottom:-4vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(#fff6c8,#ffb83a 60%,#ffb83a00);z-index:3;animation:aur-up var(--d) ease-in infinite;animation-delay:var(--w);opacity:0}
+@keyframes aur-up{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx),-112vh);opacity:0}}
+#fs.aur .apil{position:absolute;bottom:0;left:var(--x);width:7vh;height:100vh;background:linear-gradient(90deg,#fff0,#ffe9a0cc,#fff0);z-index:2;transform:scaleY(0);transform-origin:bottom;opacity:.0}
+#fs.aur[data-p="3"] .apil,#fs.aur[data-p="4"] .apil{animation:aur-pil .6s ease-out forwards}
+@keyframes aur-pil{to{transform:scaleY(1);opacity:.9}}
+#fs.aur .asl{position:absolute;left:-10vw;top:46vh;width:130vw;height:2.2vh;background:linear-gradient(90deg,#fff0,#fff,#ffd56a,#fff0);z-index:6;transform:rotate(-14deg) scaleX(0);box-shadow:0 0 5vh #ffd56a;opacity:0}
+#fs.aur[data-p="4"] .asl{animation:aur-sl .4s ease-out forwards}
+@keyframes aur-sl{0%{transform:rotate(-14deg) scaleX(0);opacity:1}60%{transform:rotate(-14deg) scaleX(1);opacity:1}100%{transform:rotate(-14deg) scaleX(1);opacity:0}}
+#gcrv.sss .gcard,#gcrv.sss .cd{box-shadow:0 0 5vh #ffd24a,0 0 12vh #ffb23a88!important}
+.aurchip{border-color:#ffd24a!important;color:#ffd24a!important;text-shadow:0 0 6px #ffb23a}
+
+#aurfx{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden}
+#aurfx .a-sl{position:absolute;height:1.1vh;min-height:6px;background:linear-gradient(90deg,#fff0,#fff 35%,#ffd24a 70%,#fff0);clip-path:polygon(0 50%,50% 0,100% 50%,50% 100%);filter:drop-shadow(0 0 6px #ffd24a);opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0);animation:a-sl .34s ease-out forwards}
+#aurfx .a-sl.ex{height:1.8vh;background:linear-gradient(90deg,#fff0,#fff 30%,#ff5a3a 70%,#fff0);filter:drop-shadow(0 0 10px #ff5a3a)}
+@keyframes a-sl{0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1.12)}}
+#aurfx .a-sp{position:absolute;width:6px;height:6px;margin:-3px;border-radius:50%;background:#ffe9a0;box-shadow:0 0 8px #ffb23a;animation:a-sp .55s ease-out forwards}
+@keyframes a-sp{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+#aurfx .a-ring{position:absolute;border-radius:50%;border:3px solid #ffd24a;box-shadow:0 0 14px #ffb23a;transform:translate(-50%,-50%) scale(.2);animation:a-ring .5s ease-out forwards}
+@keyframes a-ring{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+#aurfx .a-tx{position:absolute;transform:translate(-50%,-50%);font:900 4.4vh/1 sans-serif;color:#fff;text-shadow:0 0 10px #ff4d3a,0 0 22px #ffb23a;animation:a-tx .85s ease-out forwards;white-space:nowrap}
+#aurfx .a-tx.sk{font-size:8vh;color:#ffe9a0;text-shadow:0 0 14px #ff7a2a,0 0 30px #ffb23a}
+@keyframes a-tx{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}20%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-90%) scale(1);opacity:0}}
+#aurfx .a-brand{position:absolute;width:var(--s);height:var(--s);opacity:0;transform:translate(-50%,-50%);animation:a-brand .6s cubic-bezier(.2,1.4,.4,1) forwards;filter:drop-shadow(0 0 10px #ffb23a)}
+@keyframes a-brand{0%{opacity:0;transform:translate(-50%,-50%) scale(2.6) rotate(-120deg)}55%{opacity:1;transform:translate(-50%,-50%) scale(.92) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
+#aurfx .a-mk{position:absolute;width:30px;height:30px;margin:-15px;filter:drop-shadow(0 0 5px #ffb23a);animation:a-spin 6s linear infinite}
+@keyframes a-spin{to{transform:rotate(360deg)}}
+#aurfx .a-dim{position:absolute;inset:0;background:radial-gradient(circle at 50% 70%,#ff7a2a77,#3a0c2a99 55%,#000c);opacity:0;animation:a-dim 1.05s ease-out forwards}
+@keyframes a-dim{0%{opacity:0}25%{opacity:1}75%{opacity:1}100%{opacity:0}}
+#aurfx .a-sun{position:absolute;left:50%;top:-30vh;width:44vh;height:44vh;margin-left:-22vh;border-radius:50%;background:radial-gradient(circle,#fff6d0 0,#ffb23a 40%,#ff5a1a 70%,#ff5a1a00 72%);box-shadow:0 0 12vh #ff7a2a;opacity:0;animation:a-sun .85s cubic-bezier(.5,0,.8,.6) forwards}
+@keyframes a-sun{0%{transform:translateY(0) scale(1);opacity:0}15%{opacity:1}100%{transform:translateY(78vh) scale(.8);opacity:1}}
+#aurfx .a-hz{position:absolute;left:0;right:0;top:calc(50% + 12vh);height:.9vh;background:linear-gradient(90deg,#fff0,#fff,#ffd24a,#fff,#fff0);box-shadow:0 0 3vh #ffb23a;transform:scaleX(0);animation:a-hz .9s .3s ease-out forwards}
+@keyframes a-hz{0%{transform:scaleX(0);opacity:1}50%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+#aurfx .a-pil{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#fff0,#ffe9a0dd,#fff0);transform:scaleY(0);transform-origin:top;opacity:0;animation:a-pil .6s .45s ease-out forwards}
+@keyframes a-pil{0%{transform:scaleY(0);opacity:1}40%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+#aurpull{position:fixed;inset:0;z-index:99990;background:#000;overflow:hidden;opacity:1;transition:opacity .45s}
+#aurpull[data-p="5"]{opacity:0}
+#aurpull em{position:absolute;bottom:1.2vh;left:0;right:0;text-align:center;font-style:normal;font-size:1.8vh;color:#fff6;z-index:9}
+#aurpull .rays{position:absolute;inset:-60%;background:repeating-conic-gradient(from 0deg,#ffd24a00 0 8deg,#ffd24acc 9deg 10deg);-webkit-mask:radial-gradient(circle,#0000 4%,#000 38%,#0000 68%);mask:radial-gradient(circle,#0000 4%,#000 38%,#0000 68%);opacity:0;animation:aur-spin 12s linear infinite}
+#aurpull:not([data-p="0"]):not([data-p="1"]) .rays{opacity:.55;transition:opacity .6s}
+#aurpull .core{position:absolute;left:50%;top:50%;width:3vh;height:3vh;margin:-1.5vh;border-radius:50%;background:#fff;box-shadow:0 0 6vh 3vh #ffd24a;transform:scale(0)}
+#aurpull[data-p="1"] .core{animation:ap-core 1.1s ease-in forwards}
+@keyframes ap-core{0%{transform:scale(0)}100%{transform:scale(2.2)}}
+#aurpull[data-p="2"] .core,#aurpull[data-p="3"] .core{transform:scale(2.6);box-shadow:0 0 10vh 6vh #ffd24a}
+#aurpull[data-p="4"] .core,#aurpull[data-p="5"] .core{transform:scale(0)}
+#aurpull .rg{position:absolute;left:50%;top:50%;width:150vh;height:150vh;margin:-75vh;border-radius:50%;border:.5vh solid #ffd56a;opacity:0}
+#aurpull[data-p="2"] .rg{animation:ap-rg 1s ease-in forwards;animation-delay:var(--d)}
+@keyframes ap-rg{0%{transform:scale(1);opacity:0}20%{opacity:.95}100%{transform:scale(.04);opacity:0}}
+#aurpull .crk{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+#aurpull .crk polyline{fill:none;stroke:#fff6c8;stroke-width:.5;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 1px #ffb23a)}
+#aurpull[data-p="3"] .crk{opacity:1}
+#aurpull[data-p="3"] .crk polyline{animation:ap-crk .4s ease-out forwards}
+#aurpull[data-p="4"] .crk,#aurpull[data-p="5"] .crk{opacity:0;transition:opacity .5s}
+@keyframes ap-crk{to{stroke-dashoffset:0}}
+#aurpull .fl{position:absolute;inset:0;background:#fff;opacity:0}
+#aurpull[data-p="3"] .fl{animation:ap-fl .9s ease-out forwards}
+@keyframes ap-fl{0%{opacity:1}100%{opacity:0}}
+#aurpull .stg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:4vw;opacity:0;background:radial-gradient(circle at 38% 50%,#7a4a10aa,#1a0e04 60%,#000 100%)}
+#aurpull[data-p="4"] .stg,#aurpull[data-p="5"] .stg{opacity:1;transition:opacity .35s}
+#aurpull .art{position:relative;height:84vh}
+#aurpull .art svg{height:84vh;width:auto;display:block;position:relative;z-index:2;opacity:0}
+#aurpull[data-p="4"] .art svg,#aurpull[data-p="5"] .art svg{animation:ap-art 1s .1s ease-out forwards}
+@keyframes ap-art{0%{opacity:0;transform:translateY(7vh) scale(.92)}100%{opacity:1;transform:none}}
+#aurpull .rr{position:absolute;left:50%;top:42%;width:96vh;height:96vh;margin:-48vh;border-radius:50%;border:.5vh solid #ffd56a;box-shadow:0 0 6vh #ffb23a,inset 0 0 6vh #ffb23a66;z-index:1;animation:aur-spin 10s linear infinite}
+#aurpull .rr.r2{width:76vh;height:76vh;margin:-38vh;border-style:dashed;border-color:#fff0b8;box-shadow:none;animation-direction:reverse;animation-duration:15s}
+#aurpull .ttl{display:flex;flex-direction:column;align-items:flex-start;gap:1.4vh;z-index:3}
+#aurpull .ttl .sss{font:900 min(24vh,17vw)/1 serif;background:linear-gradient(#fff6c8,#ffd24a 55%,#b9801f);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em;filter:drop-shadow(0 0 2vh #ffb23a);opacity:0}
+#aurpull[data-p="4"] .ttl .sss,#aurpull[data-p="5"] .ttl .sss{animation:ap-sss .7s .45s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes ap-sss{0%{opacity:0;transform:scale(2.6)}100%{opacity:1;transform:none}}
+#aurpull .ttl b{font-size:min(8vh,6vw);color:#fff3c8;text-shadow:0 0 2vh #ffb23a;letter-spacing:.2em;opacity:0}
+#aurpull .ttl small{font-size:2.8vh;color:#ffd56a;letter-spacing:.3em;opacity:0}
+#aurpull[data-p="4"] .ttl b,#aurpull[data-p="5"] .ttl b{animation:ap-fade .6s .9s forwards}
+#aurpull[data-p="4"] .ttl small,#aurpull[data-p="5"] .ttl small{animation:ap-fade .6s 1.2s forwards}
+@keyframes ap-fade{from{opacity:0;transform:translateX(3vh)}to{opacity:1;transform:none}}
+#aurpull .art,#aurpull .ttl,#aurpull .stg>*{background:none!important;box-shadow:none!important;backdrop-filter:none!important}
+#aurpull .pem{position:absolute;bottom:-4vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(#fff6c8,#ffb83a 60%,#ffb83a00);z-index:4;opacity:0;animation:aur-up var(--d) ease-in infinite;animation-delay:var(--w)}
+</style>
+<script id="sss-patch">/*#### [AUR] SSS · 아우렐리온 ####*/
+(function(){try{
+const id='aur',NG=8,SSS_RATE=0.0001,SSS_GRADE_MUL=2,SKILL_MUL=2.5;
+/* ── 등급 SSS 등록: 뽑기 확률 0.01 / 등급 보정 ×2 ── */
+GN[NG]='SSS';GC[NG]='#ffd24a';GM[NG]=SSS_GRADE_MUL;GP[NG]=SSS_RATE;STP[NG]=10;
+C[id]={n:'아우렐리온',ic:'👑',col:'#ffd24a',spd:112,atk:220,hp:2200,ds:'재의 시대가 끝나는 날, 마지막으로 깨어난 영웅. 그의 검이 닿는 곳에서 새벽이 시작된다.'};
+GR[id]=NG;if(typeof ALL!=='undefined'&&ALL.indexOf&&ALL.indexOf(id)<0)ALL.push(id);
+if(typeof GPOOL!=='undefined'&&GPOOL.indexOf&&GPOOL.indexOf(id)<0)GPOOL.push(id);
+if(typeof NC!=='undefined')NC[id]=1;
+if(typeof G!=='undefined'){G.lv=G.lv||{};if(G.lv[id]==null)G.lv[id]=1;G.xp=G.xp||{};if(G.xp[id]==null)G.xp[id]=0}
+/* ── 일러스트 (웅장한 풀 SVG) ── */
+const rays=[...Array(16)].map((_,i)=>{const a=i*22.5*Math.PI/180,x1=100+Math.cos(a)*40,y1=84+Math.sin(a)*40,x2=100+Math.cos(a)*(i%2?118:150),y2=84+Math.sin(a)*(i%2?118:150);return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#ffe08a" stroke-width="${i%2?1.2:2.6}" opacity="${i%2?.35:.5}"/>`}).join('');
+const ticks=[...Array(48)].map((_,i)=>{const a=i*7.5*Math.PI/180,r1=76,r2=i%4?79:84;return `<path d="M${(100+Math.cos(a)*r1).toFixed(1)} ${(84+Math.sin(a)*r1).toFixed(1)}L${(100+Math.cos(a)*r2).toFixed(1)} ${(84+Math.sin(a)*r2).toFixed(1)}" stroke="#ffd56a" stroke-width="${i%4?.7:1.4}"/>`}).join('');
+const embers=[[22,40,1.4],[170,52,1.2],[34,110,1.6],[176,128,1.3],[14,170,1.1],[186,180,1.5],[60,22,1],[142,18,1.2],[48,200,1.2],[158,212,1],[100,8,1.4],[8,92,1],[192,96,1.1]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#ffe9a0" opacity=".85"/>`).join('');
+const wing=(t)=>`<g ${t}><path d="M74 128C40 106 6 72 2 14C26 32 44 50 58 76C42 52 32 32 28 4C54 22 70 50 80 88Z" fill="url(#aWg)" opacity=".92"/><path d="M72 138C44 126 14 106 4 66C26 82 46 98 66 116Z" fill="url(#aWg)" opacity=".75"/><path d="M74 146C52 142 26 132 12 108C32 118 52 126 70 132Z" fill="url(#aWg)" opacity=".6"/><path d="M60 80C46 56 34 36 30 10M54 94C38 72 22 52 8 28M64 112C44 96 24 82 10 66" stroke="#fff6cf" stroke-width=".8" fill="none" opacity=".7"/></g>`;
+const pauld=(t)=>`<g ${t}><path d="M46 132Q54 108 84 116L82 144Q58 150 40 142Z" fill="url(#aAr)" stroke="#5a3608" stroke-width="1.2"/><path d="M42 140Q58 148 82 142L80 150Q56 158 38 148Z" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1"/><path d="M40 146Q56 156 80 150L78 158Q54 166 38 156Z" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1" opacity=".95"/><path d="M46 130L26 108L52 120Z" fill="#f5c04a" stroke="#5a3608" stroke-width="1"/><path d="M42 140L22 126L46 134Z" fill="#e5a93a" stroke="#5a3608" stroke-width="1"/><circle cx="62" cy="128" r="4.2" fill="url(#aGem)" stroke="#5a3608" stroke-width=".8"/><path d="M50 122Q64 114 80 120" stroke="#fff3b8" stroke-width="1" fill="none" opacity=".8"/></g>`;
+const crownWing=(t)=>`<g ${t}><path d="M72 56L48 40L58 56L42 54L64 66Z" fill="url(#aAr)" stroke="#5a3608" stroke-width=".8"/><path d="M70 60L52 52L60 62Z" fill="#fff0b0" opacity=".7"/></g>`;
+CIL[id]=`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><defs>
+<radialGradient id="aG" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/><stop offset=".45" stop-color="#f5a623" stop-opacity=".3"/><stop offset="1" stop-color="#f5a623" stop-opacity="0"/></radialGradient>
+<linearGradient id="aAr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b0"/><stop offset=".45" stop-color="#e5a93a"/><stop offset="1" stop-color="#7a4d12"/></linearGradient>
+<linearGradient id="aAr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset=".5" stop-color="#b9801f"/><stop offset="1" stop-color="#5a3608"/></linearGradient>
+<linearGradient id="aCp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a2234"/><stop offset=".55" stop-color="#46101c"/><stop offset="1" stop-color="#14040a"/></linearGradient>
+<linearGradient id="aBl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9fb4d6"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#9fb4d6"/></linearGradient>
+<linearGradient id="aWg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff5c8"/><stop offset=".5" stop-color="#f5b742"/><stop offset="1" stop-color="#f5b742" stop-opacity="0"/></linearGradient>
+<radialGradient id="aGem"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#5ad2ff"/><stop offset="1" stop-color="#1a5a9a"/></radialGradient>
+<radialGradient id="aOrb"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#ffd24a"/><stop offset="1" stop-color="#ff8a1a" stop-opacity="0"/></radialGradient>
+<filter id="aBlur"><feGaussianBlur stdDeviation="3"/></filter></defs>
+<rect width="200" height="240" fill="#0b0705" opacity="0"/>
+<circle cx="100" cy="100" r="118" fill="url(#aG)"/>${rays}
+<circle cx="100" cy="84" r="72" fill="none" stroke="#ffd56a" stroke-width="1.4" stroke-dasharray="2 4" opacity=".85"/><circle cx="100" cy="84" r="88" fill="none" stroke="#fff0b8" stroke-width=".8" stroke-dasharray="14 6 2 6" opacity=".7"/>${ticks}
+${wing('')}${wing('transform="translate(200 0) scale(-1 1)"')}
+<path d="M62 118C38 152 30 204 18 240L182 240C170 204 162 152 138 118Z" fill="url(#aCp)"/><path d="M62 118C38 152 30 204 18 240L30 240C40 204 50 156 70 124Z" fill="#000" opacity=".25"/><path d="M62 118C38 152 30 204 18 240M138 118C162 152 170 204 182 240" stroke="#f5c04a" stroke-width="1.6" fill="none"/><path d="M18 240L26 226L34 240L44 224L54 240L64 226L72 240M128 240L136 226L146 240L156 224L166 240L174 226L182 240" stroke="#8a1d2c" stroke-width="2" fill="none" opacity=".8"/><path d="M52 150C46 180 42 210 38 236M148 150C154 180 158 210 162 236M70 140C64 176 62 214 60 238M130 140C136 176 138 214 140 238" stroke="#000" stroke-width="1.2" opacity=".28" fill="none"/>
+<path d="M64 130Q100 116 136 130L146 192Q100 206 54 192Z" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1.4"/><path d="M70 134Q100 124 130 134L136 160Q100 170 64 160Z" fill="url(#aAr)" stroke="#5a3608" stroke-width="1"/><path d="M60 176Q100 190 140 176M62 186Q100 200 138 186" stroke="#fff0b0" stroke-width="1" fill="none" opacity=".75"/>
+<path d="M86 160L114 160L110 240L90 240Z" fill="#3a0c16" stroke="#f5c04a" stroke-width="1.2"/><path d="M100 160L100 240" stroke="#f5c04a" stroke-width=".8" opacity=".7"/>
+<g transform="translate(100 150)"><circle r="10.5" fill="#f5c04a" stroke="#5a3608" stroke-width="1.2"/><circle r="7" fill="#fff3b8"/><circle r="3.4" fill="url(#aGem)"/>${[...Array(12)].map((_,i)=>{const a=i*30*Math.PI/180;return `<path d="M${(Math.cos(a)*11).toFixed(1)} ${(Math.sin(a)*11).toFixed(1)}L${(Math.cos(a)*16).toFixed(1)} ${(Math.sin(a)*16).toFixed(1)}" stroke="#ffd24a" stroke-width="1.4"/>`}).join('')}</g>
+${pauld('')}${pauld('transform="translate(200 0) scale(-1 1)"')}
+<rect x="89" y="102" width="22" height="22" rx="6" fill="#d9b08a"/><path d="M76 124Q100 142 124 124L120 114Q100 128 80 114Z" fill="url(#aAr)" stroke="#5a3608" stroke-width="1"/>
+<path d="M66 62C56 16 144 16 134 62L152 156C138 134 130 112 128 92L72 92C70 112 62 134 48 156Z" fill="#e9edf7" stroke="#aab4cc" stroke-width=".8"/><path d="M60 80C56 110 50 134 42 150M140 80C144 110 150 134 158 150M70 40C66 70 60 100 56 128M130 40C134 70 140 100 144 128" stroke="#aab4cc" stroke-width=".9" fill="none" opacity=".8"/>
+<path d="M72 66C72 48 85 40 100 40C115 40 128 48 128 66L126 86C122 104 112 114 100 114C88 114 78 104 74 86Z" fill="#ebc9a4" stroke="#b58a64" stroke-width=".8"/><path d="M100 40C115 40 128 48 128 66L126 86C122 104 112 114 100 114C108 100 114 82 112 62Z" fill="#b58a64" opacity=".3"/>
+<path d="M70 66C74 44 96 38 100 40C110 40 126 46 130 66C122 54 112 50 104 58C100 50 92 52 86 60C80 54 74 58 70 66Z" fill="#f3f6fc" stroke="#aab4cc" stroke-width=".8"/>
+${crownWing('')}${crownWing('transform="translate(200 0) scale(-1 1)"')}
+<path d="M72 56Q100 42 128 56L126 63Q100 51 74 63Z" fill="url(#aAr)" stroke="#5a3608" stroke-width=".9"/><path d="M100 26L107 52L100 60L93 52Z" fill="url(#aAr)" stroke="#5a3608" stroke-width=".9"/><circle cx="100" cy="50" r="3.6" fill="url(#aGem)" stroke="#5a3608" stroke-width=".6"/>
+<path d="M78 76L96 79M122 76L104 79" stroke="#8a93a8" stroke-width="2.6" stroke-linecap="round"/>
+<path d="M80 83Q87 76 95 83Q87 88 80 83Z" fill="#fff8d8"/><path d="M105 83Q113 76 120 83Q113 88 105 83Z" fill="#fff8d8"/><circle cx="87.5" cy="82.6" r="2.9" fill="#ffcf3a"/><circle cx="112.5" cy="82.6" r="2.9" fill="#ffcf3a"/><circle cx="87.5" cy="82.6" r="1.2" fill="#3a1a00"/><circle cx="112.5" cy="82.6" r="1.2" fill="#3a1a00"/><circle cx="87.5" cy="82.6" r="5.5" fill="#ffd24a" opacity=".28" filter="url(#aBlur)"/><circle cx="112.5" cy="82.6" r="5.5" fill="#ffd24a" opacity=".28" filter="url(#aBlur)"/>
+<path d="M80 89Q87 93 95 89M105 89Q113 93 120 89" stroke="#e5a93a" stroke-width=".9" fill="none"/><path d="M81 70L93 93" stroke="#b06a5a" stroke-width="1.1" opacity=".8"/><path d="M100 84L98 96Q100 98 103 96" stroke="#b58a64" stroke-width="1" fill="none"/><path d="M92 103Q100 105 108 103" stroke="#7a3a3a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<g><rect x="156" y="2" width="14" height="150" fill="#ffd24a" opacity=".35" filter="url(#aBlur)"/><path d="M163 0L171 22L169 152L157 152L155 22Z" fill="url(#aBl)" stroke="#8a93a8" stroke-width=".8"/><path d="M163 6L163 150" stroke="#9fb4d6" stroke-width="1"/><path d="M158 40L168 40M158 70L168 70M158 100L168 100" stroke="#ffd24a" stroke-width=".9" opacity=".7"/>
+<path d="M136 150L190 150L194 158L178 164L148 164L132 158Z" fill="url(#aAr)" stroke="#5a3608" stroke-width="1.2"/><circle cx="163" cy="157" r="4.6" fill="url(#aGem)" stroke="#5a3608" stroke-width=".8"/><path d="M130 158L124 148L138 154ZM196 158L202 148L188 154Z" fill="#f5c04a"/>
+<rect x="159" y="164" width="8" height="40" rx="2" fill="#2a1408" stroke="#f5c04a" stroke-width=".8"/><circle cx="163" cy="208" r="6" fill="url(#aAr)" stroke="#5a3608" stroke-width="1"/></g>
+<path d="M144 138Q158 156 161 176" stroke="#5a3608" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M144 138Q158 156 161 176" stroke="url(#aAr)" stroke-width="11" stroke-linecap="round" fill="none"/><rect x="154" y="170" width="18" height="12" rx="4" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1"/><rect x="154" y="190" width="18" height="12" rx="4" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1"/>
+<path d="M54 142Q34 160 38 184" stroke="#5a3608" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M54 142Q34 160 38 184" stroke="url(#aAr)" stroke-width="11" stroke-linecap="round" fill="none"/><rect x="28" y="182" width="20" height="10" rx="4" fill="url(#aAr2)" stroke="#5a3608" stroke-width="1"/>
+<circle cx="38" cy="166" r="22" fill="url(#aOrb)"/><circle cx="38" cy="166" r="8" fill="#fff6c8"/>${[...Array(8)].map((_,i)=>{const a=i*45*Math.PI/180;return `<path d="M${(38+Math.cos(a)*10).toFixed(1)} ${(166+Math.sin(a)*10).toFixed(1)}L${(38+Math.cos(a)*20).toFixed(1)} ${(166+Math.sin(a)*20).toFixed(1)}" stroke="#ffe08a" stroke-width="1.6"/>`}).join('')}
+${embers}</svg>`;
+/* ── 스킬 4개 + 패시브 10개 (설명) ── */
+SK[id]={b:{n:'여명 이연격',c:'n',cd:0},s:{n:'낙인의 서약',c:'e',cd:2},x:{n:'일몰의 심판',c:'e',cd:3},u:{n:'최후의 새벽',c:'u',cd:4}};
+DM[id]={b:60*SKILL_MUL,s:120*SKILL_MUL,x:100*SKILL_MUL,u:200*SKILL_MUL};
+DT[id]={role:'새벽의 검 · 낙인 처형자',sk:[
+['여명 이연격','일반','쿨 0','단일 60% ×2.5 = 150%를 2연타 · 대상 HP 40% 이하면 2타 108% 처형 일섬 · 자신 방벽 5%','베고, 한 번 더 벤다. 쓰러져 가는 적에게는 더 깊이 박힌다.'],
+['낙인의 서약','스킬','쿨 2','단일 120% ×2.5 = 300% · 대상에 낙인 3라운드: 모든 아군의 공격이 +25% 피해','검끝으로 새벽의 낙인을 새긴다. 낙인 찍힌 적은 모두의 표적이 된다.'],
+['일몰의 심판','스킬','쿨 3','적 전체 100% ×2.5 = 250% · 방어 20% 무시 · HP 25% 이하 일반 적 즉시 처형 · 아군 방벽 10%','저무는 해처럼 전장을 쓸고, 남은 생명에 마침표를 찍는다.'],
+['최후의 새벽','궁극기','쿨 4 · 시작 2','적 전체 500% · 방어 40% 무시 · HP 최고 적 추가 500% · 아군 전체 HP 30% 회복 · 쓰러진 아군 1명 부활 · 아군 쿨다운 -1','시대의 마지막 새벽. 모든 어둠이 한 번에 갈라진다.'],
+['불멸의 여명','패시브','전투당 1회','쓰러질 때 HP 60%로 부활 · 2라운드 무적 · 궁극기 쿨다운 초기화',''],
+['황금 방벽','패시브','상시','전투 시작 시 자신 최대 HP 30% 방벽 · 매 라운드 아군 전체 방벽 4%',''],
+['영웅의 위압','패시브','상시','생존 중 아군 전체 받는 피해 -15%',''],
+['최후의 의지','패시브','상시','공격력 +25% · HP 50% 이하 시 피해 +35%',''],
+['관통하는 일섬','패시브','상시','모든 공격 방어 25% 무시',''],
+['승전의 기세','패시브','처치 시','적 처치 시 궁극기 쿨다운 -1 · 최대 HP 8% 회복',''],
+['전장의 축복','패시브','행동 후','행동 종료 시 아군 전체 최대 HP 5% 회복',''],
+['세계의 지배자','패시브','상시','보스 상대 피해 +30% · 적 3명 이상이면 피해 +15%',''],
+['영웅의 질주','패시브','행동 후','행동할 때마다 속도 +3 (최대 +15)',''],
+['불굴의 갑주','패시브','상시','한 번에 받는 피해가 최대 HP의 35%를 넘지 않음','']]};
+LBX[id]=u=>{const L={b:'2연격 · 처형',s:'낙인 · 피해↑',x:'전체 · 처형',u:'전체 500% · 회복'};return {b:L.b,s:L.s,u:L.x,undefined:L.u}};
+STT[id]=u=>{const a=[];if(u._aurInv>0)a.push('무적 '+u._aurInv);if(u._aurS)a.push('속도+'+u._aurS*3);return a.join(' · ')};
+/* ── 대사 / 목소리 / 효과음 ── */
+VP['아우렐리온']=[.78,.88,2];SH[id]='최후의 새벽이 온다!';
+VL[id]={b:['일섬.','한 번 더.','끝이다.'],s:['낙인을 새긴다.','도망칠 곳은 없다.'],x:['해가 저문다.','심판의 시간이다.']};
+GL[id]=['재의 시대는 끝났다. 내가 마지막이다.'];WL[id]=['새벽이다. 모두 살아 있군.'];
+X[id+'_b']=()=>{sw(300,1400,.18,.1,0,'sine');tn(1500,.12,'triangle',.07,.06,2400)};
+X[id+'_s']=()=>{[0,.1,.2,.3].forEach(d=>tn(523+d*800,.22,'triangle',.07,d,900));ring(880,.8,.06,.2)};
+X[id+'_x']=()=>{sw(180,900,.5,.12,0,'sine');ring(660,1,.08,.1);tn(110,.6,'sine',.12,0,60)};
+USX[id]={1:()=>{ring(440,1,.08,0);tn(220,.8,'sine',.1,0,330)},2:()=>{[0,.1,.2,.3].forEach(d=>tn(523+d*800,.2,'triangle',.07,d,900))},3:()=>{ring(880,1.2,.1,0);ring(1320,1,.07,.1)},4:()=>{sw(200,1400,.6,.12,0,'sine');ring(1760,1.4,.1,.1);tn(110,1,'sine',.15,0,55)}};
+/* ── 전투 로직 ── */
+const AE=()=>S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0),AA=()=>S.U.filter(x=>x.side==='a'&&x.alive);
+const dm=(u,e,p,ig)=>{if(!e||!e.alive||e.hp<=0)return 0;const d=deal(u,e,p*SKILL_MUL,ig||0);pop(e.id,'-'+d);return d};
+const shd=(a,v,cap)=>{v=Math.round(v);if(cap)v=Math.min(v,Math.max(0,Math.round(a.maxhp*cap)-(a.sh||0)));if(v<=0)return;a.sh=(a.sh||0)+v;pop(a.id,'✦'+v)};
+const rec=(a,v)=>{const g=Math.min(a.maxhp-a.hp,Math.round(v));if(g>0){a.hp+=g;pop(a.id,'+'+g)}return Math.max(0,g)};
+const after=u=>{AA().forEach(a=>rec(a,a.maxhp*.05));if((u._aurS||0)<5){u._aurS=(u._aurS||0)+1;u.spd+=3}};
+{const D0=deal;deal=function(u,e,pct,ig){try{if(S&&u&&u.side==='a'&&e&&e.side==='b'&&e._aurMk>0)pct=pct*1.25}catch(er){}try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'){let m=1.25;if(u.hp<=u.maxhp*.5)m*=1.35;if(typeof isB==='function'&&isB(e))m*=1.3;if(AE().length>=3)m*=1.15;pct=pct*m;ig=Math.max(ig||0,.25)}}catch(er){}
+ const r=D0.call(this,u,e,pct,ig);try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'&&e.hp<=0&&!e._aurK){e._aurK=1;u.cd.u=Math.max(0,(u.cd.u||0)-1);rec(u,u.maxhp*.08);pop(u.id,'🌅승전')}}catch(er){}return r}}
+{const H0=hurt;hurt=function(t,v){let rv=false;try{if(S&&S.U&&t&&t.side==='a'&&v>0){if(t._aurInv>0){pop(t.id,'✨무적');return}
+ if(S.U.some(x=>x.id===id&&x.side==='a'&&x.alive&&x.hp>0))v=Math.max(1,Math.round(v*.85));
+ if(t.id===id)v=Math.min(v,Math.round(t.maxhp*.35))}}catch(er){}
+ const r=H0.call(this,t,v);try{if(t&&t.id===id&&t.side==='a'&&!t._aurRv&&(t.hp<=0||!t.alive)){t._aurRv=1;t.alive=1;t.hp=Math.round(t.maxhp*.6);t._aurInv=3;t.cd.u=0;pop(t.id,'🌅부활');log('🌅 불멸의 여명 — 아우렐리온이 다시 일어선다!');if(S.q&&S.q.indexOf&&S.q.indexOf(t.id)<0)S.q.push(t.id)}}catch(er){}return r}}
+{const N=nr;nr=function(){N.apply(this,arguments);try{const A=S.U.find(x=>x.id===id&&x.side==='a'&&x.alive&&x.hp>0);S.U.forEach(x=>{if(x._aurInv>0)x._aurInv--;if(x._aurMk>0)x._aurMk--});
+ if(A){if(!A._aurSh){A._aurSh=1;shd(A,A.maxhp*.3)}AA().forEach(a=>shd(a,a.maxhp*.04,.5))}}catch(er){}}}
+/* ── 스킬 전용 이펙트 ── */
+const fxL=()=>{let l=document.getElementById('aurfx');if(!l){l=document.createElement('div');l.id='aurfx';document.body.appendChild(l)}return l};
+const fxAdd=(html,ms)=>{const t=document.createElement('template');t.innerHTML=html.trim();const e=t.content.firstElementChild;fxL().appendChild(e);setTimeout(()=>e.remove(),ms||1000);return e};
+const cr=r=>r?{l:r.left,t:r.top,w:r.width,h:r.height}:{l:innerWidth*.45,t:innerHeight*.2,w:200,h:130};
+const ctr=r=>[r.l+r.w/2,r.t+r.h/2];
+const shk=ms=>{document.body.classList.add('shk');setTimeout(()=>document.body.classList.remove('shk'),ms)};
+const enemyCards=()=>[...document.querySelectorAll('#bt .bsw .bs')].map(c=>cr(c.getBoundingClientRect()));
+const cardRect=e=>{const i=AE().indexOf(e),cs=enemyCards();return cs[i]||cs[0]||cr(null)};
+const burst=(x,y,n,col)=>{for(let i=0;i<n;i++){const a=Math.PI*2*i/n+Math.random()*.5,d=30+Math.random()*50;fxAdd(`<i class="a-sp" style="left:${x}px;top:${y}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;${col?'background:'+col:''}"></i>`,650)}};
+const fxSlash=(r,n,ex)=>{const[x,y]=ctr(r),L=Math.max(r.w,140)*(ex?1.5:1.15),rot=n===1?-32:32;fxAdd(`<i class="a-sl${ex?' ex':''}" style="left:${x}px;top:${y}px;width:${L}px;--r:${rot}deg"></i>`,450);burst(x,y,ex?14:7,ex?'#ff6a4a':'');fxAdd(`<i class="a-ring" style="left:${x}px;top:${y}px;width:${ex?150:90}px;height:${ex?150:90}px;${ex?'border-color:#ff6a4a':''}"></i>`,550);if(ex)fxAdd(`<b class="a-tx" style="left:${x}px;top:${y-r.h*.25}px">처형!</b>`,900)};
+const SIG=()=>'<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#1a0e04" fill-opacity=".55" stroke="#ffd24a" stroke-width="3"/><circle cx="50" cy="50" r="37" fill="none" stroke="#fff0b8" stroke-width="1.6" stroke-dasharray="4 5"/>'+[...Array(8)].map((_,i)=>{const a=i*45*Math.PI/180;return `<path d="M${(50+Math.cos(a)*38).toFixed(1)} ${(50+Math.sin(a)*38).toFixed(1)}L${(50+Math.cos(a)*46).toFixed(1)} ${(50+Math.sin(a)*46).toFixed(1)}" stroke="#ffd24a" stroke-width="3"/>`}).join('')+'<path d="M50 20L56 50L50 80L44 50Z" fill="#ffe9a0" stroke="#b9801f" stroke-width="1.5"/><path d="M26 50L50 44L74 50L50 56Z" fill="#ffd24a" stroke="#b9801f" stroke-width="1.5"/><circle cx="50" cy="50" r="7" fill="#fff"/></svg>';
+const fxBrand=r=>{const[x,y]=ctr(r),s=Math.min(r.w,r.h)*.95;fxAdd(`<div class="a-brand" style="left:${x}px;top:${y}px;--s:${s}px">${SIG()}</div>`,750);fxAdd(`<i class="a-ring" style="left:${x}px;top:${y}px;width:${s*1.4}px;height:${s*1.4}px"></i>`,600);burst(x,y,10,'')};
+let mkRaf=0;const mkEls=new Map();
+const fxMarkLoop=()=>{if(mkRaf)return;const tick=()=>{try{const en=S&&S.U?S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0):[];const cs=[...document.querySelectorAll('#bt .bsw .bs')];let any=false;
+ en.forEach((x,i)=>{if(x._aurMk>0&&cs[i]){any=true;let el=mkEls.get(x);if(!el){el=document.createElement('div');el.className='a-mk';el.innerHTML=SIG();fxL().appendChild(el);mkEls.set(x,el)}const r=cs[i].getBoundingClientRect();el.style.left=(r.right-22)+'px';el.style.top=(r.top+22)+'px'}});
+ for(const[x,el]of mkEls){if(!(x._aurMk>0&&x.alive&&x.hp>0)||!S||S.over){el.remove();mkEls.delete(x)}else any=true}
+ if(any)mkRaf=requestAnimationFrame(tick);else{mkRaf=0;mkEls.forEach(el=>el.remove());mkEls.clear()}}catch(er){mkRaf=0}};mkRaf=requestAnimationFrame(tick)};
+const fxSunset=rs=>{fxAdd('<div class="a-dim"></div>',1100);fxAdd('<div class="a-sun"></div>',950);fxAdd('<div class="a-hz"></div>',1300);rs.forEach(r=>{const[x]=ctr(r),w=r.w*.55;fxAdd(`<i class="a-pil" style="left:${x-w/2}px;width:${w}px"></i>`,1200)})};
+const fxSkull=r=>{const[x,y]=ctr(r);fxAdd(`<b class="a-tx sk" style="left:${x}px;top:${y}px">☠</b>`,950);burst(x,y,16,'#ffb23a');fxAdd(`<i class="a-ring" style="left:${x}px;top:${y}px;width:${Math.max(r.w,120)}px;height:${Math.max(r.w,120)}px;border-color:#ff7a2a"></i>`,600)};
+H[id]={
+ b:async(u,e)=>{const rc0=cardRect(e);fxSlash(rc0,1,false);await sl(110);let t=dm(u,e,60);shk(140);await sl(120);let p2=60,ex=false;if(e.hp>0&&e.hp<=e.maxhp*.4){p2=108;ex=true;pop(e.id,'⚔ 처형 일섬')}
+  fxSlash(rc0,2,ex);await sl(110);if(e.hp>0)t+=dm(u,e,p2);if(ex)shk(260);shd(u,u.maxhp*.05);log(`⚔ ${u.n}: 여명 이연격 → ${e.n} ${t} 피해${ex?' (처형 일섬!)':''}`);after(u)},
+ s:async(u,e)=>{const rc0=cardRect(e);fxBrand(rc0);await sl(380);const d=dm(u,e,120);shk(160);if(e.hp>0){e._aurMk=3;pop(e.id,'🌅 낙인');fxMarkLoop()}log(`🌅 ${u.n}: 낙인의 서약 → ${e.n} ${d} 피해 · 3라운드간 모든 아군의 공격이 +25% 피해`);after(u)},
+ x:async(u)=>{const en0=AE(),rs=enemyCards(),rmap=new Map(en0.map((en,i)=>[en,rs[i]||cr(null)]));fxSunset(rs);await sl(520);let t=0,k=0;en0.forEach(en=>{t+=dm(u,en,100,.2)});shk(300);await sl(220);AE().forEach(en=>{if(!(typeof isB==='function'&&isB(en))&&en.hp>0&&en.hp<=en.maxhp*.25){deal(u,en,9999,1);k++;pop(en.id,'☠ 심판');fxSkull(rmap.get(en)||cr(null))}});AA().forEach(a=>shd(a,a.maxhp*.1));log(`☠ ${u.n}: 일몰의 심판 → 적 전체 ${t} 피해${k?` · ${k}체 처형`:''}`);after(u)},
+ u:async(u,e,s)=>{await cutin(u,s);let t=0;AE().forEach(en=>{t+=dm(u,en,200,.4)});const top=AE().sort((a,b)=>b.hp-a.hp)[0];if(top)t+=dm(u,top,200,.4);
+  const dead=S.U.find(a=>a.side==='a'&&!a.alive&&a.id!==u.id);if(dead){dead.alive=1;dead.hp=Math.round(dead.maxhp*.4);pop(dead.id,'+'+dead.hp);if(S.q&&S.q.indexOf&&S.q.indexOf(dead.id)<0)S.q.push(dead.id)}
+  AA().forEach(a=>{rec(a,a.maxhp*.3);if(a!==u){for(const k in a.cd){if(k!=='u'&&a.cd[k]>0)a.cd[k]--}}});log(`🌅 ${u.n}: 최후의 새벽 → ${t} 피해 · 아군 전체 회복`);after(u)}};
+/* ── 궁극기 컷인 ── */
+const rn=(x,y,d,c,s)=>`<div class="rn" style="--x:${x}%;--y:${y}%;--d:${d}s;--c:${c};--s:${s}vh"></div>`;
+const EM=[...Array(18)].map((_,i)=>`<i class="aem" style="--x:${(i*5.7+3)%98}%;--s:${1+i%3*.9}vh;--d:${2.2+i%4*.7}s;--w:${(i%6)*.15}s;--dx:${(i%2?1:-1)*(4+i%5*3)}vh"></i>`).join('');
+const F={q:'재의 시대는 끝났다. 이제, 새벽이 온다.',cc:'#ffd24a',fx:'<div class="aring"></div><div class="aring r2"></div><div class="aring r3"></div><i class="apil" style="--x:62%"></i><i class="apil" style="--x:76%"></i><i class="apil" style="--x:90%"></i>'+rn(72,50,0,'#ffd24a',42)+rn(72,50,.25,'#fff0c0',42)+rn(72,50,.5,'#ffd24a',42)+EM+'<div class="asl"></div>'};
+{const C3=cutin;cutin=async function(u,s){if(u.id!==id)return C3(u,s);skip=false;let o=document.getElementById('fs');if(!o){o=document.createElement('div');o.id='fs';o.onclick=()=>{skip=true};document.body.appendChild(o)}
+ o.className='on '+id;o.dataset.p=0;o.style.setProperty('--cc',F.cc);
+ o.innerHTML=`<div class="bg"></div><div class="rays"></div>${F.fx}<div class="ch">${CIL[id]}</div><div class="tt"><b>${s.n}</b><small>${u.n}</small></div><div class="qt">${F.q}</div><div class="fl"></div><div class="bar b1"></div><div class="bar b2"></div><em>탭하여 연출 건너뛰기</em>`;
+ void o.offsetWidth;for(const[p,t]of[[1,800],[2,950],[3,750],[4,900]]){o.dataset.p=p;sfxU(id,p);if(p==1&&!skip)say(u.n,F.q);if(p==4)document.body.classList.add('shk');await sl(t)}
+ document.body.classList.remove('shk');o.className='';o.innerHTML='';skip=false}}
+/* ── 뽑기: SSS 확률 0.01 ── */
+{const R=rollG;rollG=function(){if(Math.random()<GP[NG]){try{if(typeof PB!=='undefined'){PB.i=(PB.i||0)+1;PB.ok=1}G.ps=0}catch(er){}return id}return R.apply(this,arguments)}}
+{const Rg=rGc;rGc=function(){const r=Rg.apply(this,arguments);try{const bx=document.querySelector('#gacha .gr,.gr');if(bx&&!bx.querySelector('.aurchip')){const sp=document.createElement('span');sp.className='aurchip';sp.textContent='SSS '+(GP[NG]*100)+'%';bx.appendChild(sp)}}catch(er){}return r}}
+const rv=document.getElementById('gcrv');if(rv){new MutationObserver(()=>{const on=/SSS등급/.test(rv.textContent||'');if(rv.classList.contains('sss')!==on)rv.classList.toggle('sss',on)}).observe(rv,{childList:true,subtree:true,characterData:true})}
+/* ── SSS 전용 뽑기 연출 ── */
+const EMB=[...Array(26)].map((_,i)=>`<i class="pem" style="--x:${(i*4.1+2)%98}%;--s:${1+i%3*.9}vh;--d:${2.4+i%4*.7}s;--w:${(i%7)*.2}s;--dx:${(i%2?1:-1)*(4+i%5*3)}vh"></i>`).join('');
+const aurPullCine=async()=>{
+ const o=document.createElement('div');o.id='aurpull';o.dataset.p=0;
+ const crk=[...Array(14)].map((_,i)=>{const a=i*(360/14)+((i*37)%17)-8,L=34+(i*53)%40;let x=50,y=50,pts='50,50';for(let k=1;k<=5;k++){const aa=(a+((k*29+i*13)%21)-10)*Math.PI/180;x+=Math.cos(aa)*L/5;y+=Math.sin(aa)*L/5;pts+=' '+x.toFixed(1)+','+y.toFixed(1)}return `<polyline points="${pts}" pathLength="1"/>`}).join('');
+ o.innerHTML=`<div class="rays"></div><div class="core"></div>${[0,1,2,3].map(i=>`<div class="rg" style="--d:${i*.22}s"></div>`).join('')}<svg class="crk" viewBox="0 0 100 100" preserveAspectRatio="none">${crk}</svg><div class="fl"></div><div class="stg"><div class="art"><div class="rr"></div><div class="rr r2"></div>${CIL[id]}</div><div class="ttl"><span class="sss">SSS</span><b>아우렐리온</b><small>최후의 새벽 · 마지막 시대의 영웅</small></div>${EMB}</div><em>탭하여 건너뛰기</em>`;
+ document.body.appendChild(o);let sk=false;o.onclick=()=>{sk=true};
+ const w=async ms=>{const t0=performance.now();while(!sk&&performance.now()-t0<ms)await new Promise(r=>setTimeout(r,30))};
+ const snd=p=>{try{if(p==1){sw(60,520,1.1,.12,0,'sine');tn(46,1.1,'sine',.14,0,90)}else if(p==2){sw(500,2000,1,.1,0,'sine');ring(220,1,.06,0);ring(330,1,.06,.3)}else if(p==3){tn(55,.9,'sine',.28,0,28);ring(1760,1.6,.14,0);sw(2400,200,.6,.1,0,'sine')}else if(p==4){[392,494,587,784,988].forEach((f,i)=>ring(f,2.2,.07,i*.12))}}catch(er){}};
+ for(const[p,ms]of[[1,1100],[2,1000],[3,500],[4,2300]]){if(sk)break;o.dataset.p=p;snd(p);await w(ms)}
+ o.dataset.p=5;await new Promise(r=>setTimeout(r,sk?160:450));o.remove()};
+{const RS=rvShow;rvShow=function(i){try{const r=RV.L[i];if(r&&r.id===id&&!window.__aurPulling){window.__aurPulling=1;aurPullCine().catch(()=>{}).then(()=>{window.__aurPulling=0;RS.call(window,i)});return}}catch(er){}return RS.apply(this,arguments)}}
+/* ── 치트: 테스트용 지급 ── */
+const cp=document.getElementById('chp');if(cp&&!document.getElementById('aurcheat')){const b=document.createElement('button');b.id='aurcheat';b.textContent='👑 아우렐리온 지급';b.onclick=()=>{try{G.j[id]=1;if(typeof save==='function')save();location.reload()}catch(er){alert('지급 실패: '+er.message)}};cp.appendChild(b)}
+}catch(err){console.error('[aur-patch]',err)}})();
+</script>
+
+<style id="grade-shimmer-css">/*#### [112_grade-shimmer] S·SS·SSS 등급 반짝임 (아이콘 · 일러스트) ####*/
+.gl-s,.gl-ss,.gl-sss,.gl-m{position:relative}
+@keyframes glrot{to{transform:rotate(360deg)}}
+@keyframes glsweep{0%,50%{transform:translateX(-130%) skewX(-18deg)}100%{transform:translateX(340%) skewX(-18deg)}}
+@keyframes glpSS{0%,100%{box-shadow:0 0 3px 0 rgba(255,77,109,.30)}50%{box-shadow:0 0 10px 2px rgba(255,77,109,.85)}}
+@keyframes glpSSS{0%,100%{box-shadow:0 0 5px 1px rgba(255,210,74,.45)}50%{box-shadow:0 0 14px 3px rgba(255,226,120,.95)}}
+/* 아이콘 배지: 둥근 면 위로 빛이 도는 반짝임 (회전 = GPU 가속, 가벼움) */
+.ic.gl-s::before,.ic.gl-ss::before,.ic.gl-sss::before,.ch.gl-s::before,.ch.gl-ss::before,.ch.gl-sss::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;animation:glrot 6s linear infinite}
+.ic.gl-s::before,.ch.gl-s::before{opacity:.32;background:conic-gradient(from 0deg,transparent 0 70%,rgba(255,236,190,.9) 80%,transparent 90% 100%)}
+.ic.gl-ss::before,.ch.gl-ss::before{opacity:.65;animation-duration:3.4s;background:conic-gradient(from 0deg,transparent 0 66%,rgba(255,205,220,.95) 78%,transparent 88% 100%)}
+.ic.gl-sss::before,.ch.gl-sss::before{opacity:.9;animation-duration:2.4s;background:conic-gradient(from 0deg,transparent 0 22%,rgba(255,244,180,.95) 30%,transparent 38% 64%,rgba(255,244,180,.95) 76%,transparent 86% 100%)}
+.ic.gl-ss{animation:glpSS 2.4s ease-in-out infinite}
+.ic.gl-sss{animation:glpSSS 1.8s ease-in-out infinite}
+/* 일러스트(상세창·도감 상세): 빛줄기가 지나가는 반짝임 */
+.dpt.gl-s::after,.dpt.gl-ss::after,.dpt.gl-sss::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;pointer-events:none;animation:glsweep 5.5s ease-in-out infinite;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent)}
+.dpt.gl-s::after{opacity:.3}
+.dpt.gl-ss::after{opacity:.55;animation-duration:3.8s;background:linear-gradient(100deg,transparent,rgba(255,200,215,.7),transparent)}
+.dpt.gl-sss::after{opacity:.8;animation-duration:2.8s;background:linear-gradient(100deg,transparent,rgba(255,240,170,.85),transparent)}
+.dpt.gl-ss{box-shadow:inset 0 0 18px rgba(255,77,109,.25)}
+.dpt.gl-sss{box-shadow:inset 0 0 22px rgba(255,210,74,.35)}
+/* M등급: 약하게 타오르는 불꽃 */
+@keyframes glflame{0%{opacity:.30;transform:scaleY(.9) scaleX(1)}35%{opacity:.58;transform:scaleY(1.08) scaleX(.97)}60%{opacity:.38;transform:scaleY(.95) scaleX(1.02)}100%{opacity:.55;transform:scaleY(1.1) scaleX(.98)}}
+@keyframes glpM{0%,100%{box-shadow:0 0 3px 0 rgba(255,110,30,.22)}30%{box-shadow:0 0 7px 1px rgba(255,130,40,.50)}55%{box-shadow:0 0 4px 0 rgba(255,100,25,.30)}80%{box-shadow:0 0 8px 1px rgba(255,140,50,.55)}}
+.ic.gl-m::before,.ch.gl-m::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;transform-origin:50% 100%;animation:glflame 1.4s ease-in-out infinite;background:radial-gradient(ellipse 75% 65% at 50% 108%,rgba(255,140,40,.95),rgba(255,70,10,.45) 55%,transparent 78%)}
+.ic.gl-m{animation:glpM 1.9s ease-in-out infinite}
+.dpt.gl-m::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;pointer-events:none;transform-origin:50% 100%;animation:glflame 1.6s ease-in-out infinite;background:radial-gradient(ellipse 85% 100% at 50% 100%,rgba(255,130,40,.6),rgba(255,70,10,.22) 55%,transparent 78%)}
+.dpt.gl-m{box-shadow:inset 0 0 16px rgba(255,100,30,.22)}
+@media (prefers-reduced-motion:reduce){.ic.gl-s::before,.ic.gl-ss::before,.ic.gl-sss::before,.ch.gl-s::before,.ch.gl-ss::before,.ch.gl-sss::before,.ic.gl-ss,.ic.gl-sss,.ic.gl-m,.ic.gl-m::before,.ch.gl-m::before,.dpt.gl-m::after,.dpt.gl-s::after,.dpt.gl-ss::after,.dpt.gl-sss::after{animation:none}}
+</style>
+<script id="grade-shimmer">/*#### [112_grade-shimmer-js] ####*/
+(function(){try{
+const CLS={4:'gl-s',5:'gl-ss',7:'gl-m',8:'gl-sss'};  /* S · SS · M(불꽃) · SSS */
+let NM=null,NMn=-1,CK=null;
+const names=()=>{const k=Object.keys(C);if(NM&&NMn===k.length)return NM;NM={};CK={};k.forEach(i=>{NM[C[i].n]=i});NMn=k.length;
+  const h=x=>{const m=/^#?([0-9a-f]{6})$/i.exec(x||'');if(!m)return'';const n=parseInt(m[1],16);return `rgb(${n>>16&255}, ${n>>8&255}, ${n&255})`};
+  const cnt={};k.forEach(i=>{const key=C[i].ic+'|'+h(C[i].col);cnt[key]=(cnt[key]||0)+1;CK[key]=i});Object.keys(cnt).forEach(x=>{if(cnt[x]>1)delete CK[x]});return NM};
+const tx=b=>[...b.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim();
+function idOf(el){
+  const N=names();
+  if(el.classList.contains('ch')){const k=el.textContent.trim()+'|'+el.style.backgroundColor;return CK[k]||null}
+  const d=el.closest('[data-i]');if(d&&C[d.dataset.i])return d.dataset.i;let n=el.parentElement,dep=0;
+  while(n&&dep<5){
+    if(n.querySelectorAll('.ic,.dpt').length>1)break;
+    const b=n.querySelector('b,h3');
+    if(b){const t=tx(b),t2=t.replace(/\s+[A-C]$/,'');if(N[t])return N[t];if(N[t2])return N[t2]}
+    n=n.parentElement;dep++}
+  if(el.classList.contains('ic')){const k=el.textContent.trim()+'|'+el.style.backgroundColor;if(CK[k])return CK[k]}
+  return null}
+let q=0;
+function scan(){
+  document.querySelectorAll('.ic:not([data-gl]),.ch:not([data-gl]),.dpt:not([data-gl])').forEach(el=>{
+    const id=idOf(el),t=+el.dataset.glt||0;
+    if(!id){if(t>=3)el.dataset.gl='0';else el.dataset.glt=t+1;return}
+    el.dataset.gl='1';const c=CLS[GR[id]];if(c)el.classList.add(c)})}
+const kick=()=>{if(q)return;q=1;requestAnimationFrame(()=>{q=0;try{scan()}catch(e){}})};
+new MutationObserver(kick).observe(document.body,{childList:true,subtree:true});
+kick();
+}catch(e){console.warn('grade-shimmer',e)}})();
 </script>
 </body></html>
