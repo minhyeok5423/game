@@ -98,6 +98,10 @@
  [097_equip-dungeon-v1] 6KB ui
  [098_ash-skin] 3KB CSS
  [111_new6-chars] 신규 6종: 하벨·유향·모르가·이은·아델라·에뉴마
+ [112_new6-fx] 신규 6종 전용 연출
+ [113_old-fx] 기존 20종 전용 연출 보강
+ [114_raizen] SSS · 라이젠(뇌정의 검제) — 충전·감전 시너지
+ [115_dx-opponent] 훈련소: 허수아비 대신 상대 캐릭터 선택
   규칙: 번호 순서대로 실행되며 뒤 블록이 앞 블록 함수를 덮어씀(패치 구조) ============ */
 /*#### [001_block] ####*/
 window.CXS=(()=>{const K='cx_v1';let o={};try{o=JSON.parse(localStorage.getItem(K)||'null')||{}}catch(e){}return{get:(k,d)=>o[k]==null?d:o[k],set:(k,v)=>{o[k]=v;try{localStorage.setItem(K,JSON.stringify(o))}catch(e){}},sp:()=>o.sp==2||o.sp==4?o.sp:1}})();window.__cx4=()=>CXS.get('c4',1)==1;window.DUP_COIN=10;window.FRIEND_DB='https://age-of-ash-default-rtdb.asia-southeast1.firebasedatabase.app';window.__dupGet=id=>{const a=(G.aw&&G.aw[id])||0,W=window.__AWSH||[1,2,3,5,8];let need=0;for(let k=a;k<W.length;k++)need+=W[k];if((G.dup[id]||0)>=need){G.coin+=DUP_COIN;return DUP_COIN}G.dup[id]=(G.dup[id]||0)+1;return 0};</script>
@@ -3877,7 +3881,14 @@ ast:{d:30,r:'h',s:[tS('별똥별','o',90),tS('별빛 치유','l',0,{heal:.28,w:'
 ,delta:{d:30,r:'d',s:[tS('물줄기','o',85),tS('수문 개방','a',1,{lvx:[30,15],cd:3}),tS('대홍수','a',1,{lvx:[80,30],slow:.85,cd:5})]}
 ,karis:{d:30,r:'h',s:[tS('성광 일격','o',90,{hl:.05}),tS('성배 기울이기','l',0,{calS:1,cd:3}),tS('성광의 범람','a',70,{calx:1,cd:5})]}
 ,erdan:{d:35,r:'d',s:[tS('잔로 베기','o',95,{echo:1}),tS('사라진 발자국','o',140,{echoD:1,cd:3}),tS('돌아오지 않는 길','o',200,{echoU:1,cd:4})]}
-,varg:{d:80,r:'t',rl:'제단',s:[tS('제단의 주먹','o',110,{gain:10,rm:50}),tS('세 갈래의 심판','a',100,{gd:[.2,0],cd:3}),tS('마지막 제단','a',220,{rp:2.2,rc:1,cd:4})]}
+,varg:{d:80,r:'t',rl:'제단',s:[tS('제단의 주먹','o',110,{gain:10,rm:50}),tS('세 갈래의 심판','a',100,{gd:[.2,0],cd:3}),tS('마지막 제단','a',220,{rp:2.2,rc:1,cd:4})]},
+/* ---- 신규 6종 (하벨·유향·모르가·이은·아델라·에뉴마) ---- */
+habel:{d:40,r:'h',s:[tS('성구 타격','o',100),tS('대속','F',0,{selfCost:.15,team:{heal:.30},w:'heal',cd:3}),tS('속죄의 재','s',0,{gd:[.1,.4],ctr:2,selfSh:.08,cd:6})]},
+yuhyang:{d:25,r:'d',s:[tS('불씨 던지기','o',100),tS('불씨 구역','a',45,{brn:3,dd:2,cd:3}),tS('재의 만개','a',230,{brn:3,cd:6,ci:3})]},
+morga:{d:30,r:'d',s:[tS('먹물 찍기','o',100),tS('종언의 각인','o',0,{bm:[3,300],ex:3,cd:4}),tS('이름 말소','o',150,{bmx:1,selfBa:.3,cd:7,ci:3})]},
+ieun:{d:25,r:'d',s:[tS('바늘 찌르기','o',100),tS('운명의 실','o',80,{vtn:1,cd:3}),tS('매듭 당기기','a',150,{cd:6})]},
+adela:{d:30,r:'s',s:[tS('밧줄 감기','o',100),tS('항로 설정','F',0,{teamBa:.2,team:{sh:.06},cd:3}),tS('순풍 만선','o',90,{teamBa:.25,team:{heal:.10,sh:.10},cdrA:1,cd:6})]},
+enuma:{d:45,r:'d',ph:1,s:[tS('한 줄 베기','o',115),tS('이름 호명','o',275,{ex:3,team:{heal:.12},lb:1.3,cd:3}),tS('백지의 서약','a',450,{team:{heal:.33,sh:.17},teamBa:.2,cd:5,ci:1})]}
 }; const tnK=i=>TN_K[i]||TN_K._;
 const TN_FT=[['신발',42,60],['복어',28,0],['참치',20,260],['상어',8,450],['황금 잉어',2,900]],TN_FU=[['참치',55,260],['상어',35,450],['황금 잉어',10,900]];
 function tnFish(B,E,u,t,tb){let r=tnRnd()*tb.reduce((a,x)=>a+x[1],0),c=tb[0];for(const x of tb){if((r-=x[1])<0){c=x;break}}
@@ -7284,7 +7295,7 @@ function trainStart(ids){
   fight(1,TK);
   S.train=1;
   const d=S.U.find(u=>u.side=='b');
-  if(d){
+  if(d&&!d._op){
     d.dummy=1;d.maxhp=999999;d.def=DX.def;d.spd=1;applyAtk(d);
     Object.defineProperty(d,'hp',{configurable:true,enumerable:true,
       get(){return d.maxhp},
@@ -7309,8 +7320,12 @@ function hud(){
   <div class="r2"><button id="dxcd">⏱ 쿨타임 초기화</button><button id="dxr">↺</button><button id="dxx">나가기</button></div>
   <div class="r2"><button id="dxfxb" class="${DX.fxOpen?'on':''}">🧪 상태이상 테스트 ${DX.fxOpen?'▴':'▾'}</button></div>`
   +(DX.fxOpen?`<div class="r2"><small style="color:var(--mu)">대상</small><button data-t="d" class="${DX.fxT=='d'?'on':''}">허수아비</button><button data-t="a" class="${DX.fxT=='a'?'on':''}">아군</button></div><div class="fxg">${FXB.map(([k,i,n])=>`<button data-fx="${k}">${i}${n}</button>`).join('')}<button data-fx="clear">✖해제</button></div>`:'');
+  {const oc=S&&S._opChar,h=document.querySelector('#dxh .hh b');
+   if(oc){[...b.querySelectorAll('.r2')].forEach(r=>{const t=(r.querySelector('small')||{}).textContent||'';if(/방어력|허수아비 공격|피해량/.test(t))r.remove()});const tb=b.querySelector('[data-t="d"]');if(tb)tb.textContent='상대'}
+   if(h)h.textContent=oc?'⚔ '+C[oc].n:'🎯 허수아비'}
   if(DX.fxOpen)fitHud();
 }
+window.__dxHud=hud;
 function fitHud(){const h=$('#dxh');if(!h||!DX.pos)return;const y=Math.max(0,Math.min(DX.pos.y,innerHeight-110-h.offsetHeight));if(y!==DX.pos.y){DX.pos.y=y;h.style.top=y+'px'}}
 function placeHud(){
   const h=$('#dxh');if(!DX.pos)DX.pos={x:Math.max(0,(innerWidth-h.offsetWidth)/2),y:46};
@@ -12643,6 +12658,206 @@ if(typeof stun==='function'&&typeof STP!=='undefined'){const S0=stun;stun=functi
 console.log('new6-chars: 하벨·유향·모르가·이은·아델라·에뉴마 등록 완료');
 }catch(e){console.error('new6-chars',e)}})();
 </script>
+<script id="new6-fx">/*#### [112_new6-fx] 신규 6종 전용 연출: 하벨(쇠사슬·성광) · 유향(불씨·꽃불) · 모르가(먹·말소) · 이은(실·매듭) · 아델라(나침반·순풍) · 에뉴마(깃펜·백지) ####*/
+(function(){try{
+const X=window.SIGFX;
+if(!X||!X.SIG||!X.M||!X.ULT||!X.SCR||typeof act==='undefined'){console.warn('new6-fx: 연출 시스템을 찾지 못해 건너뜀');return}
+if(X.SIG.habel)return;
+const M=X.M,SIG=X.SIG,ULT=X.ULT,SCR=X.SCR;
+const LA=()=>document.getElementById('sigfx'),LB=()=>document.getElementById('sigfx2');
+const spd=()=>{try{return fast?(typeof fastL!=='undefined'&&fastL>=2?.38:.55):1}catch(e){return 1}};
+const rnd=(a,b)=>a+Math.random()*(b-a),TAU=6.2832;
+const mk=(L,css,html)=>{const p=L();if(!p)return null;const e=document.createElement('div');e.style.cssText='position:absolute;pointer-events:none;box-sizing:border-box;'+css;if(html!=null)e.innerHTML=html;p.appendChild(e);return e};
+const an=(e,kf,o)=>{if(!e)return;o=o||{};const a=e.animate(kf,{duration:(o.d||400)*spd(),delay:(o.dl||0)*spd(),easing:o.e||'ease-out',fill:'both'});a.onfinish=()=>e.remove();return a};
+const later=(f,ms)=>setTimeout(()=>{try{f()}catch(e){}},ms*spd());
+const SND=f=>{try{if(typeof mute!=='undefined'&&mute)return;if(typeof skip!=='undefined'&&skip)return;f()}catch(e){}};
+const _tn=(...a)=>{try{tn(...a)}catch(e){}},_ns=(...a)=>{try{ns(...a)}catch(e){}},_rg=(...a)=>{try{ring(...a)}catch(e){}};
+const shk=()=>{try{document.body.classList.add('shk');setTimeout(()=>document.body.classList.remove('shk'),420)}catch(e){}};
+const ringV=(L,R,c,f,t,d,dl,bw)=>{const z=R.s;const e=mk(L,`left:${R.cx-z/2}px;top:${R.cy-z/2}px;width:${z}px;height:${z}px;border-radius:50%;border:${bw||3}px solid ${c};box-shadow:0 0 12px ${c}`);an(e,[{opacity:.95,transform:`scale(${f})`},{opacity:0,transform:`scale(${t})`}],{d:d||420,dl:dl||0})};
+const glowV=(L,R,c,sc,d)=>{const z=R.s*(sc||1.2);const e=mk(L,`left:${R.cx-z/2}px;top:${R.cy-z/2}px;width:${z}px;height:${z}px;border-radius:50%;background:radial-gradient(circle,#fffc 0,${c} 26%,transparent 62%)`);an(e,[{opacity:.8,transform:'scale(.3)'},{opacity:0,transform:'scale(1.2)'}],{d:d||340})};
+const dotsV=(L,R,c,n,d)=>{for(let i=0;i<n;i++){const a=rnd(0,TAU),r=rnd(.3,1)*d,z=rnd(3,6),e=mk(L,`left:${R.cx}px;top:${R.cy}px;width:${z}px;height:${z}px;margin:${-z/2}px;border-radius:50%;background:#fff;box-shadow:0 0 6px ${c}`);an(e,[{opacity:1,transform:'translate(0,0)'},{opacity:0,transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r}px) scale(.3)`}],{d:rnd(300,560)})}};
+const gl=(L,x,y,ch,sz,c,kf,o)=>{const e=mk(L,`left:${x}px;top:${y}px;font-size:${sz}px;line-height:1;margin:${-sz/2}px 0 0 ${-sz/2}px;width:${sz}px;text-align:center;filter:drop-shadow(0 0 6px ${c})`,ch);an(e,kf,o)};
+const flashB=(c,a,d)=>{const e=mk(LB,`inset:0;background:${c||'#fff'}`);an(e,[{opacity:a||.9},{opacity:0}],{d:d||420})};
+const vigB=(c,d,a)=>{const e=mk(LB,`inset:0;background:radial-gradient(circle at 50% 50%,transparent 30%,${c} 125%)`);an(e,[{opacity:0},{opacity:a||.95,offset:.25},{opacity:0}],{d:d||1000})};
+
+/* ================= 모티프 (평타 · 스킬) ================= */
+/* 하벨: 금빛 쇠사슬이 떨어져 감기고 십자 광채 */
+M.chain=(R,c,g,o)=>{const s=R.s,n=o.H?6:4;
+ for(let i=0;i<n;i++){const a=(i/(n-1)-.5)*2.2,x0=R.cx+Math.sin(a)*s*.95,y0=R.cy-s,dx=R.cx-x0,dy=R.cy-y0;
+  const e=mk(LA,`left:${x0}px;top:${y0}px;width:${s*.2}px;height:${s*.34}px;margin:${-s*.17}px 0 0 ${-s*.1}px;border:3px solid ${c};border-radius:50%;box-shadow:0 0 10px ${c}`);
+  an(e,[{opacity:0,transform:`translate(0,-18px) rotate(${a*35}deg)`},{opacity:1,transform:`translate(${dx*.85}px,${dy*.85}px) rotate(${a*35+80}deg)`,offset:.55},{opacity:0,transform:`translate(${dx}px,${dy}px) rotate(${a*35+110}deg) scale(.55)`}],{d:430,dl:i*45,e:'cubic-bezier(.3,.8,.3,1)'})}
+ [[0,0],[90,60]].forEach(([r,dl])=>{const w=s*(o.H?1.5:1.1),e=mk(LA,`left:${R.cx-w/2}px;top:${R.cy-2}px;width:${w}px;height:4px;border-radius:50%;background:linear-gradient(90deg,transparent,${c},#fff,${c},transparent);box-shadow:0 0 12px ${c}`);an(e,[{opacity:0,transform:`rotate(${r}deg) scaleX(0)`},{opacity:1,transform:`rotate(${r}deg) scaleX(1)`,offset:.4},{opacity:0,transform:`rotate(${r}deg) scaleX(1.1) scaleY(.3)`}],{d:380,dl:200+dl})});
+ ringV(LA,R,c,.4,1.4,420,240,2);glowV(LA,R,c,1.1,320);dotsV(LA,R,c,o.H?10:6,s*.7);
+ SND(()=>{_rg(660,1,.08,0);_tn(220,.25,'triangle',.08,.18,110)})};
+/* 유향: 바닥에서 불꽃이 치솟고 불씨가 흩날림 */
+M.ember=(R,c,g,o)=>{const s=R.s,n=o.H?18:10;
+ const fl=mk(LA,`left:${R.cx-s*.5}px;top:${R.cy+s*.2}px;width:${s}px;height:${s*.95}px;margin-top:${-s*.95}px;transform-origin:50% 100%;background:radial-gradient(ellipse at 50% 90%,#fff 0,#ffd27a 20%,${c} 50%,transparent 72%);border-radius:50% 50% 40% 40%;filter:blur(1px)`);
+ an(fl,[{opacity:0,transform:'scale(.4,.2)'},{opacity:.95,transform:'scale(1,1.15)',offset:.35},{opacity:0,transform:'scale(.7,1.5) translateY(-14px)'}],{d:520});
+ for(let i=0;i<n;i++){const x=R.cx+rnd(-s*.5,s*.5),y=R.cy+s*.35,z=rnd(3,7),e=mk(LA,`left:${x}px;top:${y}px;width:${z}px;height:${z}px;border-radius:50%;background:${i%3?'#ffb24d':'#fff2c0'};box-shadow:0 0 8px ${c}`);
+  an(e,[{opacity:0,transform:'translate(0,0)'},{opacity:1,offset:.2},{opacity:0,transform:`translate(${rnd(-26,26)}px,${-rnd(s*.6,s*1.4)}px) scale(.3)`}],{d:rnd(420,760),dl:rnd(0,160)})}
+ ringV(LA,{cx:R.cx,cy:R.cy+s*.3,s:s*1.1},c,.3,1.3,420,0,2);
+ SND(()=>{_tn(180,.45,'sawtooth',.06,0,420);_ns(.35,.09,0,1400,.8,4000)})};
+/* 모르가: 붓 한 획 + 먹물 방울 + 달 낙인 */
+M.ink=(R,c,g,o)=>{const s=R.s,w=s*(o.H?2:1.5);
+ const e=mk(LA,`left:${R.cx-w/2}px;top:${R.cy-s*.05}px;width:${w}px;height:${o.H?12:8}px;border-radius:60% 40% 50% 50%;background:linear-gradient(90deg,transparent,#1a1030 10%,${c} 55%,#1a1030 90%,transparent);box-shadow:0 0 14px ${c};transform-origin:0 50%`);
+ an(e,[{opacity:1,transform:'rotate(-24deg) scaleX(0)'},{opacity:1,transform:'rotate(-24deg) scaleX(1)',offset:.35},{opacity:0,transform:'rotate(-24deg) scaleX(1) scaleY(.4)'}],{d:520,e:'cubic-bezier(.2,.8,.3,1)'});
+ for(let i=0;i<(o.H?10:6);i++){const a=rnd(0,TAU),r=rnd(.3,1)*s*.8,z=rnd(6,16),d=mk(LA,`left:${R.cx}px;top:${R.cy}px;width:${z}px;height:${z}px;margin:${-z/2}px;border-radius:50% 50% 50% 20%;background:radial-gradient(circle at 35% 35%,${c},#1a1030 70%);box-shadow:0 0 6px ${c}`);
+  an(d,[{opacity:1,transform:'translate(0,0) scale(.3)'},{opacity:1,transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r}px) scale(1)`,offset:.5},{opacity:0,transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r+16}px) scale(.8)`}],{d:rnd(420,640)})}
+ gl(LA,R.cx,R.cy,'☾',s*(o.H?.9:.6),c,[{opacity:0,transform:'scale(1.8)'},{opacity:.95,transform:'scale(1)',offset:.35},{opacity:0,transform:'scale(1)'}],{d:520,dl:180});
+ ringV(LA,R,c,.5,1.2,380,0,2);
+ SND(()=>{_tn(520,.35,'sine',.06,0,880);_ns(.25,.07,.05,2200,1,5000)})};
+/* 이은: 사방에서 실이 날아와 매듭을 지음 */
+M.thread=(R,c,g,o)=>{const s=R.s,n=o.H?9:6;
+ for(let i=0;i<n;i++){const a=rnd(0,TAU),len=s*rnd(1.1,1.7),x0=R.cx+Math.cos(a)*len,y0=R.cy+Math.sin(a)*len*.8,L=Math.hypot(R.cx-x0,R.cy-y0),ang=Math.atan2(R.cy-y0,R.cx-x0);
+  const e=mk(LA,`left:${x0}px;top:${y0}px;width:${L}px;height:2px;background:linear-gradient(90deg,transparent,${c},#fff);box-shadow:0 0 6px ${c};transform-origin:0 50%`);
+  an(e,[{opacity:0,transform:`rotate(${ang}rad) scaleX(0)`},{opacity:1,transform:`rotate(${ang}rad) scaleX(1)`,offset:.4},{opacity:0,transform:`rotate(${ang}rad) scaleX(1)`}],{d:480,dl:i*35})}
+ const z=s*.28,k=mk(LA,`left:${R.cx-z/2}px;top:${R.cy-z/2}px;width:${z}px;height:${z}px;border-radius:50%;border:3px solid ${c};box-shadow:0 0 12px ${c}`);
+ an(k,[{opacity:0,transform:'scale(2.2) rotate(0)'},{opacity:1,transform:'scale(1) rotate(120deg)',offset:.5},{opacity:0,transform:'scale(.6) rotate(200deg)'}],{d:520,dl:240});
+ glowV(LA,R,c,1,320);dotsV(LA,R,c,6,s*.6);
+ SND(()=>{[0,.06,.12].forEach(d=>_tn(900+d*2000,.15,'sine',.05,d))})};
+/* 아델라: 나침반 문양이 돌며 바람 줄기가 스침 */
+M.gale=(R,c,g,o)=>{const s=R.s,z=s*(o.H?1.5:1.1);
+ const svg=`<svg viewBox="-50 -50 100 100" width="${z}" height="${z}"><path d="M0-48L8-8 48 0 8 8 0 48-8 8-48 0-8-8Z" fill="${c}" fill-opacity=".35" stroke="${c}" stroke-width="2"/><path d="M0-48L5-5 0 0Z M48 0L5 5 0 0Z M0 48L-5 5 0 0Z M-48 0L-5-5 0 0Z" fill="#fff" fill-opacity=".85"/><circle r="12" fill="none" stroke="${c}" stroke-width="2"/></svg>`;
+ const e=mk(LA,`left:${R.cx-z/2}px;top:${R.cy-z/2}px;width:${z}px;height:${z}px;filter:drop-shadow(0 0 8px ${c})`,svg);
+ an(e,[{opacity:0,transform:'scale(.3) rotate(-90deg)'},{opacity:1,transform:'scale(1) rotate(0)',offset:.4},{opacity:0,transform:'scale(1.35) rotate(60deg)'}],{d:560,e:'cubic-bezier(.2,.9,.3,1)'});
+ for(let i=0;i<(o.H?6:4);i++){const y=R.cy+rnd(-s*.6,s*.6),w=s*rnd(1,1.8),e2=mk(LA,`left:${R.cx-w/2}px;top:${y}px;width:${w}px;height:3px;border-radius:50%;background:linear-gradient(90deg,transparent,${c},#fff,transparent)`);
+  an(e2,[{opacity:0,transform:`translateX(${-s}px) scaleX(.3)`},{opacity:.9,transform:'translateX(0) scaleX(1)',offset:.45},{opacity:0,transform:`translateX(${s}px) scaleX(.6)`}],{d:460,dl:i*40})}
+ glowV(LA,R,c,1,320);dotsV(LA,R,c,6,s*.7);
+ SND(()=>{_tn(400,.4,'sine',.05,0,900);_ns(.35,.07,0,3000,1,7000)})};
+/* 에뉴마: 깃펜이 금빛 선을 긋고 글자 조각이 떠오름 */
+M.quill=(R,c,g,o)=>{const s=R.s,w=s*(o.H?2:1.5),y=R.cy;
+ const ln=mk(LA,`left:${R.cx-w/2}px;top:${y-2}px;width:${w}px;height:4px;border-radius:2px;background:linear-gradient(90deg,transparent,${c},#fff 60%,${c},transparent);box-shadow:0 0 12px ${c};transform-origin:0 50%`);
+ an(ln,[{opacity:1,transform:'rotate(-12deg) scaleX(0)'},{opacity:1,transform:'rotate(-12deg) scaleX(1)',offset:.45},{opacity:0,transform:'rotate(-12deg) scaleX(1)'}],{d:520,e:'cubic-bezier(.3,.7,.3,1)'});
+ gl(LA,R.cx-w/2,y+w*.12,'✒',s*.5,c,[{opacity:0,transform:'translate(0,0)'},{opacity:1,offset:.1},{opacity:1,transform:`translate(${w*.95}px,${-w*.2}px) rotate(-8deg)`,offset:.6},{opacity:0,transform:`translate(${w}px,${-w*.22}px)`}],{d:520,e:'cubic-bezier(.3,.7,.3,1)'});
+ const A=['이','름','言','文','✦','·'];
+ for(let i=0;i<(o.H?8:5);i++){gl(LA,R.cx+rnd(-s*.6,s*.6),R.cy+rnd(-s*.2,s*.4),A[i%A.length],rnd(14,24),c,[{opacity:0,transform:'translateY(0)'},{opacity:.95,offset:.3},{opacity:0,transform:`translateY(${-rnd(30,70)}px) rotate(${rnd(-25,25)}deg)`}],{d:rnd(520,820),dl:rnd(60,260)})}
+ glowV(LA,R,c,1.1,360);ringV(LA,R,c,.5,1.3,380,160,2);
+ SND(()=>{_ns(.3,.08,0,6000,.6,1200);_tn(1320,.2,'sine',.04,.1,880)})};
+
+/* 지원 스킬(아군 대상) 효과: 기존 'halo'를 캐릭터별로 교체 */
+const H0=M.halo;
+M.halo=function(R,c,g,o){const id=window.__sig&&window.__sig.id;
+ if(id==='habel'){ringV(LA,R,c,.4,1.5,520,0,3);ringV(LA,R,c,.3,1.2,520,120,2);
+  for(let i=0;i<8;i++)gl(LA,R.cx+rnd(-R.s*.5,R.s*.5),R.cy-R.s*.9,'✦',rnd(10,18),c,[{opacity:0,transform:'translateY(0)'},{opacity:1,offset:.3},{opacity:0,transform:`translateY(${R.s*1.1}px)`}],{d:rnd(500,760),dl:i*40});
+  glowV(LA,R,c,1.2,420);SND(()=>{_rg(1047,1,.08,0);_rg(1568,.8,.05,.1)});return}
+ if(id==='adela'){M.gale(R,c,g,{H:0});return}
+ if(id==='enuma'){glowV(LA,R,c,1.3,460);ringV(LA,R,c,.4,1.4,480,0,2);
+  for(let i=0;i<7;i++)gl(LA,R.cx+rnd(-R.s*.5,R.s*.5),R.cy+R.s*.4,i%2?'✦':'·',rnd(12,22),c,[{opacity:0,transform:'translateY(0)'},{opacity:1,offset:.3},{opacity:0,transform:`translateY(${-R.s*rnd(.6,1.2)}px)`}],{d:rnd(500,800),dl:i*45});
+  SND(()=>{_rg(1320,.8,.06,0);_ns(.25,.06,0,6000,.6,1200)});return}
+ return H0.apply(this,arguments)};
+
+/* ================= 필살기 전체화면 연출 ================= */
+/* 하벨 · 속죄의 재: 성광 기둥 + 쇠사슬이 화면을 가로지르고 재가 내림 */
+SCR.atone=(c,g)=>{const W=innerWidth,H=innerHeight;
+ for(let i=0;i<5;i++){const x=W*(.1+i*.2)+rnd(-20,20),w=rnd(28,60),e=mk(LB,`left:${x-w/2}px;top:-5%;width:${w}px;height:110%;background:linear-gradient(180deg,#fffbe0cc,${c}66 60%,transparent);mix-blend-mode:screen`);an(e,[{opacity:0,transform:'scaleX(.2)'},{opacity:.9,transform:'scaleX(1)',offset:.35},{opacity:0,transform:'scaleX(1.6)'}],{d:900,dl:i*70})}
+ for(let j=0;j<3;j++){const y=H*(.3+j*.2);for(let i=0;i<12;i++){const e=mk(LB,`left:${-60+i*(W/10)}px;top:${y-14}px;width:44px;height:26px;border:4px solid ${c};border-radius:50%;box-shadow:0 0 10px ${c}`);an(e,[{opacity:0,transform:'translateX(-80px)'},{opacity:.95,transform:'translateX(0)',offset:.35},{opacity:0,transform:`translateX(${W*.25}px)`}],{d:800,dl:i*30+j*90})}}
+ for(let i=0;i<26;i++)gl(LB,rnd(0,W),-20,i%3?'✦':'⛓',rnd(16,34),c,[{opacity:0,transform:'translate(0,0)'},{opacity:.9,offset:.2},{opacity:0,transform:`translate(${rnd(-40,40)}px,${H*.9}px)`}],{d:rnd(900,1400),dl:rnd(0,500),e:'linear'});
+ later(()=>{flashB('#fff6d0',.85,500);shk()},520);
+ SND(()=>{_rg(523,1.4,.12,0);_rg(784,1.2,.08,.1);_tn(110,.9,'sine',.12,0,60)})};
+/* 유향 · 재의 만개: 불꽃 꽃잎이 활짝 피고 불씨가 솟구침 */
+SCR.bloom=(c,g)=>{const W=innerWidth,H=innerHeight,cx=W*.5,cy=H*.58;
+ vigB('#ff4a1a99',1100,.9);
+ for(let i=0;i<10;i++){const a=i/10*360,e=mk(LB,`left:${cx-26}px;top:${cy-H*.3}px;width:52px;height:${H*.3}px;transform-origin:50% 100%;border-radius:50% 50% 20% 20%;background:linear-gradient(0deg,#fff4c0,${c} 40%,#ff3a1a88 80%,transparent);filter:blur(1px);mix-blend-mode:screen`);
+  an(e,[{opacity:0,transform:`rotate(${a}deg) scaleY(.1)`},{opacity:.95,transform:`rotate(${a+18}deg) scaleY(1)`,offset:.45},{opacity:0,transform:`rotate(${a+40}deg) scaleY(1.25)`}],{d:1000,dl:i*25})}
+ const z=Math.min(W,H)*.9,gw=mk(LB,`left:${cx-z/2}px;top:${cy-z/2}px;width:${z}px;height:${z}px;border-radius:50%;background:radial-gradient(circle,#fff 0,#ffd27a 18%,${c}aa 40%,transparent 68%)`);
+ an(gw,[{opacity:0,transform:'scale(.2)'},{opacity:.95,transform:'scale(1)',offset:.5},{opacity:0,transform:'scale(1.3)'}],{d:1000});
+ for(let i=0;i<34;i++)gl(LB,rnd(0,W),H+20,i%4?'✦':'🔥',rnd(14,30),c,[{opacity:0,transform:'translate(0,0)'},{opacity:1,offset:.2},{opacity:0,transform:`translate(${rnd(-50,50)}px,${-H*rnd(.5,1)}px)`}],{d:rnd(800,1300),dl:rnd(0,420),e:'ease-out'});
+ later(()=>{flashB('#ffe6a0',.8,420);shk()},480);
+ SND(()=>{_tn(120,.9,'sawtooth',.1,0,500);_ns(.6,.12,0,900,.8,3500)})};
+/* 모르가 · 이름 말소: 먹이 번지고 취소선이 이름을 지움 */
+SCR.erase=(c,g)=>{const W=innerWidth,H=innerHeight;
+ const d=mk(LB,`inset:0;background:radial-gradient(circle at 50% 50%,#0a0418cc,#000 125%)`);an(d,[{opacity:0},{opacity:.9,offset:.25},{opacity:.9,offset:.75},{opacity:0}],{d:1150});
+ for(let i=0;i<7;i++){const z=rnd(W*.35,W*.8),x=rnd(0,W),y=rnd(0,H),e=mk(LB,`left:${x-z/2}px;top:${y-z/2}px;width:${z}px;height:${z}px;border-radius:50%;background:radial-gradient(circle,#1a1030 0,${c}66 55%,transparent 72%)`);an(e,[{opacity:0,transform:'scale(.1)'},{opacity:.9,transform:'scale(1)',offset:.5},{opacity:0,transform:'scale(1.15)'}],{d:900,dl:i*60})}
+ gl(LB,W*.5,H*.5,'☾',Math.min(W,H)*.9,c,[{opacity:0,transform:'scale(.6) rotate(-10deg)'},{opacity:.35,transform:'scale(1) rotate(0)',offset:.4},{opacity:0,transform:'scale(1.2)'}],{d:1100});
+ [.36,.5,.64].forEach((yy,i)=>{const r=(i-1)*4,e=mk(LB,`left:-5%;top:${H*yy}px;width:110%;height:7px;background:linear-gradient(90deg,transparent,#fff 10%,${c} 50%,#fff 90%,transparent);box-shadow:0 0 18px ${c};transform-origin:0 50%`);
+  an(e,[{opacity:1,transform:`rotate(${r}deg) scaleX(0)`},{opacity:1,transform:`rotate(${r}deg) scaleX(1)`,offset:.25},{opacity:0,transform:`rotate(${r}deg) scaleX(1)`}],{d:700,dl:300+i*110,e:'cubic-bezier(.2,.8,.3,1)'})});
+ later(()=>{flashB('#f0e8ff',.85,420);shk()},760);
+ SND(()=>{_tn(70,.9,'sine',.16,0,40);_ns(.4,.1,0,700,.8,200);_tn(520,.4,'sine',.06,.3,880)})};
+/* 이은 · 매듭 당기기: 화면 가득 실이 엮이고 한 점으로 조여짐 */
+SCR.weave=(c,g)=>{const W=innerWidth,H=innerHeight,cx=W*.5,cy=H*.5;
+ for(let i=0;i<18;i++){const edge=i%4,x0=edge==0?-20:edge==1?W+20:rnd(0,W),y0=edge==2?-20:edge==3?H+20:rnd(0,H),x1=cx+rnd(-W*.25,W*.25),y1=cy+rnd(-H*.2,H*.2),L=Math.hypot(x1-x0,y1-y0),ang=Math.atan2(y1-y0,x1-x0);
+  const e=mk(LB,`left:${x0}px;top:${y0}px;width:${L}px;height:3px;background:linear-gradient(90deg,transparent,${c},#fff);box-shadow:0 0 10px ${c};transform-origin:0 50%`);
+  an(e,[{opacity:0,transform:`rotate(${ang}rad) scaleX(0)`},{opacity:1,transform:`rotate(${ang}rad) scaleX(1)`,offset:.45},{opacity:0,transform:`rotate(${ang}rad) scaleX(.85)`}],{d:900,dl:i*28})}
+ const z=Math.min(W,H)*.5,k=mk(LB,`left:${cx-z/2}px;top:${cy-z/2}px;width:${z}px;height:${z}px;border-radius:50%;border:6px solid ${c};box-shadow:0 0 30px ${c},inset 0 0 30px ${c}`);
+ an(k,[{opacity:0,transform:'scale(2.4) rotate(0)'},{opacity:1,transform:'scale(1) rotate(180deg)',offset:.6},{opacity:0,transform:'scale(.2) rotate(300deg)'}],{d:1000,dl:300,e:'cubic-bezier(.5,0,.2,1)'});
+ gl(LB,cx,cy,'🧵',Math.min(W,H)*.5,c,[{opacity:0,transform:'scale(.5)'},{opacity:.4,transform:'scale(1)',offset:.5},{opacity:0,transform:'scale(1.2)'}],{d:1000});
+ later(()=>{flashB('#eaffe0',.85,420);shk()},900);
+ SND(()=>{[0,.08,.16,.24].forEach(d=>_tn(700+d*2400,.16,'sine',.05,d));_tn(90,.5,'sine',.1,.5,50)})};
+/* 아델라 · 순풍 만선: 거대한 나침반이 돌고 바람과 파도가 화면을 가름 */
+SCR.voyage=(c,g)=>{const W=innerWidth,H=innerHeight,cx=W*.5,cy=H*.5,z=Math.min(W,H*1.05)*1.15;
+ const svg=`<svg viewBox="-50 -50 100 100" width="${z}" height="${z}"><circle r="46" fill="none" stroke="${c}" stroke-width="1.5" stroke-dasharray="2 3"/><circle r="38" fill="none" stroke="${c}" stroke-width=".8"/><path d="M0-48L8-8 48 0 8 8 0 48-8 8-48 0-8-8Z" fill="${c}" fill-opacity=".3" stroke="${c}" stroke-width="1.6"/><path d="M0-48L5-5 0 0Z M48 0L5 5 0 0Z M0 48L-5 5 0 0Z M-48 0L-5-5 0 0Z" fill="#fff" fill-opacity=".9"/></svg>`;
+ const e=mk(LB,`left:${cx-z/2}px;top:${cy-z/2}px;width:${z}px;height:${z}px;filter:drop-shadow(0 0 14px ${c})`,svg);
+ an(e,[{opacity:0,transform:'scale(.3) rotate(-180deg)'},{opacity:.95,transform:'scale(1) rotate(0)',offset:.45},{opacity:0,transform:'scale(1.4) rotate(90deg)'}],{d:1100,e:'cubic-bezier(.2,.9,.3,1)'});
+ for(let i=0;i<14;i++){const y=rnd(.08,.92)*H,w=rnd(W*.4,W*.9),e2=mk(LB,`left:${rnd(-.1,.3)*W}px;top:${y}px;width:${w}px;height:${rnd(3,7)}px;border-radius:50%;background:linear-gradient(90deg,transparent,${c},#fff,transparent);box-shadow:0 0 12px ${c}`);
+  an(e2,[{opacity:0,transform:`translateX(${-W*.5}px)`},{opacity:.95,transform:'translateX(0)',offset:.4},{opacity:0,transform:`translateX(${W*.7}px)`}],{d:800,dl:i*45,e:'cubic-bezier(.3,.7,.3,1)'})}
+ const wv=mk(LB,`left:0;right:0;bottom:0;height:${H*.28}px;background:linear-gradient(0deg,${c}99,transparent)`);an(wv,[{opacity:0,transform:'translateY(40px)'},{opacity:.9,transform:'translateY(0)',offset:.4},{opacity:0,transform:'translateY(-10px)'}],{d:1000});
+ later(()=>{flashB('#dff8ff',.8,420);shk()},560);
+ SND(()=>{_tn(300,.7,'sine',.08,0,900);_ns(.6,.1,0,2500,1,6000)})};
+/* 에뉴마 · 백지의 서약: 화면이 백지가 되고 금빛 문장이 한 줄씩 적힘 */
+SCR.covenant=(c,g)=>{const W=innerWidth,H=innerHeight;
+ const pg=mk(LB,`inset:0;background:radial-gradient(circle at 50% 45%,#fffdf4,#fff4d6 70%,#f0dca0)`);an(pg,[{opacity:0},{opacity:.92,offset:.22},{opacity:.92,offset:.72},{opacity:0}],{d:1500});
+ gl(LB,W*.5,H*.5,'📜',Math.min(W,H)*.95,c,[{opacity:0,transform:'scale(.7)'},{opacity:.22,transform:'scale(1)',offset:.4},{opacity:0,transform:'scale(1.15)'}],{d:1500});
+ for(let i=0;i<9;i++){const y=H*(.17+i*.075),w=W*rnd(.5,.76),e=mk(LB,`left:${W*.12}px;top:${y}px;width:${w}px;height:4px;border-radius:2px;background:linear-gradient(90deg,${c},#d8a82a 70%,transparent);box-shadow:0 0 10px ${c};transform-origin:0 50%`);
+  an(e,[{opacity:0,transform:'scaleX(0)'},{opacity:1,transform:'scaleX(1)',offset:.35},{opacity:.9,offset:.8},{opacity:0}],{d:1100,dl:200+i*85,e:'cubic-bezier(.3,.7,.3,1)'})}
+ const A=['名','이','름','文','✦'];for(let i=0;i<18;i++)gl(LB,rnd(W*.1,W*.9),rnd(H*.2,H*.85),A[i%A.length],rnd(18,40),'#c8962a',[{opacity:0,transform:'translateY(10px) scale(.6)'},{opacity:.9,offset:.35},{opacity:0,transform:`translateY(${-rnd(30,80)}px) rotate(${rnd(-20,20)}deg)`}],{d:rnd(700,1100),dl:rnd(150,800)});
+ later(()=>{flashB('#fff2b8',.95,600);shk()},1000);
+ SND(()=>{_ns(.5,.08,0,6000,.6,1200);_rg(1047,1.4,.1,.5);_rg(1568,1.2,.07,.6)})};
+
+/* ================= 편성 ================= */
+/* id: [시전 글리프, 일반공격 모티프, 스킬 모티프, 파티클 글리프, 색] */
+Object.assign(SIG,{
+ habel:['⛪','chain','halo','⛓✦','#e8d9a8'],
+ yuhyang:['🪔','ember','ember','🔥✦','#ff8a3d'],
+ morga:['🖋','ink','ink','☾✦','#9a78e0'],
+ ieun:['🧵','thread','thread','🧵✦','#78c96b'],
+ adela:['🧭','gale','halo','🧭✦','#3fb6c9'],
+ enuma:['📜','quill','quill','📜✦','#ffe49a']});
+/* 필살기: [타격1, 타격2(또는 지원), 전체화면] */
+Object.assign(ULT,{
+ habel:['chain','halo','atone'],yuhyang:['ember','ember','bloom'],morga:['ink','ink','erase'],
+ ieun:['thread','thread','weave'],adela:['gale','halo','voyage'],enuma:['quill','quill','covenant']});
+console.log('new6-fx: 신규 6종 전용 연출 등록 완료');
+}catch(e){console.error('new6-fx',e)}})();
+</script>
+<script id="old-fx">/*#### [113_old-fx] 기존 캐릭터 20종 전용 연출 보강 (시그니처 미등록분) ####*/
+(function(){try{
+const X=window.SIGFX;
+if(!X||!X.SIG||!X.M||!X.ULT||!X.SCR){console.warn('old-fx: 연출 시스템을 찾지 못해 건너뜀');return}
+const SIG=X.SIG,ULT=X.ULT;
+/* id: [시전 글리프, 일반공격 모티프, 스킬 모티프, 파티클 글리프, 색] */
+const S={
+ hau:['🐺','fang','pierce','🐾✦','#7ea5b8'],
+ seril:['🎒','quake','rise','🎒✦','#c9b48a'],
+ ian:['🎻','swirl','fan','♪♫','#d08ac0'],
+ khan:['🐏','quake','anvil','🔥✦','#d0603c'],
+ crona:['⏳','gear','sand','⏳✦','#6fb7c9'],
+ sepel:['⚰','tendril','rise','⚰✦','#a0a0b8'],
+ mimo:['🦜','swirl','fan','🦜♪','#4fb3a0'],
+ rinet:['🎯','pierce','lock','🎯','#ffa060'],
+ belin:['⚗','swirl','rise','⚗🫧','#9be05a'],
+ seorim:['📜','stamp','chain','📜⛓','#c9a15b'],
+ m_sgt:['🔨','stamp','stamp','🔨','#d04a3a'],
+ m_whi:['📣','bell','bell','📣','#e0b060'],
+ m_grd:['📝','ink','stamp','📝','#c04040'],
+ m_lht:['🗼','beam','beam','🗼✦','#ffd080'],
+ m_srv:['📐','pierce','thread','📐','#6ab88a'],
+ m_flg:['⛵','gale','gale','⛵✦','#5b9ad0'],
+ m_drf:['🧭','gale','lock','🧭✦','#5b86b8'],
+ aur:['👑','cross','pierce','👑✦','#ffd24a'],
+ noct:['🗡','cross','fang','🗡','#ff2d4a'],
+ raizen:['⚡','web','beam','⚡','#ffe45c']};
+/* 필살기: [타격1, 타격2, 전체화면] — 아우렐리온·녹턴·라이젠은 자체 필살 컷신이 있어 제외 */
+const U={
+ hau:['pierce','fang','gstorm:sweep'],seril:['quake','rise','rays'],ian:['fan','swirl','gstorm:rise'],khan:['quake','anvil','shock'],
+ crona:['gear','sand','clock'],sepel:['tendril','eclipse','dark'],mimo:['fan','swirl','gstorm:sweep'],rinet:['lock','pierce','iris'],
+ belin:['rise','firework','star'],seorim:['stamp','chain','white'],m_sgt:['stamp','anvil','shock'],m_whi:['bell','halo','shock'],
+ m_grd:['ink','stamp','blood'],m_lht:['beam','firework','beam'],m_srv:['thread','pierce','iris'],m_flg:['gale','tide','tide'],m_drf:['gale','lock','voyage']};
+let n=0;
+Object.keys(S).forEach(id=>{if(typeof C!=='undefined'&&!C[id])return;if(!SIG[id]){SIG[id]=S[id];n++}});
+Object.keys(U).forEach(id=>{if(C[id]&&!ULT[id])ULT[id]=U[id]});
+console.log('old-fx: 기존 캐릭터 전용 연출 '+n+'종 등록 완료');
+}catch(e){console.error('old-fx',e)}})();
+</script>
 <style id="aur-css">
 #fs.aur .bg{background:radial-gradient(circle at 32% 52%,#8a5a14 0,#2a1806 45%,#060403 85%)!important}
 #fs.aur .aring{position:absolute;left:-6vh;top:7vh;width:86vh;height:86vh;border-radius:50%;border:.6vh solid #ffd56a;box-shadow:0 0 7vh #ffb23a,inset 0 0 7vh #ffb23a77;z-index:2;opacity:0;animation:aur-spin 9s linear infinite}
@@ -12877,6 +13092,663 @@ const cp=document.getElementById('chp');if(cp&&!document.getElementById('aurchea
 }catch(err){console.error('[aur-patch]',err)}})();
 </script>
 
+<style id="noct-css">
+/* ===== 녹턴 · 궁극기 컷인 ===== */
+#fs.noct{--cc:#ff2d4a}
+#fs.noct .bg{background:radial-gradient(circle at 30% 54%,#7a0a22 0,#1a0510 46%,#030106 88%)!important}
+#fs.noct .rays{background:repeating-conic-gradient(from 0deg at 50% 50%,#ff2d4a66 0 1.5deg,transparent 1.5deg 7deg)!important}
+#fs.noct .nmoon{position:absolute;left:-16vh;top:-6vh;width:108vh;height:108vh;border-radius:50%;background:radial-gradient(circle at 38% 34%,#ff9a86 0,#ee2a48 28%,#8a0c26 66%,#2a0410 100%);box-shadow:0 0 14vh #ff2d4a,inset 0 0 12vh #3a0612;z-index:1;opacity:0;transform:scale(.55) translateY(14vh);transition:opacity .6s,transform 1.4s cubic-bezier(.2,.8,.2,1)}
+#fs.noct[data-p="1"] .nmoon,#fs.noct[data-p="2"] .nmoon,#fs.noct[data-p="3"] .nmoon,#fs.noct[data-p="4"] .nmoon{opacity:.95;transform:none}
+#fs.noct .nsig{position:absolute;right:3vw;top:9vh;width:62vh;height:62vh;z-index:2;opacity:0;transition:opacity .6s;animation:nx-spin 24s linear infinite}
+#fs.noct[data-p="2"] .nsig,#fs.noct[data-p="3"] .nsig,#fs.noct[data-p="4"] .nsig{opacity:.55}
+@keyframes nx-spin{to{transform:rotate(360deg)}}
+#fs.noct .nsp{position:absolute;left:0;width:60vw;height:.35vh;background:linear-gradient(90deg,#fff0,#fff,#ff2d4a00);z-index:2;opacity:0;top:var(--y)}
+#fs.noct[data-p="1"] .nsp,#fs.noct[data-p="2"] .nsp{animation:nx-sp .7s var(--d) linear infinite}
+@keyframes nx-sp{0%{opacity:0;transform:translateX(-60vw)}30%{opacity:.9}100%{opacity:0;transform:translateX(150vw)}}
+#fs.noct .npet{position:absolute;top:-6vh;left:var(--x);width:var(--s);height:calc(var(--s)*1.5);border-radius:100% 0 100% 0;background:linear-gradient(135deg,#ffb0ba,#ff2d4a 60%,#6a0818);z-index:4;opacity:0;animation:nx-pet var(--d) linear infinite;animation-delay:var(--w)}
+@keyframes nx-pet{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:.95}100%{transform:translate(var(--dx),112vh) rotate(640deg);opacity:0}}
+#fs.noct .nsl{position:absolute;left:-12vw;width:140vw;height:1.5vh;z-index:6;background:linear-gradient(90deg,#fff0,#fff 28%,#fff 72%,#fff0);box-shadow:0 0 3vh #ff2d4a,0 0 9vh #ff2d4a;clip-path:polygon(0 50%,12% 0,88% 0,100% 50%,88% 100%,12% 100%);opacity:0;transform:rotate(var(--r)) scaleX(0);top:var(--y)}
+#fs.noct[data-p="3"] .nsl,#fs.noct[data-p="4"] .nsl{animation:nx-nsl .42s var(--d) ease-out forwards}
+@keyframes nx-nsl{0%{opacity:1;transform:rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:rotate(var(--r)) scaleX(1)}100%{opacity:.0;transform:rotate(var(--r)) scaleX(1.06)}}
+#fs.noct .ncut{position:absolute;left:-20vw;top:50vh;width:150vw;height:.9vh;z-index:7;background:#fff;box-shadow:0 0 4vh #fff,0 0 12vh #ff2d4a;transform:rotate(-24deg) scaleX(0);opacity:0}
+#fs.noct[data-p="4"] .ncut{animation:nx-cut .6s ease-out forwards}
+@keyframes nx-cut{0%{opacity:1;transform:rotate(-24deg) scaleX(0)}35%{opacity:1;transform:rotate(-24deg) scaleX(1)}100%{opacity:0;transform:rotate(-24deg) scaleX(1);height:6vh}}
+#fs.noct .tt b{background:linear-gradient(#fff 10%,#ffc0c8 55%,#ff2d4a);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 2.4vh #ff2d4a) drop-shadow(0 .5vh 0 #000)}
+#fs.noct .tt small{color:#ff8a96;letter-spacing:1.4vh}
+#fs.noct .qt{color:#ffe0e4}
+#fs.noct .ch{filter:drop-shadow(0 0 3vh #ff2d4a)}
+#fs.noct[data-p="4"] .ch{animation:nx-dash .5s ease-out}
+@keyframes nx-dash{0%{transform:translateX(-4vw) scale(1.04);filter:blur(1.2vh) drop-shadow(0 0 5vh #ff2d4a)}100%{transform:scale(1.02)}}
+/* ===== 녹턴 · 전투 이펙트 ===== */
+#nocfx{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden}
+#nocfx .n-sl{position:absolute;height:1.05vh;min-height:5px;background:linear-gradient(90deg,#fff0,#fff 30%,#ff2d4a 78%,#fff0);clip-path:polygon(0 50%,50% 0,100% 50%,50% 100%);filter:drop-shadow(0 0 6px #ff2d4a);opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0);animation:n-sl .3s ease-out forwards}
+@keyframes n-sl{0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1.12)}}
+#nocfx .n-sp{position:absolute;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#ffb0ba;box-shadow:0 0 8px #ff2d4a;animation:n-sp .5s ease-out forwards}
+@keyframes n-sp{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+#nocfx .n-ring{position:absolute;border-radius:50%;border:3px solid #ff2d4a;box-shadow:0 0 14px #ff2d4a;transform:translate(-50%,-50%) scale(.2);animation:n-ring .5s ease-out forwards}
+@keyframes n-ring{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+#nocfx .n-tx{position:absolute;transform:translate(-50%,-50%);font:900 4.2vh/1 sans-serif;color:#fff;text-shadow:0 0 10px #ff2d4a,0 0 22px #ff2d4a;animation:n-tx .85s ease-out forwards;white-space:nowrap}
+@keyframes n-tx{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}20%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-90%) scale(1);opacity:0}}
+#nocfx .n-mark{position:absolute;width:var(--s);height:var(--s);opacity:0;transform:translate(-50%,-50%);animation:n-mark .6s cubic-bezier(.2,1.4,.4,1) forwards;filter:drop-shadow(0 0 10px #ff2d4a)}
+@keyframes n-mark{0%{opacity:0;transform:translate(-50%,-50%) scale(2.4) rotate(120deg)}55%{opacity:1;transform:translate(-50%,-50%) scale(.92) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
+#nocfx .n-mk{position:absolute;width:30px;height:30px;margin:-15px;filter:drop-shadow(0 0 5px #ff2d4a);animation:n-spin 5s linear infinite}
+@keyframes n-spin{to{transform:rotate(360deg)}}
+#nocfx .n-dim{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#2a041088,#000d 70%);opacity:0;animation:n-dim var(--t,1s) ease-out forwards}
+@keyframes n-dim{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+#nocfx .n-moon{position:absolute;left:50%;top:50%;width:70vh;height:70vh;margin:-35vh;border-radius:50%;background:radial-gradient(circle at 38% 34%,#ff9a86,#ee2a48 30%,#8a0c26 70%);box-shadow:0 0 16vh #ff2d4a;opacity:0;animation:n-moon 1s ease-out forwards}
+@keyframes n-moon{0%{opacity:0;transform:scale(.4)}25%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.15)}}
+#nocfx .n-blink{position:absolute;left:0;right:0;height:6vh;background:linear-gradient(90deg,#0000,#000 20%,#000 80%,#0000);opacity:0;animation:n-blink .26s ease-out forwards}
+@keyframes n-blink{0%{opacity:0;transform:scaleX(.2)}40%{opacity:.85;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.1)}}
+#nocfx .n-full{position:absolute;left:50%;top:50%;width:150vmax;height:1.6vh;margin-left:-75vmax;background:linear-gradient(90deg,#fff0,#fff 30%,#fff 70%,#fff0);box-shadow:0 0 4vh #ff2d4a,0 0 10vh #ff2d4a;transform:rotate(var(--r)) scaleX(0);opacity:0;animation:n-full .5s var(--d,0s) ease-out forwards}
+@keyframes n-full{0%{opacity:1;transform:rotate(var(--r)) scaleX(0)}50%{opacity:1;transform:rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:rotate(var(--r)) scaleX(1)}}
+#nocfx .n-skull{position:absolute;transform:translate(-50%,-50%);font:900 8vh/1 sans-serif;color:#ffe0e4;text-shadow:0 0 14px #ff2d4a,0 0 30px #ff2d4a;animation:n-tx .95s ease-out forwards}
+.nocchip{border-color:#ff2d4a!important;color:#ff6a7a!important;text-shadow:0 0 6px #ff2d4a}
+/* ===== 녹턴 · SSS 뽑기 연출 ===== */
+#nocpull{position:fixed;inset:0;z-index:99991;background:#000;overflow:hidden;opacity:1;transition:opacity .45s}
+#nocpull[data-p="5"]{opacity:0}
+#nocpull em{position:absolute;bottom:1.2vh;left:0;right:0;text-align:center;font-style:normal;font-size:1.8vh;color:#fff6;z-index:9}
+#nocpull .eyes{position:absolute;left:50%;top:50%;width:46vh;height:6vh;margin:-3vh -23vh;z-index:3;opacity:0}
+#nocpull .eyes i{position:absolute;top:50%;width:18vh;height:0;background:#ff2d4a;box-shadow:0 0 5vh 1.6vh #ff2d4a,0 0 14vh 4vh #ff2d4a88;clip-path:polygon(0 50%,40% 0,100% 40%,60% 100%);transform:translateY(-50%)}
+#nocpull .eyes i:first-child{left:0;transform:translateY(-50%) rotate(8deg)}
+#nocpull .eyes i:last-child{right:0;transform:translateY(-50%) scaleX(-1) rotate(8deg)}
+#nocpull[data-p="1"] .eyes{opacity:1}
+#nocpull[data-p="1"] .eyes i{animation:np-eye 1.05s ease-out forwards}
+@keyframes np-eye{0%{height:0}45%{height:.4vh}60%{height:.4vh}100%{height:6vh}}
+#nocpull[data-p="2"] .eyes{opacity:1;animation:np-eyeout 1s ease-in forwards}
+#nocpull[data-p="2"] .eyes i{height:6vh}
+@keyframes np-eyeout{0%{transform:scale(1);opacity:1}100%{transform:scale(7);opacity:0}}
+#nocpull[data-p="3"] .eyes,#nocpull[data-p="4"] .eyes,#nocpull[data-p="5"] .eyes{opacity:0}
+#nocpull .mn{position:absolute;left:50%;top:120%;width:92vh;height:92vh;margin-left:-46vh;border-radius:50%;background:radial-gradient(circle at 38% 34%,#ff9a86 0,#ee2a48 28%,#8a0c26 66%,#2a0410 100%);box-shadow:0 0 18vh #ff2d4a;z-index:1;opacity:0}
+#nocpull[data-p="2"] .mn{animation:np-mn 1s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes np-mn{0%{opacity:0;top:120%}100%{opacity:1;top:50%;margin-top:-46vh}}
+#nocpull[data-p="3"] .mn,#nocpull[data-p="4"] .mn,#nocpull[data-p="5"] .mn{opacity:1;top:50%;margin-top:-46vh}
+#nocpull[data-p="4"] .mn,#nocpull[data-p="5"] .mn{left:38%;transition:left .5s}
+#nocpull .sl{position:absolute;left:50%;top:50%;width:170vmax;height:1.3vh;margin-left:-85vmax;background:linear-gradient(90deg,#fff0,#fff 30%,#fff 70%,#fff0);box-shadow:0 0 4vh #ff2d4a,0 0 12vh #ff2d4a;z-index:5;opacity:0;transform:rotate(var(--r)) scaleX(0)}
+#nocpull[data-p="3"] .sl{animation:np-sl .38s var(--d) ease-out forwards}
+@keyframes np-sl{0%{opacity:1;transform:rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:rotate(var(--r)) scaleX(1)}}
+#nocpull .fl{position:absolute;inset:0;background:#fff;opacity:0;z-index:6}
+#nocpull[data-p="3"] .fl{animation:np-fl 1s .38s ease-out forwards}
+@keyframes np-fl{0%{opacity:1}100%{opacity:0}}
+#nocpull .stg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:4vw;opacity:0;z-index:3;background:radial-gradient(circle at 38% 50%,#7a0a2299,#14040a 62%,#000 100%)}
+#nocpull[data-p="4"] .stg,#nocpull[data-p="5"] .stg{opacity:1;transition:opacity .3s}
+#nocpull .art{position:relative;height:86vh}
+#nocpull .art svg{height:86vh;width:auto;display:block;position:relative;z-index:2;opacity:0}
+#nocpull[data-p="4"] .art svg,#nocpull[data-p="5"] .art svg{animation:np-art .9s .05s cubic-bezier(.1,.8,.2,1) forwards}
+@keyframes np-art{0%{opacity:0;transform:translateX(-9vw) scale(1.05);filter:blur(1.4vh)}100%{opacity:1;transform:none;filter:none}}
+#nocpull .ttl{display:flex;flex-direction:column;align-items:flex-start;gap:1.4vh;z-index:4}
+#nocpull .ttl .sss{font:900 min(24vh,17vw)/1 serif;background:linear-gradient(#fff 8%,#ffd0d6 40%,#ff2d4a 78%,#7a0a22);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em;filter:drop-shadow(0 0 2.4vh #ff2d4a);opacity:0}
+#nocpull[data-p="4"] .ttl .sss,#nocpull[data-p="5"] .ttl .sss{animation:np-sss .7s .4s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes np-sss{0%{opacity:0;transform:scale(2.8)}100%{opacity:1;transform:none}}
+#nocpull .ttl b{font-size:min(8vh,6vw);color:#ffe8ea;text-shadow:0 0 2vh #ff2d4a;letter-spacing:.3em;opacity:0}
+#nocpull .ttl small{font-size:2.8vh;color:#ff8a96;letter-spacing:.3em;opacity:0}
+#nocpull[data-p="4"] .ttl b,#nocpull[data-p="5"] .ttl b{animation:np-fade .6s .9s forwards}
+#nocpull[data-p="4"] .ttl small,#nocpull[data-p="5"] .ttl small{animation:np-fade .6s 1.2s forwards}
+@keyframes np-fade{from{opacity:0;transform:translateX(3vh)}to{opacity:1;transform:none}}
+#nocpull .art,#nocpull .ttl,#nocpull .stg>*{box-shadow:none!important}
+#nocpull .pet{position:absolute;top:-6vh;left:var(--x);width:var(--s);height:calc(var(--s)*1.5);border-radius:100% 0 100% 0;background:linear-gradient(135deg,#ffb0ba,#ff2d4a 60%,#6a0818);z-index:4;opacity:0;animation:nx-pet var(--d) linear infinite;animation-delay:var(--w)}
+</style>
+<script id="noct-patch">/*#### [113_noct] SSS · 녹턴 (무영의 암살자) ####*/
+(function(){try{
+if(typeof H==='undefined'||typeof C==='undefined'||typeof CIL==='undefined'||typeof deal!=='function'||typeof hurt!=='function'||typeof nr!=='function'||typeof cutin!=='function'||typeof GN==='undefined'){console.warn('noct: 필요한 데이터가 없어 건너뜀');return}
+const id='noct';
+if(C[id]){console.warn('noct: 이미 등록되어 있어 건너뜀');return}
+const SKILL_MUL=2.5,SSS_RATE=0.0001;
+let NG=GN.indexOf('SSS');
+if(NG<0){NG=8;GN[NG]='SSS';GC[NG]='#ffd24a';GM[NG]=2;GP[NG]=SSS_RATE;STP[NG]=10}
+/* ── 등록 ── */
+C[id]={n:'녹턴',ic:'🗡',col:'#ff2d4a',spd:128,atk:235,hp:1750,ds:'이름도 얼굴도 지워진 채 혈월 아래를 걷는 암살자. 그가 지나간 자리에는 붉은 꽃잎만 남는다.'};
+GR[id]=NG;if(typeof ALL!=='undefined'&&ALL.indexOf&&ALL.indexOf(id)<0)ALL.push(id);
+if(typeof GPOOL!=='undefined'&&GPOOL.indexOf&&GPOOL.indexOf(id)<0)GPOOL.push(id);
+if(typeof NC!=='undefined')NC[id]=1;
+if(window.ELX&&ELX.C)ELX.C[id]='yin';
+if(typeof G!=='undefined'){G.lv=G.lv||{};if(G.lv[id]==null)G.lv[id]=1;G.xp=G.xp||{};if(G.xp[id]==null)G.xp[id]=0}
+/* ── 일러스트 ── */
+CIL[id]=`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><style>
+.nx-sc1{animation:nxsway 3.2s ease-in-out infinite;transform-origin:96px 112px}
+.nx-sc2{animation:nxsway 4.1s ease-in-out infinite reverse;transform-origin:96px 112px}
+.nx-hd{animation:nxsway 3.6s ease-in-out infinite;transform-origin:80px 40px}
+.nx-cp{animation:nxcape 4.6s ease-in-out infinite;transform-origin:110px 108px}
+.nx-eye{animation:nxeye 2.4s ease-in-out infinite}
+.nx-pt{animation:nxfall var(--d,6s) linear infinite;animation-delay:var(--w,0s)}
+.nx-rg{animation:nxspin 40s linear infinite;transform-origin:118px 86px}
+.nx-rg2{animation:nxspin 60s linear infinite reverse;transform-origin:118px 86px}
+.nx-gl{animation:nxglint 3.4s ease-in-out infinite}
+.nx-sl{animation:nxslash 3.4s ease-in-out infinite}
+.nx-gh{animation:nxghost 3.4s ease-in-out infinite}
+@keyframes nxsway{0%,100%{transform:rotate(-1.4deg) skewX(0deg)}50%{transform:rotate(1.4deg) skewX(-1.5deg)}}
+@keyframes nxcape{0%,100%{transform:skewX(0deg) scaleX(1)}50%{transform:skewX(-1.6deg) scaleX(1.02)}}
+@keyframes nxeye{0%,100%{opacity:.78}50%{opacity:1}}
+@keyframes nxfall{0%{transform:translate(0,-10px) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx,-14px),250px) rotate(var(--r,200deg));opacity:0}}
+@keyframes nxspin{to{transform:rotate(360deg)}}
+@keyframes nxglint{0%,70%,100%{opacity:0;transform:scale(.4)}80%{opacity:1;transform:scale(1)}92%{opacity:0;transform:scale(1.4)}}
+@keyframes nxslash{0%,60%{opacity:0;transform:translateX(-12px)}72%{opacity:1;transform:none}100%{opacity:0;transform:translateX(10px)}}
+@keyframes nxghost{0%,100%{opacity:.28;transform:translate(0,0)}50%{opacity:.5;transform:translate(-3px,0)}}
+</style><defs>
+<radialGradient id="nxMoon" cx=".4" cy=".36" r=".78"><stop offset="0" stop-color="#ff9a86"/><stop offset=".3" stop-color="#ee2a48"/><stop offset=".72" stop-color="#8a0c26"/><stop offset="1" stop-color="#2a0410"/></radialGradient>
+<radialGradient id="nxMoonGlow" cx=".5" cy=".5" r=".5"><stop offset=".5" stop-color="#ff2d4a" stop-opacity=".6"/><stop offset=".78" stop-color="#ff2d4a" stop-opacity=".18"/><stop offset="1" stop-color="#ff2d4a" stop-opacity="0"/></radialGradient>
+<linearGradient id="nxCape" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241c34"/><stop offset=".5" stop-color="#0f0b18"/><stop offset="1" stop-color="#030208"/></linearGradient>
+<linearGradient id="nxLining" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4a62"/><stop offset=".5" stop-color="#b3102e"/><stop offset="1" stop-color="#3a0612"/></linearGradient>
+<linearGradient id="nxScarf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a7a"/><stop offset=".4" stop-color="#d1142f"/><stop offset="1" stop-color="#5a0816"/></linearGradient>
+<linearGradient id="nxArmor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#58547a"/><stop offset=".45" stop-color="#242034"/><stop offset="1" stop-color="#090710"/></linearGradient>
+<linearGradient id="nxLeather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#33293f"/><stop offset=".6" stop-color="#14101c"/><stop offset="1" stop-color="#07050b"/></linearGradient>
+<linearGradient id="nxSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7d86a3"/><stop offset=".45" stop-color="#fff"/><stop offset=".55" stop-color="#cfd6ea"/><stop offset="1" stop-color="#5b6382"/></linearGradient>
+<linearGradient id="nxBlade" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8a93b2"/><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#ffd0d6"/></linearGradient>
+<linearGradient id="nxBladeS" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#b9c1dc"/><stop offset="1" stop-color="#5b6382"/></linearGradient>
+<linearGradient id="nxTrail" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff2d4a" stop-opacity="0"/><stop offset=".55" stop-color="#ff4a62" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity=".95"/></linearGradient>
+<linearGradient id="nxTrail2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7a6bff" stop-opacity="0"/><stop offset=".6" stop-color="#ff4a62" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity=".9"/></linearGradient>
+<linearGradient id="nxHood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34294a"/><stop offset=".5" stop-color="#120e1c"/><stop offset="1" stop-color="#05040a"/></linearGradient>
+<linearGradient id="nxInner" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#010103"/><stop offset=".5" stop-color="#0a0610"/><stop offset="1" stop-color="#1a1220"/></linearGradient>
+<radialGradient id="nxEye" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#ff6a7a"/><stop offset="1" stop-color="#ff1a3a" stop-opacity="0"/></radialGradient>
+<radialGradient id="nxGem" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#ff4a62"/><stop offset="1" stop-color="#6a0818"/></radialGradient>
+<linearGradient id="nxFog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1226" stop-opacity="0"/><stop offset=".6" stop-color="#2a1a3a" stop-opacity=".7"/><stop offset="1" stop-color="#0a0610" stop-opacity=".95"/></linearGradient>
+<linearGradient id="nxShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".6" stop-color="#000" stop-opacity="0"/></linearGradient>
+<linearGradient id="nxRim" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#ff4a62" stop-opacity=".8"/><stop offset=".25" stop-color="#ff4a62" stop-opacity="0"/></linearGradient>
+<radialGradient id="nxVg" cx=".5" cy=".5" r=".72"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>
+<linearGradient id="nxSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8cfc8"/><stop offset=".6" stop-color="#c49a98"/><stop offset="1" stop-color="#8a5a64"/></linearGradient>
+<linearGradient id="nxFaceShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05030a" stop-opacity=".9"/><stop offset=".34" stop-color="#05030a" stop-opacity=".55"/><stop offset=".6" stop-color="#05030a" stop-opacity=".08"/><stop offset="1" stop-color="#05030a" stop-opacity=".1"/></linearGradient>
+<filter id="nxB1"><feGaussianBlur stdDeviation="1"/></filter>
+<filter id="nxB2"><feGaussianBlur stdDeviation="2"/></filter>
+<filter id="nxB4"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="nxRed"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 .1  0 0 0 0 .22  0 0 0 .9 0"/><feGaussianBlur stdDeviation=".6"/></filter>
+<clipPath id="nxMoonClip"><circle cx="118" cy="86" r="64"/></clipPath>
+<clipPath id="nxHalfB"><polygon points="20,168 200,32 200,240 20,240"/></clipPath>
+</defs><rect width="200" height="240" fill="#07050b" opacity="0"/><circle cx="118" cy="86" r="104" fill="url(#nxMoonGlow)"/><g clip-path="url(#nxMoonClip)"><g transform="translate(-1.8 -1.8)"><circle cx="118" cy="86" r="64" fill="url(#nxMoon)"/><circle cx="92" cy="66" r="11" fill="#3a0612" opacity="0.2"/><circle cx="142" cy="58" r="8" fill="#3a0612" opacity="0.18"/><circle cx="104" cy="110" r="13" fill="#3a0612" opacity="0.16"/><circle cx="150" cy="98" r="9" fill="#3a0612" opacity="0.15"/><circle cx="86" cy="92" r="5" fill="#3a0612" opacity="0.15"/><circle cx="126" cy="72" r="4" fill="#3a0612" opacity="0.12"/><circle cx="122" cy="128" r="7" fill="#3a0612" opacity="0.12"/><circle cx="160" cy="76" r="5" fill="#3a0612" opacity="0.12"/></g></g><g clip-path="url(#nxMoonClip)"><g clip-path="url(#nxHalfB)"><g transform="translate(3.4 3.4)"><circle cx="118" cy="86" r="64" fill="url(#nxMoon)"/><circle cx="104" cy="110" r="13" fill="#3a0612" opacity=".16"/></g></g></g><path d="M14 168 L200 32" stroke="#ff4a62" stroke-width="6" opacity=".55" filter="url(#nxB2)"/><path d="M14 168 L200 32" stroke="#fff" stroke-width="1.3" opacity=".95"/><g class="nx-rg"><circle cx="118" cy="86" r="76" fill="none" stroke="#ff4a62" stroke-width=".8" stroke-dasharray="1.5 4" opacity=".8"/><path d="M198.0 86.0L206.0 86.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M196.8 99.9L199.7 100.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M193.2 113.4L196.0 114.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M187.3 126.0L194.2 130.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M179.3 137.4L181.6 139.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M169.4 147.3L171.4 149.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M158.0 155.3L162.0 162.2" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M145.4 161.2L146.4 164.0" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M131.9 164.8L132.4 167.7" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M118.0 166.0L118.0 174.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M104.1 164.8L103.6 167.7" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M90.6 161.2L89.6 164.0" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M78.0 155.3L74.0 162.2" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M66.6 147.3L64.6 149.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M56.7 137.4L54.4 139.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M48.7 126.0L41.8 130.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M42.8 113.4L40.0 114.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M39.2 99.9L36.3 100.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M38.0 86.0L30.0 86.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M39.2 72.1L36.3 71.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M42.8 58.6L40.0 57.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M48.7 46.0L41.8 42.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M56.7 34.6L54.4 32.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M66.6 24.7L64.6 22.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M78.0 16.7L74.0 9.8" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M90.6 10.8L89.6 8.0" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M104.1 7.2L103.6 4.3" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M118.0 6.0L118.0 -2.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M131.9 7.2L132.4 4.3" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M145.4 10.8L146.4 8.0" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M158.0 16.7L162.0 9.8" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M169.4 24.7L171.4 22.4" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M179.3 34.6L181.6 32.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M187.3 46.0L194.2 42.0" stroke="#ff6a7a" stroke-width="1.2" opacity=".7"/><path d="M193.2 58.6L196.0 57.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/><path d="M196.8 72.1L199.7 71.6" stroke="#ff6a7a" stroke-width="0.6" opacity=".7"/></g><g class="nx-rg2"><circle cx="118" cy="86" r="92" fill="none" stroke="#c1122f" stroke-width=".7" stroke-dasharray="10 5 2 5" opacity=".6"/></g><path d="M112.0 109.3L51.4 133.5" stroke="#ff4a62" stroke-width="0.53" opacity="0.24"/><path d="M36.9 139.6L-4.6 156.2" stroke="#ff4a62" stroke-width="0.61" opacity="0.32"/><path d="M60.7 29.1L38.5 38.0" stroke="#ff4a62" stroke-width="0.70" opacity="0.29"/><path d="M196.4 17.4L134.1 42.3" stroke="#ff4a62" stroke-width="0.63" opacity="0.27"/><path d="M3.0 43.3L-39.3 60.2" stroke="#ff4a62" stroke-width="0.33" opacity="0.15"/><path d="M6.0 62.2L-33.3 77.9" stroke="#ff4a62" stroke-width="0.52" opacity="0.34"/><path d="M128.1 124.3L87.1 140.7" stroke="#ff4a62" stroke-width="0.63" opacity="0.23"/><path d="M199.5 70.3L135.7 95.8" stroke="#ff4a62" stroke-width="0.72" opacity="0.30"/><path d="M45.9 78.6L14.6 91.1" stroke="#ff4a62" stroke-width="0.34" opacity="0.31"/><path d="M169.3 97.7L133.5 112.0" stroke="#ff4a62" stroke-width="0.78" opacity="0.34"/><path d="M41.9 8.1L-17.9 32.1" stroke="#ff4a62" stroke-width="0.53" opacity="0.37"/><path d="M14.6 97.0L-32.3 115.8" stroke="#ff4a62" stroke-width="0.69" opacity="0.18"/><path d="M66.5 27.5L4.2 52.5" stroke="#ff4a62" stroke-width="0.68" opacity="0.13"/><path d="M20.2 63.2L-0.5 71.5" stroke="#ff4a62" stroke-width="0.70" opacity="0.15"/><path d="M89.5 133.3L62.7 144.0" stroke="#ff4a62" stroke-width="0.67" opacity="0.14"/><path d="M23.3 152.2L-14.1 167.1" stroke="#ff4a62" stroke-width="0.41" opacity="0.18"/><path d="M160.7 225.5L128.7 238.3" stroke="#ff4a62" stroke-width="0.74" opacity="0.16"/><path d="M170.9 96.3L123.4 115.3" stroke="#ff4a62" stroke-width="0.35" opacity="0.38"/><path d="M51.7 55.8L-1.9 77.2" stroke="#ff4a62" stroke-width="0.46" opacity="0.18"/><path d="M18.0 24.4L-26.8 42.4" stroke="#ff4a62" stroke-width="0.42" opacity="0.27"/><path d="M90.6 91.3L28.5 116.1" stroke="#ff4a62" stroke-width="0.54" opacity="0.26"/><path d="M36.6 202.1L11.5 212.1" stroke="#ff4a62" stroke-width="0.75" opacity="0.33"/><path d="M38.0 63.9L-14.1 84.7" stroke="#ff4a62" stroke-width="0.77" opacity="0.16"/><path d="M176.4 220.8L130.7 239.1" stroke="#ff4a62" stroke-width="0.51" opacity="0.13"/><path d="M192.5 16.7L163.6 28.3" stroke="#ff4a62" stroke-width="0.65" opacity="0.17"/><path d="M119.3 192.5L87.8 205.1" stroke="#ff4a62" stroke-width="0.39" opacity="0.30"/><path d="M45.7 23.4L1.9 40.9" stroke="#ff4a62" stroke-width="0.73" opacity="0.27"/><path d="M183.5 70.8L156.1 81.7" stroke="#ff4a62" stroke-width="0.31" opacity="0.18"/><path d="M12.1 107.8L-14.0 118.3" stroke="#ff4a62" stroke-width="0.48" opacity="0.26"/><path d="M72.4 37.5L13.4 61.1" stroke="#ff4a62" stroke-width="0.79" opacity="0.28"/><g class="nx-gh" filter="url(#nxRed)" transform="translate(-16 2)" opacity=".35"><use href="#nxFig"/></g><g filter="url(#nxRed)" transform="translate(-30 4)" opacity=".16"><use href="#nxFig"/></g><g id="nxFig"><g class="nx-cp"><path d="M78 104 C54 124 30 150 4 186 L0 200 L10 196 L6 214 L22 204 L20 224 L38 208 L40 232 L56 212 L66 240 L116 240 L120 176 L132 112 Z" fill="url(#nxCape)"/><path d="M80 112 C56 130 34 154 8 188 L10 196 L6 214 L22 204 L20 224 L38 208 L40 232 L56 212 L66 240 L74 214 C78 180 84 148 96 122 Z" fill="url(#nxLining)" opacity=".92"/><path d="M84 124 C60 146 40 170 20 200M92 130 C74 156 58 184 48 214M76 120 C52 140 30 164 14 190" stroke="#1a0208" stroke-width=".8" opacity=".6" fill="none"/><path d="M78 104 C54 124 30 150 4 186" stroke="#ff8a96" stroke-width=".9" fill="none" opacity=".85"/><path d="M130 106 C152 120 172 150 188 198 L196 240 L130 240 L134 192 Z" fill="url(#nxCape)"/><path d="M130 106 C152 120 172 150 188 198 L196 240 L186 230 L178 240 L170 226 L162 240 L152 224" stroke="#ff2d4a" stroke-width=".8" fill="none" opacity=".6"/></g><path d="M92 170 C86 192 70 212 50 234" stroke="#05040a" stroke-width="23" stroke-linecap="round" fill="none"/><path d="M92 170 C86 192 70 212 50 234" stroke="url(#nxLeather)" stroke-width="19" stroke-linecap="round" fill="none"/><path d="M96 176 C90 196 76 214 58 234" stroke="#ff4a62" stroke-width=".7" fill="none" opacity=".5"/><path d="M72 206 L44 238 L74 238 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M64 212 L52 230" stroke="#ff4a62" stroke-width=".8" opacity=".85"/><path d="M116 168 C136 178 142 202 136 232" stroke="#05040a" stroke-width="25" stroke-linecap="round" fill="none"/><path d="M116 168 C136 178 142 202 136 232" stroke="url(#nxLeather)" stroke-width="21" stroke-linecap="round" fill="none"/><path d="M126 186 Q142 190 146 210 L130 214 Q122 200 126 186Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M128 190 Q140 194 143 208" stroke="#ff6a7a" stroke-width=".9" fill="none"/><path d="M122 214 L152 238 L120 240 L116 228Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M126 218 L148 236" stroke="#ff6a7a" stroke-width=".8"/><path d="M62 122 C68 104 88 96 106 96 C126 96 142 100 148 110 L134 176 C118 186 96 186 82 180 Z" fill="#05040a"/><path d="M66 122 C72 107 90 100 106 100 C124 100 138 104 143 112 L130 172 C116 180 96 180 84 176 Z" fill="url(#nxLeather)"/><path d="M66 122 C72 107 90 100 106 100 C124 100 138 104 143 112 L130 172 C116 180 96 180 84 176 Z" fill="url(#nxShade)"/><path d="M82 112 C94 104 118 106 132 116 L124 150 C114 158 96 158 88 150 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M86 118 C98 112 118 114 128 122" stroke="#a09cc0" stroke-width=".8" fill="none" opacity=".7"/><path d="M106 110 L106 154" stroke="#ff2d4a" stroke-width=".9" opacity=".85"/><path d="M94 126 L118 126M92 138 L120 138" stroke="#05040a" stroke-width="1.2" opacity=".75"/><path d="M106 118 L113 132 L106 146 L99 132 Z" fill="url(#nxGem)" stroke="#05040a" stroke-width=".8"/><path d="M106 118 L113 132 L106 146 L99 132 Z" fill="#ff2d4a" opacity=".4" filter="url(#nxB2)"/><path d="M72 110 L84 106 L140 166 L128 176 Z" fill="#241a2e" stroke="#05040a" stroke-width="1"/><path d="M142 112 L134 108 L82 170 L92 176 Z" fill="#1a1224" stroke="#05040a" stroke-width="1"/><path d="M86.0 114.0 l5.5 -3.2 l-1.2 8.6 z" fill="url(#nxSteel)" stroke="#05040a" stroke-width=".5"/><circle cx="85.4" cy="118.4" r="1.1" fill="#ff4a62"/><path d="M96.5 125.5 l5.5 -3.2 l-1.2 8.6 z" fill="url(#nxSteel)" stroke="#05040a" stroke-width=".5"/><circle cx="95.9" cy="129.9" r="1.1" fill="#ff4a62"/><path d="M107.0 137.0 l5.5 -3.2 l-1.2 8.6 z" fill="url(#nxSteel)" stroke="#05040a" stroke-width=".5"/><circle cx="106.4" cy="141.4" r="1.1" fill="#ff4a62"/><path d="M117.5 148.5 l5.5 -3.2 l-1.2 8.6 z" fill="url(#nxSteel)" stroke="#05040a" stroke-width=".5"/><circle cx="116.9" cy="152.9" r="1.1" fill="#ff4a62"/><path d="M128.0 160.0 l5.5 -3.2 l-1.2 8.6 z" fill="url(#nxSteel)" stroke="#05040a" stroke-width=".5"/><circle cx="127.4" cy="164.4" r="1.1" fill="#ff4a62"/><path d="M78 166 C96 174 116 174 136 164 L134 176 C114 186 96 186 80 178 Z" fill="#0e0a14" stroke="#05040a" stroke-width="1"/><path d="M82 169 C98 176 116 176 132 168" stroke="#ff2d4a" stroke-width=".8" fill="none" opacity=".85"/><circle cx="107" cy="175" r="5.2" fill="url(#nxGem)" stroke="#05040a" stroke-width="1"/><rect x="120" y="170" width="9" height="13" rx="2" fill="#150f1e" stroke="#ff4a62" stroke-width=".5" transform="rotate(10 124 176)"/><rect x="84" y="172" width="8" height="12" rx="2" fill="#150f1e" stroke="#ff4a62" stroke-width=".5" transform="rotate(-10 88 178)"/><path d="M72 124 C52 130 40 146 40 164" stroke="#05040a" stroke-width="20" stroke-linecap="round" fill="none"/><path d="M72 124 C52 130 40 146 40 164" stroke="url(#nxLeather)" stroke-width="16" stroke-linecap="round" fill="none"/><path d="M44 140 L60 146 L56 162 L40 156 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M46 144 L58 148" stroke="#ff6a7a" stroke-width=".8"/><path d="M30 170 C24 140 24 116 34 92 C30 124 34 146 44 170Z" fill="url(#nxTrail2)" opacity=".85" filter="url(#nxB1)"/><path d="M36 164 L26 88 L50 156 Z" fill="url(#nxBlade)" stroke="#05040a" stroke-width=".7"/><path d="M38 160 L28 92" stroke="#ff4a62" stroke-width=".9"/><path d="M43 158 L30 96" stroke="#8a93b2" stroke-width=".4"/><rect x="31" y="160" width="17" height="3.4" rx="1.4" fill="url(#nxArmor)" stroke="#ff6a7a" stroke-width=".5"/><rect x="35" y="163" width="8" height="14" rx="3" fill="#0a0710" stroke="#05040a" stroke-width="1"/><circle cx="40" cy="170" r="7.5" fill="#0c0812" stroke="#05040a" stroke-width="1"/><path d="M34 168h12M34 172h12" stroke="#2a2238" stroke-width="1"/><path d="M58 124 Q66 98 94 104 L90 132 Q72 138 54 130 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1.2"/><path d="M56 130 Q72 138 90 132 L88 140 Q72 146 54 138Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M60 118 Q70 102 92 108" stroke="#a09cc0" stroke-width=".9" fill="none" opacity=".85"/><path d="M58 122 L46 106 L64 114Z M54 132 L40 120 L58 126Z" fill="#14101c" stroke="#ff6a7a" stroke-width=".7"/><circle cx="74" cy="120" r="2.7" fill="url(#nxGem)" stroke="#05040a" stroke-width=".5"/><path d="M132 114 C152 120 164 136 172 152" stroke="#05040a" stroke-width="20" stroke-linecap="round" fill="none"/><path d="M132 114 C152 120 164 136 172 152" stroke="url(#nxLeather)" stroke-width="16" stroke-linecap="round" fill="none"/><path d="M148 124 L164 128 L160 146 L144 140 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M150 128 L162 132" stroke="#ff6a7a" stroke-width=".8"/><path d="M172 160 C146 112 154 58 200 14 C172 66 170 116 188 160 Z" fill="url(#nxTrail)" opacity=".8" filter="url(#nxB2)"/><path d="M172 160 C148 112 156 60 200 18 C176 68 172 116 182 160 Z" fill="url(#nxTrail)" opacity=".92"/><path d="M172 156 C166 118 178 74 202 26 C192 74 190 118 186 156 Z" fill="url(#nxBlade)" stroke="#05040a" stroke-width=".7"/><path d="M177 152 C172 114 184 72 201 30" stroke="#ff4a62" stroke-width="1.1" fill="none" opacity=".95"/><path d="M183 154 C183 118 190 78 201 30" stroke="#8a93b2" stroke-width=".5" fill="none"/><rect x="165" y="154" width="28" height="5.4" rx="2.4" fill="url(#nxArmor)" stroke="#ff6a7a" stroke-width=".6"/><rect x="174" y="160" width="10" height="34" rx="3" fill="#1a1222" stroke="#ff6a7a" stroke-width=".6" transform="rotate(3 179 177)"/><path d="M174 168 l10 .6M174 175 l10 .6M174 182 l10 .6M174 189 l10 .6" stroke="#ff4a62" stroke-width=".6" opacity=".85"/><circle cx="180" cy="197" r="4.2" fill="url(#nxGem)" stroke="#05040a" stroke-width=".8"/><ellipse cx="179" cy="170" rx="9.4" ry="8" fill="#0c0812" stroke="#05040a" stroke-width="1"/><path d="M171 166h16M171 170h16M171 174h16" stroke="#2a2238" stroke-width=".9"/><g class="nx-gl" style="transform-origin:190px 78px"><path d="M190 66 l2.4 -11 l2.4 11 l11 2.4 l-11 2.4 l-2.4 11 l-2.4 -11 l-11 -2.4z" fill="#fff"/></g><path d="M122 106 Q144 92 160 112 L152 136 Q134 142 118 130 Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1.2"/><path d="M120 128 Q136 140 154 134 L152 142 Q136 148 118 136Z" fill="url(#nxArmor)" stroke="#05040a" stroke-width="1"/><path d="M124 104 Q142 96 158 110" stroke="#ff8a96" stroke-width="1.1" fill="none"/><path d="M158 108 L176 86 L164 118Z M154 122 L174 108 L160 130Z" fill="#14101c" stroke="#ff6a7a" stroke-width=".7"/><circle cx="140" cy="118" r="2.9" fill="url(#nxGem)" stroke="#05040a" stroke-width=".5"/><g class="nx-sc2"><path d="M92 114 C66 112 44 122 24 146 C14 160 6 174 0 190 C12 186 22 182 30 176 C28 188 24 198 20 210 C32 200 42 188 52 172 C64 152 78 134 100 124 Z" fill="url(#nxScarf)" stroke="#2a0410" stroke-width=".7"/><path d="M88 118 C62 122 42 136 26 158M68 126 C50 142 36 164 26 188" stroke="#2a0410" stroke-width=".6" fill="none" opacity=".7"/></g><path d="M78 104 C94 116 122 116 140 100 L144 114 C124 130 94 130 76 116 Z" fill="url(#nxScarf)" stroke="#2a0410" stroke-width=".9"/><path d="M82 110 C96 120 120 120 138 106M84 116 C98 124 120 124 138 112" stroke="#2a0410" stroke-width=".7" fill="none" opacity=".75"/><path d="M80 105 C96 115 120 115 140 102" stroke="#ff9aa6" stroke-width=".9" fill="none" opacity=".85"/><g transform="translate(11 12) scale(.9) rotate(-4 104 110)"><g class="nx-hd"><path d="M88 36 C66 22 38 26 14 48 C40 42 62 46 82 60 Z" fill="url(#nxHood)" stroke="#05040a" stroke-width=".9"/><path d="M84 34 C64 26 44 30 28 40" stroke="#ff8a96" stroke-width=".8" fill="none" opacity=".85"/><path d="M92 40 C76 34 60 38 46 48 C62 46 76 50 86 60Z" fill="#05040a" opacity=".5"/></g><path d="M70 106 C60 78 62 46 84 28 C98 18 114 14 130 22 C148 32 152 60 146 86 C143 98 134 108 124 114 L92 114 C82 112 74 110 70 106 Z" fill="#05040a" stroke="#05040a" stroke-width="2"/><path d="M70 106 C60 78 62 46 84 28 C98 18 114 14 130 22 C148 32 152 60 146 86 C143 98 134 108 124 114 L92 114 C82 112 74 110 70 106 Z" fill="url(#nxHood)"/><path d="M130 22 C148 32 152 60 146 86 C143 98 134 108 124 114" stroke="#ff6a7a" stroke-width="1.6" fill="none" opacity=".95"/><path d="M84 28 C98 18 114 14 130 22" stroke="#a79bff" stroke-width=".9" fill="none" opacity=".7"/><path d="M70 106 C60 78 62 46 84 28" stroke="#8a7bff" stroke-width=".8" fill="none" opacity=".5"/><path d="M94 22 C90 38 90 50 94 60M130 26 C138 42 138 58 134 70M76 60 C74 74 76 88 82 100" stroke="#000" stroke-width="1" fill="none" opacity=".5"/><path d="M80 58 C90 49 100 53 106 63 C112 53 124 49 135 58 C140 72 138 90 130 100 C122 110 112 114 104 114 C94 114 84 102 80 86 C78 76 78 66 80 58Z" fill="#020104" stroke="#05040a" stroke-width="2.2"/><path d="M80 58 C90 49 100 53 106 63 C112 53 124 49 135 58 C140 72 138 90 130 100 C122 110 112 114 104 114 C94 114 84 102 80 86 C78 76 78 66 80 58Z" fill="url(#nxSkin)"/><path d="M80 58 C90 49 100 53 106 63 C112 53 124 49 135 58 C140 72 138 90 130 100 C122 110 112 114 104 114 C94 114 84 102 80 86 C78 76 78 66 80 58Z" fill="url(#nxFaceShade)"/><path d="M135 58 C140 72 138 90 130 100" stroke="#ff4a62" stroke-width="1.6" fill="none" opacity=".9"/><path d="M80 58 C90 49 100 53 106 63 C112 53 124 49 135 58" stroke="#3a2f52" stroke-width="2" fill="none"/><path d="M80 58 C90 49 100 53 106 63 C112 53 124 49 135 58" stroke="#9a8cff" stroke-width=".6" fill="none" opacity=".7"/><path d="M107 66 C108 72 108 76 106 80 C108 82 111 82 112 80" stroke="#7a5a5e" stroke-width=".9" fill="none" opacity=".7"/><path d="M84 78 C90 82 94 83 98 83M130 74 C124 80 120 82 116 83" stroke="#5a3a44" stroke-width=".8" fill="none" opacity=".5"/><path d="M79 82 C90 84 98 87 106 87 C116 87 126 83 136 75 L134 98 C126 110 114 116 104 116 C92 116 84 106 79 94Z" fill="#110b19" stroke="#05040a" stroke-width="1"/><path d="M79 82 C90 84 98 87 106 87 C116 87 126 83 136 75" stroke="#ff2d4a" stroke-width=".9" fill="none"/><path d="M88 94 L104 101 L126 92" stroke="#ff2d4a" stroke-width=".7" fill="none" opacity=".9"/><path d="M96 102 L98 108M106 104 L106 110M116 101 L115 107" stroke="#ff2d4a" stroke-width=".6" opacity=".7"/><path d="M134 80 C134 92 130 100 126 104" stroke="#ff6a7a" stroke-width=".9" fill="none" opacity=".8"/><path d="M90 56 L98 82" stroke="#d8334a" stroke-width="1.6" opacity=".95"/><path d="M90 56 L98 82" stroke="#ffd0d6" stroke-width=".4" opacity=".8"/><path d="M84 63 L104 69M134 60 L112 67" stroke="#000" stroke-width="2.8" stroke-linecap="round"/><g class="nx-eye"><ellipse cx="96" cy="72" rx="13" ry="7" fill="#ff2d4a" filter="url(#nxB4)" opacity=".6"/><ellipse cx="120" cy="69" rx="13" ry="7" fill="#ff2d4a" filter="url(#nxB4)" opacity=".6"/><path d="M85 74 C90 67 100 67 107 72 C100 76 92 77 85 74Z" fill="#12040a"/><path d="M110 71 C116 65 126 65 133 70 C126 74 117 75 110 71Z" fill="#12040a"/><circle cx="98" cy="72" r="3.6" fill="url(#nxEye)"/><circle cx="123" cy="69" r="3.6" fill="url(#nxEye)"/><path d="M98 69.2 L98 74.8M123 66.2 L123 71.8" stroke="#2a0008" stroke-width="1.1"/><circle cx="97" cy="71" r=".9" fill="#fff"/><circle cx="122" cy="68" r=".9" fill="#fff"/><path d="M84 74 C90 66 100 66 108 72M109 71 C116 64 126 64 134 70" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/></g><g class="nx-sl"><path d="M84 74 L0 104" stroke="#ff2d4a" stroke-width="2.4" stroke-linecap="round" opacity=".85" filter="url(#nxB2)"/><path d="M86 74 L18 98" stroke="#fff" stroke-width=".8" stroke-linecap="round" opacity=".95"/></g></g></g><path d="M0 198 C30 188 60 206 100 198 C140 190 170 206 200 196 L200 240 L0 240 Z" fill="url(#nxFog)"/><path d="M0 216 C34 208 70 224 110 216 C150 208 176 222 200 214 L200 240 L0 240Z" fill="#06040a" opacity=".55"/><g class="nx-pt" style="--d:7.9s;--w:-1.4s;--dx:-38px;--r:124deg"><g transform="translate(137 28) scale(0.95)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:5.1s;--w:-6.4s;--dx:-15px;--r:266deg"><g transform="translate(189 40) scale(0.63)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:7.7s;--w:-7.4s;--dx:7px;--r:267deg"><g transform="translate(20 32) scale(0.84)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:6.8s;--w:-6.9s;--dx:7px;--r:294deg"><g transform="translate(180 32) scale(0.68)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:7.9s;--w:-6.2s;--dx:-20px;--r:237deg"><g transform="translate(170 3) scale(0.78)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:10.0s;--w:-8.8s;--dx:-2px;--r:198deg"><g transform="translate(127 23) scale(0.85)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:9.2s;--w:-0.8s;--dx:-1px;--r:126deg"><g transform="translate(90 19) scale(0.78)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:8.5s;--w:-5.0s;--dx:-8px;--r:304deg"><g transform="translate(50 0) scale(0.59)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:8.4s;--w:-2.0s;--dx:-31px;--r:301deg"><g transform="translate(63 18) scale(0.81)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:6.6s;--w:-6.7s;--dx:-30px;--r:206deg"><g transform="translate(175 37) scale(0.89)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:6.9s;--w:-5.8s;--dx:-24px;--r:147deg"><g transform="translate(173 33) scale(0.72)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:8.6s;--w:-9.5s;--dx:-26px;--r:154deg"><g transform="translate(167 11) scale(0.70)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:7.1s;--w:-6.3s;--dx:-14px;--r:183deg"><g transform="translate(47 39) scale(0.91)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:5.4s;--w:-0.3s;--dx:5px;--r:128deg"><g transform="translate(92 23) scale(0.84)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:9.0s;--w:-0.2s;--dx:-33px;--r:211deg"><g transform="translate(65 33) scale(0.46)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><g class="nx-pt" style="--d:5.7s;--w:-0.5s;--dx:-7px;--r:209deg"><g transform="translate(51 26) scale(0.80)"><path d="M0 0 C3 -3 7 -2 8 2 C5 1 2 2 0 0Z M0 0 C-2 -4 -6 -5 -9 -3 C-6 -3 -3 -2 0 0Z M0 0 C2 4 1 8 -3 10 C-1 6 -1 3 0 0Z" fill="#ff2d4a" stroke="#ffb0ba" stroke-width=".25"/></g></g><circle cx="161.5" cy="220.4" r="1.1" fill="#ffb0ba" opacity="0.46"/><circle cx="95.0" cy="41.1" r="0.5" fill="#ffb0ba" opacity="0.61"/><circle cx="142.8" cy="41.2" r="0.7" fill="#ffb0ba" opacity="0.54"/><circle cx="139.5" cy="119.7" r="1.1" fill="#ffb0ba" opacity="0.77"/><circle cx="78.7" cy="182.1" r="1.3" fill="#ffb0ba" opacity="0.40"/><circle cx="186.5" cy="166.1" r="0.6" fill="#ffb0ba" opacity="0.60"/><circle cx="125.1" cy="209.3" r="0.8" fill="#ffb0ba" opacity="0.66"/><circle cx="175.9" cy="183.3" r="1.3" fill="#ffb0ba" opacity="0.61"/><circle cx="130.3" cy="47.1" r="1.1" fill="#ffb0ba" opacity="0.80"/><circle cx="128.3" cy="165.1" r="0.7" fill="#ffb0ba" opacity="0.84"/><circle cx="196.1" cy="224.8" r="1.0" fill="#ffb0ba" opacity="0.78"/><circle cx="64.1" cy="209.3" r="1.3" fill="#ffb0ba" opacity="0.54"/><circle cx="16.6" cy="101.4" r="1.0" fill="#ffb0ba" opacity="0.77"/><circle cx="97.5" cy="6.5" r="1.2" fill="#ffb0ba" opacity="0.39"/><circle cx="160.0" cy="39.8" r="0.8" fill="#ffb0ba" opacity="0.78"/><circle cx="28.1" cy="34.2" r="1.0" fill="#ffb0ba" opacity="0.75"/><circle cx="168.0" cy="158.6" r="1.4" fill="#ffb0ba" opacity="0.62"/><circle cx="189.8" cy="19.8" r="0.7" fill="#ffb0ba" opacity="0.64"/><circle cx="58.0" cy="167.6" r="1.1" fill="#ffb0ba" opacity="0.64"/><circle cx="168.7" cy="128.8" r="0.8" fill="#ffb0ba" opacity="0.56"/><circle cx="169.1" cy="207.1" r="0.7" fill="#ffb0ba" opacity="0.82"/><circle cx="193.7" cy="120.6" r="1.0" fill="#ffb0ba" opacity="0.46"/><circle cx="107.2" cy="115.7" r="1.0" fill="#ffb0ba" opacity="0.37"/><circle cx="193.9" cy="118.7" r="0.9" fill="#ffb0ba" opacity="0.79"/><rect width="200" height="240" fill="url(#nxVg)"/></svg>`;
+/* ── 스킬 ── */
+SK[id]={b:{n:'그림자 베기',c:'n',cd:0},s:{n:'암영 표식',c:'e',cd:2},x:{n:'혈월 난무',c:'e',cd:3},u:{n:'영멸참 · 무영',c:'u',cd:4}};
+DM[id]={b:55*SKILL_MUL,s:110*SKILL_MUL,x:55*SKILL_MUL,u:70*SKILL_MUL};
+DT[id]={role:'무영의 암살자 · 표식 처형자',sk:[
+['그림자 베기','일반','쿨 0','단일 55% ×2.5 = 137% 2연타 · 표식 대상이면 추가 일섬 80% ×2.5 = 200%','소리 없이 두 번 베고, 표식이 있으면 한 번 더 파고든다.'],
+['암영 표식','스킬','쿨 2','단일 110% ×2.5 = 275% · 표식 3라운드: 아군 공격 +20% 피해, 녹턴은 +40% · 자신 다음 피해 1회 회피','대상의 그림자에 칼끝을 꽂는다. 표식이 남은 한, 도망칠 곳은 없다.'],
+['혈월 난무','스킬','쿨 3','무작위 6연격 각 55% ×2.5 = 137% · 방어 20% 무시 · 표식 대상 우선 · 처치 시 암영 표식 쿨다운 -1','붉은 달 아래 그림자가 갈라지며, 칼날이 사방에서 쏟아진다.'],
+['영멸참 · 무영','궁극기','쿨 4 · 시작 2','적 전체 3연참 각 70% ×2.5 = 175% · 방어 35% 무시 · 이후 HP 비율이 가장 낮은 적 처형(일반 적 즉사 / 보스 250% ×2.5) · 2라운드 은신(무적) · 다음 일반 공격 피해 2배','칼이 지나간 뒤에야 적들은 자신이 이미 베였음을 안다.'],
+['그림자 걸음','패시브','라운드마다','매 라운드 자신을 노린 첫 피해 1회 회피','' ],
+['급소 간파','패시브','상시','모든 공격 방어 20% 무시 · 공격력 +20%','' ],
+['암살자의 본능','패시브','상시','HP 50% 이하 시 피해 +30% · 보스 상대 피해 +25%','' ],
+['표식 연쇄','패시브','표식 대상 처치 시','남은 적 전체에 표식 2라운드 전이','' ],
+['피의 속도','패시브','처치 시','궁극기 쿨다운 -1 · 속도 +4 (최대 +20)','' ],
+['잔영','패시브','상시','받는 피해 -10%','' ],
+['그림자 이동','패시브','행동 후','자신 최대 HP 6% 방벽','' ],
+['혈월의 가호','패시브','전투 시작','자신 최대 HP 25% 방벽 · 1라운드 은신','' ],
+['무영 탈출','패시브','전투당 1회','쓰러질 때 HP 35%로 되살아나 2라운드 은신','' ]]};
+LBX[id]=u=>{const L={b:'2연격 · 표식 추가타',s:'표식 · 피해↑',x:'6연격 · 표식 우선',u:'전체 3연참 · 처형'};return {b:L.b,s:L.s,u:L.x,undefined:L.u}};
+STT[id]=u=>{const a=[];if(u._nxInv>0)a.push('은신 '+u._nxInv);if(u._nxEv>0)a.push('회피 준비');if(u._nxCrit)a.push('다음 일격 ×2');if(u._nxS)a.push('속도+'+u._nxS*4);return a.join(' · ')};
+/* ── 대사 / 목소리 / 효과음 ── */
+VP['녹턴']=[1.12,.95,3];SH[id]='…이미 끝났다.';
+VL[id]={b:['…','스윽.','조용히.'],s:['표식.','눈을 감아라.'],x:['달이 붉다.','흩어져라.']};
+GL[id]=['…이름은 버렸다. 칼만 남았다.'];WL[id]=['…끝났다. 조용하군.'];
+X[id+'_b']=()=>{sw(1800,300,.12,.09,0,'sawtooth');tn(1200,.06,'triangle',.05,.05,2200)};
+X[id+'_s']=()=>{sw(900,200,.28,.1,0,'sine');ring(700,.5,.06,.12);tn(90,.3,'sine',.1,0,50)};
+X[id+'_x']=()=>{[0,.08,.16,.24,.32,.4].forEach((d,i)=>sw(2200-i*120,260,.1,.08,d,'sawtooth'));ring(520,1,.07,.1)};
+USX[id]={1:()=>{tn(55,1,'sine',.12,0,45);ring(330,1.4,.05,0)},2:()=>{sw(220,1800,.9,.1,0,'sawtooth');ring(660,1,.06,.2)},3:()=>{[0,.1,.2].forEach(d=>{sw(2600,200,.18,.1,d,'sawtooth');ring(1500+d*900,.5,.06,d)})},4:()=>{tn(46,1.2,'sine',.22,0,24);sw(3000,120,.5,.12,0,'sawtooth');ring(1760,1.6,.08,.05)}};
+/* ── 전투 로직 ── */
+const AE=()=>S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0),AA=()=>S.U.filter(x=>x.side==='a'&&x.alive);
+const isBoss=e=>!!(e&&(e.boss||e.dgb));
+const dm=(u,e,p,ig)=>{if(!e||!e.alive||e.hp<=0)return 0;const d=deal(u,e,p*SKILL_MUL,ig||0);pop(e.id,'-'+d);return d};
+const shd=(a,v,cap)=>{v=Math.round(v);if(cap)v=Math.min(v,Math.max(0,Math.round(a.maxhp*cap)-(a.sh||0)));if(v<=0)return;a.sh=(a.sh||0)+v;pop(a.id,'✦'+v)};
+const after=u=>{shd(u,u.maxhp*.06,.5)};
+{const D0=deal;deal=function(u,e,pct,ig){
+ try{if(S&&u&&u.side==='a'&&e&&e.side==='b'&&e._nxMk>0&&u.id!==id)pct=pct*1.2}catch(er){}
+ try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'){let m=1.2;if(e._nxMk>0)m*=1.4;if(u.hp<=u.maxhp*.5)m*=1.3;if(isBoss(e))m*=1.25;pct=pct*m;ig=Math.max(ig||0,.2)}}catch(er){}
+ const r=D0.call(this,u,e,pct,ig);
+ try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'&&e.hp<=0&&!e._nxK){e._nxK=1;u.cd.u=Math.max(0,(u.cd.u||0)-1);if((u._nxS||0)<5){u._nxS=(u._nxS||0)+1;u.spd+=4}pop(u.id,'🌑처치');
+   if(e._nxMk>0){AE().forEach(x=>{x._nxMk=Math.max(x._nxMk||0,2)});pop(u.id,'🩸표식 연쇄');try{fxMarkLoop()}catch(er2){}}}}catch(er){}
+ return r}}
+{const H0=hurt;hurt=function(t,v){try{if(S&&S.U&&t&&t.side==='a'&&v>0){
+  if(t._nxInv>0){pop(t.id,'🌑은신');return}
+  if(t.id===id){if(t._nxEv>0){t._nxEv--;pop(t.id,'🌑회피');log('🌑 녹턴: 그림자 걸음 — 공격을 흘려보냈다');return}v=Math.max(1,Math.round(v*.9))}}}catch(er){}
+ const r=H0.call(this,t,v);
+ try{if(t&&t.id===id&&t.side==='a'&&!t._nxRv&&(t.hp<=0||!t.alive)){t._nxRv=1;t.alive=1;t.hp=Math.round(t.maxhp*.35);t._nxInv=3;pop(t.id,'🌑탈출');log('🌑 무영 탈출 — 녹턴이 그림자 속에서 다시 일어선다!');if(S.q&&S.q.indexOf&&S.q.indexOf(t.id)<0)S.q.push(t.id)}}catch(er){}
+ return r}}
+{const N0=nr;nr=function(){N0.apply(this,arguments);try{S.U.forEach(x=>{if(x._nxInv>0)x._nxInv--;if(x._nxMk>0)x._nxMk--});
+ const A=S.U.find(x=>x.id===id&&x.side==='a'&&x.alive&&x.hp>0);
+ if(A){if(!A._nxInit){A._nxInit=1;A._nxInv=Math.max(A._nxInv||0,2);shd(A,A.maxhp*.25)}A._nxEv=1}}catch(er){}}}
+/* ── 이펙트 ── */
+const fxL=()=>{let l=document.getElementById('nocfx');if(!l){l=document.createElement('div');l.id='nocfx';document.body.appendChild(l)}return l};
+const fxAdd=(html,ms)=>{const t=document.createElement('template');t.innerHTML=html.trim();const e=t.content.firstElementChild;fxL().appendChild(e);setTimeout(()=>e.remove(),ms||1000);return e};
+const cr=r=>r?{l:r.left,t:r.top,w:r.width,h:r.height}:{l:innerWidth*.45,t:innerHeight*.2,w:200,h:130};
+const ctr=r=>[r.l+r.w/2,r.t+r.h/2];
+const shk=ms=>{document.body.classList.add('shk');setTimeout(()=>document.body.classList.remove('shk'),ms)};
+const enemyCards=()=>[...document.querySelectorAll('#bt .bsw .bs')].map(c=>cr(c.getBoundingClientRect()));
+const cardRect=e=>{const i=AE().indexOf(e),cs=enemyCards();return cs[i]||cs[0]||cr(null)};
+const burst=(x,y,n)=>{for(let i=0;i<n;i++){const a=Math.PI*2*i/n+Math.random()*.5,d=30+Math.random()*50;fxAdd(`<i class="n-sp" style="left:${x}px;top:${y}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px"></i>`,600)}};
+const fxSlash=(r,rot,big)=>{const[x,y]=ctr(r),L=Math.max(r.w,140)*(big?1.5:1.15);fxAdd(`<i class="n-sl" style="left:${x}px;top:${y}px;width:${L}px;--r:${rot}deg"></i>`,400);burst(x,y,big?12:6);fxAdd(`<i class="n-ring" style="left:${x}px;top:${y}px;width:${big?140:80}px;height:${big?140:80}px"></i>`,520)};
+const fxCross=r=>{fxSlash(r,-32,false);setTimeout(()=>fxSlash(r,28,true),90)};
+const SIG=()=>'<svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="45" fill="#14040a" fill-opacity=".6" stroke="#ff2d4a" stroke-width="3"/><circle cx="50" cy="50" r="36" fill="none" stroke="#ffb0ba" stroke-width="1.4" stroke-dasharray="3 5"/><path d="M14 50Q50 24 86 50Q50 76 14 50Z" fill="#2a0610" stroke="#ff2d4a" stroke-width="2.4"/><circle cx="50" cy="50" r="11" fill="#ff2d4a"/><path d="M50 40V60" stroke="#14040a" stroke-width="3.4"/><circle cx="46" cy="46" r="2.4" fill="#fff"/><path d="M50 4V16M50 84V96M4 50H16M84 50H96" stroke="#ff2d4a" stroke-width="3"/></svg>';
+const fxMark=r=>{const[x,y]=ctr(r),s=Math.min(r.w,r.h)*.95;fxAdd(`<div class="n-mark" style="left:${x}px;top:${y}px;--s:${s}px">${SIG()}</div>`,700);fxAdd(`<i class="n-ring" style="left:${x}px;top:${y}px;width:${s*1.4}px;height:${s*1.4}px"></i>`,560);burst(x,y,10)};
+let mkRaf=0;const mkEls=new Map();
+const fxMarkLoop=()=>{if(mkRaf)return;const tick=()=>{try{const en=S&&S.U?S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0):[];const cs=[...document.querySelectorAll('#bt .bsw .bs')];let any=false;
+ en.forEach((x,i)=>{if(x._nxMk>0&&cs[i]){any=true;let el=mkEls.get(x);if(!el){el=document.createElement('div');el.className='n-mk';el.innerHTML=SIG();fxL().appendChild(el);mkEls.set(x,el)}const r=cs[i].getBoundingClientRect();el.style.left=(r.right-22)+'px';el.style.top=(r.top+22)+'px'}});
+ for(const[x,el]of mkEls){if(!(x._nxMk>0&&x.alive&&x.hp>0)||!S||S.over){el.remove();mkEls.delete(x)}else any=true}
+ if(any)mkRaf=requestAnimationFrame(tick);else{mkRaf=0;mkEls.forEach(el=>el.remove());mkEls.clear()}}catch(er){mkRaf=0}};mkRaf=requestAnimationFrame(tick)};
+const fxSkull=r=>{const[x,y]=ctr(r);fxAdd(`<b class="n-skull" style="left:${x}px;top:${y}px">☠</b>`,1000);burst(x,y,16);fxAdd(`<i class="n-ring" style="left:${x}px;top:${y}px;width:${Math.max(r.w,120)}px;height:${Math.max(r.w,120)}px"></i>`,600)};
+/* ── 스킬 ── */
+H[id]={
+ b:async(u,e)=>{const rc0=cardRect(e);const crit=u._nxCrit?2:1;u._nxCrit=0;fxSlash(rc0,-30,false);await sl(100);let t=dm(u,e,55*crit);shk(120);await sl(110);fxSlash(rc0,26,false);if(e.hp>0)t+=dm(u,e,55*crit);
+  if(e.hp>0&&e._nxMk>0){await sl(110);fxSlash(rc0,-8,true);t+=dm(u,e,80*crit);pop(e.id,'🩸추가 일섬');shk(220)}
+  log(`🗡 ${u.n}: 그림자 베기 → ${e.n} ${t} 피해${crit>1?' (은신 기습 ×2)':''}`);after(u)},
+ s:async(u,e)=>{const rc0=cardRect(e);fxAdd('<div class="n-dim" style="--t:.8s"></div>',900);await sl(120);fxMark(rc0);await sl(330);const d=dm(u,e,110);shk(160);if(e.hp>0){e._nxMk=3;pop(e.id,'🩸 표식');fxMarkLoop()}u._nxEv=Math.max(u._nxEv||0,1);log(`🩸 ${u.n}: 암영 표식 → ${e.n} ${d} 피해 · 3라운드간 표식 대상에게 아군 +20% / 녹턴 +40% 피해`);after(u)},
+ x:async(u)=>{fxAdd('<div class="n-dim" style="--t:1.4s"></div>',1450);fxAdd('<div class="n-moon"></div>',1050);await sl(260);let t=0,k=0;
+  for(let i=0;i<6;i++){const en=AE();if(!en.length)break;const mk=en.filter(x=>x._nxMk>0);const pool=mk.length&&Math.random()<.65?mk:en;const e=pool[Math.random()*pool.length|0],rc=cardRect(e);
+   fxAdd(`<i class="n-blink" style="top:${rc.t+rc.h/2-20}px"></i>`,300);fxSlash(rc,(i%2?1:-1)*(18+i*7),i===5);const h0=e.hp>0;t+=dm(u,e,55,.2);shk(80);if(h0&&e.hp<=0)k++;await sl(120)}
+  if(k>0){u.cd.s=Math.max(0,(u.cd.s||0)-1);pop(u.id,'⏱ 표식 쿨 -1')}
+  log(`🌙 ${u.n}: 혈월 난무 → 6연격 ${t} 피해${k?` · ${k}체 처치`:''}`);after(u)},
+ u:async(u,e,s)=>{await cutin(u,s);let t=0;const rs0=enemyCards();
+  for(let i=0;i<3;i++){fxAdd(`<i class="n-full" style="--r:${[-22,18,-6][i]}deg"></i>`,600);AE().forEach(en=>{t+=dm(u,en,70,.35)});shk(180);await sl(170)}
+  const tg=AE().sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0];
+  if(tg){const rc=cardRect(tg);await sl(180);if(isBoss(tg)){fxSkull(rc);t+=dm(u,tg,250,.5);pop(tg.id,'☠ 처형 일섬')}else{fxSkull(rc);deal(u,tg,9999,1);pop(tg.id,'☠ 처형');t+=0}shk(320)}
+  u._nxInv=3;u._nxCrit=1;pop(u.id,'🌑은신');
+  log(`🌑 ${u.n}: 영멸참 · 무영 → 적 전체 ${t} 피해 · 처형 · 2라운드 은신`);after(u)}};
+/* ── 궁극기 컷인 ── */
+const PET=[...Array(20)].map((_,i)=>`<i class="npet" style="--x:${(i*5.3+2)%98}%;--s:${.9+i%3*.5}vh;--d:${2.6+i%4*.8}s;--w:${(i%7)*.25}s;--dx:${(i%2?-1:1)*(6+i%5*4)}vh"></i>`).join('');
+const SPD=[...Array(9)].map((_,i)=>`<i class="nsp" style="--y:${12+i*9.5}vh;--d:${(i%5)*.13}s"></i>`).join('');
+const NSIG='<svg class="nsig" viewBox="0 0 200 200"><circle cx="100" cy="100" r="94" fill="none" stroke="#ff2d4a" stroke-width="1.4" stroke-dasharray="3 6"/><circle cx="100" cy="100" r="76" fill="none" stroke="#ffb0ba" stroke-width="1"/><path d="M100 6V30M100 170V194M6 100H30M170 100H194" stroke="#ff2d4a" stroke-width="3"/><path d="M40 40L160 160M160 40L40 160" stroke="#ff4a62" stroke-width="1.6" opacity=".8"/><path d="M22 100Q100 40 178 100Q100 160 22 100Z" fill="none" stroke="#ff2d4a" stroke-width="2.6"/><circle cx="100" cy="100" r="17" fill="#ff2d4a"/><path d="M100 84V116" stroke="#14040a" stroke-width="5"/></svg>';
+const F={q:'…네가 모를 뿐, 이미 끝났다.',cc:'#ff2d4a',fx:'<div class="nmoon"></div>'+NSIG+SPD+PET+'<i class="nsl" style="--y:30vh;--r:-18deg;--d:0s"></i><i class="nsl" style="--y:52vh;--r:14deg;--d:.16s"></i><i class="nsl" style="--y:66vh;--r:-7deg;--d:.32s"></i><i class="ncut"></i>'};
+{const C3=cutin;cutin=async function(u,s){if(u.id!==id)return C3(u,s);skip=false;let o=document.getElementById('fs');if(!o){o=document.createElement('div');o.id='fs';o.onclick=()=>{skip=true};document.body.appendChild(o)}
+ o.className='on '+id;o.dataset.p=0;o.style.setProperty('--cc',F.cc);
+ o.innerHTML=`<div class="bg"></div><div class="rays"></div>${F.fx}<div class="ch">${CIL[id]}</div><div class="tt"><b>${s.n}</b><small>${u.n}</small></div><div class="qt">${F.q}</div><div class="fl"></div><div class="bar b1"></div><div class="bar b2"></div><em>탭하여 연출 건너뛰기</em>`;
+ void o.offsetWidth;for(const[p,t]of[[1,900],[2,1000],[3,850],[4,1100]]){o.dataset.p=p;sfxU(id,p);if(p==1&&!skip)say(u.n,F.q);if(p==4)document.body.classList.add('shk');await sl(t)}
+ document.body.classList.remove('shk');o.className='';o.innerHTML='';skip=false}}
+/* ── 뽑기: SSS 확률 0.01% ── */
+{const R=rollG;rollG=function(){if(Math.random()<GP[NG]){try{if(typeof PB!=='undefined'){PB.i=(PB.i||0)+1;PB.ok=1}G.ps=0}catch(er){}return id}return R.apply(this,arguments)}}
+/* ── SSS 전용 뽑기 연출 ── */
+const PETP=[...Array(24)].map((_,i)=>`<i class="pet" style="--x:${(i*4.3+2)%98}%;--s:${.9+i%3*.5}vh;--d:${2.8+i%4*.8}s;--w:${(i%7)*.25}s;--dx:${(i%2?-1:1)*(6+i%5*4)}vh"></i>`).join('');
+const nocPullCine=async()=>{
+ const o=document.createElement('div');o.id='nocpull';o.dataset.p=0;
+ o.innerHTML=`<div class="mn"></div><div class="eyes"><i></i><i></i></div><i class="sl" style="--r:-20deg;--d:0s"></i><i class="sl" style="--r:16deg;--d:.12s"></i><i class="sl" style="--r:-4deg;--d:.24s"></i><i class="sl" style="--r:34deg;--d:.34s"></i><div class="fl"></div><div class="stg"><div class="art">${CIL[id]}</div><div class="ttl"><span class="sss">SSS</span><b>녹턴</b><small>무영(無影)의 암살자</small></div>${PETP}</div><em>탭하여 건너뛰기</em>`;
+ document.body.appendChild(o);let sk=false;o.onclick=()=>{sk=true};
+ const w=async ms=>{const t0=performance.now();while(!sk&&performance.now()-t0<ms)await new Promise(r=>setTimeout(r,30))};
+ const snd=p=>{try{if(p==1){tn(48,1.1,'sine',.12,0,70);ring(300,1.2,.04,.2)}else if(p==2){sw(120,900,1,.1,0,'sine');ring(220,1.2,.05,.3)}else if(p==3){[0,.12,.24,.34].forEach(d=>{sw(3000,160,.2,.12,d,'sawtooth')});tn(42,.9,'sine',.28,.3,24)}else if(p==4){[392,466,554,740,932].forEach((f,i)=>ring(f,2,.06,i*.1));tn(55,1.2,'sine',.16,0,40)}}catch(er){}};
+ for(const[p,ms]of[[1,1100],[2,1000],[3,900],[4,2300]]){if(sk)break;o.dataset.p=p;snd(p);await w(ms)}
+ o.dataset.p=5;await new Promise(r=>setTimeout(r,sk?160:450));o.remove()};
+window.__nocPull=nocPullCine;
+{const RS=rvShow;rvShow=function(i){try{const r=RV.L[i];if(r&&r.id===id&&!window.__nocPulling){window.__nocPulling=1;nocPullCine().catch(()=>{}).then(()=>{window.__nocPulling=0;RS.call(window,i)});return}}catch(er){}return RS.apply(this,arguments)}}
+/* ── 치트: 테스트용 지급 ── */
+const cp=document.getElementById('chp');if(cp&&!document.getElementById('noccheat')){const b=document.createElement('button');b.id='noccheat';b.textContent='🗡 녹턴 지급';b.onclick=()=>{try{G.j[id]=1;if(typeof save==='function')save();location.reload()}catch(er){alert('지급 실패: '+er.message)}};cp.appendChild(b)}
+console.log('noct: 녹턴(SSS) 등록 완료');
+}catch(err){console.error('[noct-patch]',err)}})();
+</script>
+
+<style id="raizen-css">
+/* ===== 라이젠 · 궁극기 컷인 ===== */
+@keyframes rz-spin{to{transform:rotate(360deg)}}
+.rzB{clip-path:polygon(58% 0,40% 22%,52% 24%,34% 48%,46% 50%,28% 74%,40% 76%,30% 100%,60% 70%,50% 68%,70% 44%,58% 42%,78% 18%,66% 16%,80% 0)}
+#fs.raizen{--cc:#ffd23a}
+#fs.raizen .bg{background:radial-gradient(circle at 32% 54%,#3b3fb0 0,#10104a 42%,#02020c 90%)!important}
+#fs.raizen .rays{background:repeating-conic-gradient(from 0deg at 36% 52%,#ffe27a66 0 1.2deg,transparent 1.2deg 6.5deg)!important}
+#fs.raizen .rzd{position:absolute;left:-12vh;top:-2vh;width:104vh;height:104vh;z-index:1;opacity:0;transform:scale(.5);transition:opacity .6s,transform 1.3s cubic-bezier(.2,.8,.2,1)}
+#fs.raizen .rzd svg{width:100%;height:100%;animation:rz-spin 20s linear infinite;filter:drop-shadow(0 0 3vh #ffd23a)}
+#fs.raizen:not([data-p="0"]) .rzd{opacity:.92;transform:none}
+#fs.raizen .rzcb{position:absolute;top:-4vh;height:108vh;width:17vh;left:var(--x);z-index:3;opacity:0;filter:drop-shadow(0 0 2vh #ffd23a) drop-shadow(0 0 6vh #7a8bff)}
+#fs.raizen .rzcb i{display:block;width:100%;height:100%;background:linear-gradient(#fff,#fff6b0 60%,#ffd23a)}
+#fs.raizen[data-p="2"] .rzcb{animation:rz-cb .55s var(--d) steps(2,end) infinite}
+#fs.raizen[data-p="3"] .rzcb{animation:rz-cb .3s var(--d) steps(2,end) infinite}
+#fs.raizen[data-p="4"] .rzcb{opacity:.25}
+@keyframes rz-cb{0%{opacity:0}18%{opacity:1}34%{opacity:.15}52%{opacity:.9}100%{opacity:0}}
+#fs.raizen .rzsp{position:absolute;bottom:-4vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:#ffe27a;box-shadow:0 0 1.6vh #ffd23a;z-index:4;opacity:0;animation:rz-up var(--d) linear infinite;animation-delay:var(--w)}
+@keyframes rz-up{0%{transform:translate(0,0);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx),-112vh);opacity:0}}
+#fs.raizen .rzcs{position:absolute;left:-12vw;width:140vw;height:1.4vh;z-index:6;background:linear-gradient(90deg,#fff0,#fff 28%,#fff 72%,#fff0);box-shadow:0 0 3vh #ffd23a,0 0 9vh #7a8bff;clip-path:polygon(0 50%,12% 0,88% 0,100% 50%,88% 100%,12% 100%);opacity:0;transform:rotate(var(--r)) scaleX(0);top:var(--y)}
+#fs.raizen[data-p="3"] .rzcs,#fs.raizen[data-p="4"] .rzcs{animation:rz-cs .42s var(--d) ease-out forwards}
+@keyframes rz-cs{0%{opacity:1;transform:rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:rotate(var(--r)) scaleX(1.06)}}
+#fs.raizen .tt b{background:linear-gradient(#fff 10%,#fff3b0 55%,#ffc61a);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 2.4vh #ffd23a) drop-shadow(0 .5vh 0 #000)}
+#fs.raizen .tt small{color:#ffe27a;letter-spacing:1.4vh}
+#fs.raizen .qt{color:#fff6cc}
+#fs.raizen .ch{filter:drop-shadow(0 0 3vh #ffd23a)}
+#fs.raizen[data-p="4"] .ch{animation:rz-dash .5s ease-out}
+@keyframes rz-dash{0%{transform:translateX(4vw) scale(1.05);filter:blur(1.2vh) drop-shadow(0 0 5vh #ffd23a)}100%{transform:scale(1.02)}}
+/* ===== 라이젠 · 전투 이펙트 ===== */
+#rzfx{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden}
+#rzfx .rz-bw{position:absolute;top:0;left:calc(var(--x) - var(--w)/2);width:var(--w);height:var(--y);opacity:0;filter:drop-shadow(0 0 8px #ffd23a) drop-shadow(0 0 22px #7a8bff);animation:rz-bw .42s ease-out forwards}
+#rzfx .rz-bw i{display:block;width:100%;height:100%;background:linear-gradient(#fff6,#fff 30%,#fff)}
+@keyframes rz-bw{0%{opacity:0}10%{opacity:1}30%{opacity:.35}46%{opacity:1}100%{opacity:0}}
+#rzfx .rz-sl{position:absolute;height:1.05vh;min-height:5px;background:linear-gradient(90deg,#fff0,#fff 30%,#ffd23a 80%,#fff0);clip-path:polygon(0 50%,50% 0,100% 50%,50% 100%);opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0);animation:rz-sl .3s ease-out forwards}
+@keyframes rz-sl{0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(0)}55%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scaleX(1.12)}}
+#rzfx .rz-sp{position:absolute;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:#fff3b0;box-shadow:0 0 8px #ffd23a;animation:rz-sp .5s ease-out forwards}
+@keyframes rz-sp{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+#rzfx .rz-ring{position:absolute;border-radius:50%;border:3px solid #ffd23a;box-shadow:0 0 14px #ffd23a,inset 0 0 12px #7a8bff;transform:translate(-50%,-50%) scale(.2);animation:rz-ring .5s ease-out forwards}
+@keyframes rz-ring{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+#rzfx .rz-dim{position:absolute;inset:0;background:radial-gradient(circle,#10104a88,#000d 70%);opacity:0;animation:rz-dim var(--t,1s) ease-out forwards}
+@keyframes rz-dim{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+#rzfx .rz-fl{position:absolute;inset:0;background:#fff;opacity:0;animation:rz-fl .45s ease-out forwards}
+@keyframes rz-fl{0%{opacity:.85}100%{opacity:0}}
+#rzfx .rz-arc{position:absolute;inset:0;width:100%;height:100%;animation:rz-fl .45s ease-out forwards}
+#rzfx .rz-arc polyline{fill:none;stroke:#fff;stroke-width:3;stroke-linejoin:bevel;filter:drop-shadow(0 0 6px #ffd23a) drop-shadow(0 0 14px #7a8bff)}
+#rzfx .rz-mk{position:absolute;width:30px;height:30px;margin:-15px;font:900 24px/30px sans-serif;text-align:center;color:#ffe27a;text-shadow:0 0 6px #ffd23a,0 0 14px #7a8bff;animation:rz-mk .7s ease-in-out infinite alternate}
+@keyframes rz-mk{from{transform:scale(.85) rotate(-8deg);opacity:.7}to{transform:scale(1.15) rotate(8deg);opacity:1}}
+.rzchip{border-color:#ffd23a!important;color:#ffe27a!important;text-shadow:0 0 6px #ffd23a}
+/* ===== 라이젠 · SSS 뽑기 연출 ===== */
+#rzpull{position:fixed;inset:0;z-index:99991;background:#000;overflow:hidden;opacity:1;transition:opacity .45s}
+#rzpull[data-p="5"]{opacity:0}
+#rzpull em{position:absolute;bottom:1.2vh;left:0;right:0;text-align:center;font-style:normal;font-size:1.8vh;color:#fff6;z-index:9}
+#rzpull .rzc{position:absolute;left:50%;top:50%;width:2vh;height:2vh;margin:-1vh;border-radius:50%;background:#fff;box-shadow:0 0 6vh 3vh #ffd23a,0 0 16vh 6vh #5a6aff88;opacity:0;z-index:3}
+#rzpull[data-p="1"] .rzc{animation:rz-beat 1.1s ease-out forwards}
+@keyframes rz-beat{0%{opacity:0;transform:scale(.3)}10%{opacity:1;transform:scale(1)}25%{opacity:.2;transform:scale(.6)}38%{opacity:1;transform:scale(2)}52%{opacity:.2;transform:scale(.7)}68%{opacity:1;transform:scale(3.6)}100%{opacity:1;transform:scale(6)}}
+#rzpull[data-p="2"] .rzc{opacity:1;transform:scale(6)}
+#rzpull[data-p="3"] .rzc,#rzpull[data-p="4"] .rzc,#rzpull[data-p="5"] .rzc{opacity:0}
+#rzpull .rzpd{position:absolute;left:50%;top:50%;width:110vh;height:110vh;margin:-55vh;z-index:2;opacity:0}
+#rzpull .rzpd svg{width:100%;height:100%;animation:rz-spin 14s linear infinite;filter:drop-shadow(0 0 3vh #ffd23a)}
+#rzpull[data-p="2"] .rzpd{animation:rz-pd 1s ease-out forwards}
+@keyframes rz-pd{0%{opacity:0;transform:scale(.2)}100%{opacity:.9;transform:scale(1)}}
+#rzpull[data-p="3"] .rzpd,#rzpull[data-p="4"] .rzpd,#rzpull[data-p="5"] .rzpd{opacity:.9;transition:left .5s}
+#rzpull[data-p="4"] .rzpd,#rzpull[data-p="5"] .rzpd{left:36%}
+#rzpull .rzpb{position:absolute;top:-4vh;height:108vh;width:20vh;left:var(--x);margin-left:-10vh;z-index:5;opacity:0;filter:drop-shadow(0 0 2vh #ffd23a) drop-shadow(0 0 7vh #7a8bff)}
+#rzpull .rzpb i{display:block;width:100%;height:100%;background:linear-gradient(#fff,#fff6b0 60%,#ffd23a)}
+#rzpull[data-p="2"] .rzpb{animation:rz-cb .5s var(--d) steps(2,end) infinite}
+#rzpull[data-p="3"] .rzpb{animation:rz-cb .28s var(--d) steps(2,end) 2}
+#rzpull .fl{position:absolute;inset:0;background:#fff;opacity:0;z-index:7}
+#rzpull[data-p="3"] .fl{animation:rz-fl2 1s .1s ease-out forwards}
+@keyframes rz-fl2{0%{opacity:1}100%{opacity:0}}
+#rzpull .rzpr{position:absolute;left:50%;top:50%;width:30vh;height:30vh;margin:-15vh;border-radius:50%;border:1vh solid #fff;box-shadow:0 0 6vh #ffd23a;z-index:6;opacity:0}
+#rzpull[data-p="3"] .rzpr{animation:rz-pr .9s var(--d,0s) ease-out forwards}
+@keyframes rz-pr{0%{opacity:1;transform:scale(.2)}100%{opacity:0;transform:scale(9)}}
+#rzpull .stg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:4vw;opacity:0;z-index:4;background:radial-gradient(circle at 36% 50%,#2a2e9a99,#0a0a30 62%,#000 100%)}
+#rzpull[data-p="4"] .stg,#rzpull[data-p="5"] .stg{opacity:1;transition:opacity .3s}
+#rzpull .art{position:relative;height:86vh}
+#rzpull .art svg{height:86vh;width:auto;display:block;position:relative;z-index:2;opacity:0}
+#rzpull[data-p="4"] .art svg,#rzpull[data-p="5"] .art svg{animation:rz-art .9s .05s cubic-bezier(.1,.8,.2,1) forwards}
+@keyframes rz-art{0%{opacity:0;transform:translateX(9vw) scale(1.05);filter:blur(1.4vh)}100%{opacity:1;transform:none;filter:none}}
+#rzpull .ttl{display:flex;flex-direction:column;align-items:flex-start;gap:1.4vh;z-index:4}
+#rzpull .ttl .sss{font:900 min(24vh,17vw)/1 serif;background:linear-gradient(#fff 8%,#fff3b0 40%,#ffc61a 78%,#8a5a08);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em;filter:drop-shadow(0 0 2.4vh #ffd23a);opacity:0}
+#rzpull[data-p="4"] .ttl .sss,#rzpull[data-p="5"] .ttl .sss{animation:rz-sss .7s .4s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes rz-sss{0%{opacity:0;transform:scale(2.8)}100%{opacity:1;transform:none}}
+#rzpull .ttl b{font-size:min(8vh,6vw);color:#fff6cc;text-shadow:0 0 2vh #ffd23a;letter-spacing:.3em;opacity:0}
+#rzpull .ttl small{font-size:2.8vh;color:#ffe27a;letter-spacing:.3em;opacity:0}
+#rzpull[data-p="4"] .ttl b,#rzpull[data-p="5"] .ttl b{animation:rz-fade .6s .9s forwards}
+#rzpull[data-p="4"] .ttl small,#rzpull[data-p="5"] .ttl small{animation:rz-fade .6s 1.2s forwards}
+@keyframes rz-fade{from{opacity:0;transform:translateX(3vh)}to{opacity:1;transform:none}}
+#rzpull .art,#rzpull .ttl,#rzpull .stg>*{box-shadow:none!important}
+#rzpull .rzsp{position:absolute;bottom:-4vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:#ffe27a;box-shadow:0 0 1.6vh #ffd23a;z-index:5;opacity:0;animation:rz-up var(--d) linear infinite;animation-delay:var(--w)}
+</style>
+<script id="raizen-patch">/*#### [114_raizen] SSS · 라이젠 (뇌정의 검제) — 충전 · 감전 시너지형 ####*/
+(function(){try{
+if(typeof H==='undefined'||typeof C==='undefined'||typeof CIL==='undefined'||typeof deal!=='function'||typeof hurt!=='function'||typeof nr!=='function'||typeof cutin!=='function'||typeof GN==='undefined'){console.warn('raizen: 필요한 데이터가 없어 건너뜀');return}
+const id='raizen';
+if(C[id]){console.warn('raizen: 이미 등록되어 있어 건너뜀');return}
+const MUL=2.5,RATE=0.0001;
+let NG=GN.indexOf('SSS');
+if(NG<0){NG=8;GN[NG]='SSS';GC[NG]='#ffd24a';GM[NG]=2;GP[NG]=RATE;STP[NG]=10}
+/* ── 등록 ── */
+C[id]={n:'라이젠',ic:'⚡',col:'#ffd23a',spd:124,atk:240,hp:1900,ds:'천둥북을 등에 지고 폭풍 속을 걷는 검제. 그의 심장이 뛸 때마다 하늘이 응답하고, 칼이 번쩍일 때마다 벽력이 떨어진다.'};
+GR[id]=NG;if(typeof ALL!=='undefined'&&ALL.indexOf&&ALL.indexOf(id)<0)ALL.push(id);
+if(typeof GPOOL!=='undefined'&&GPOOL.indexOf&&GPOOL.indexOf(id)<0)GPOOL.push(id);
+if(typeof NC!=='undefined')NC[id]=1;
+if(window.ELX&&ELX.C)ELX.C[id]='yang';
+if(typeof G!=='undefined'){G.lv=G.lv||{};if(G.lv[id]==null)G.lv[id]=1;G.xp=G.xp||{};if(G.xp[id]==null)G.xp[id]=0}
+/* ── 일러스트 ── */
+const f=n=>+n.toFixed(1);
+const spk=(x0,y0,x1,y1,w,bd,fill)=>{const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L,mx=(x0+x1)/2,my=(y0+y1)/2;return `<path d="M${f(x0+nx*w)} ${f(y0+ny*w)}Q${f(mx+nx*(w*.5+bd))} ${f(my+ny*(w*.5+bd))} ${x1} ${y1}Q${f(mx-nx*(w*.5-bd))} ${f(my-ny*(w*.5-bd))} ${f(x0-nx*w)} ${f(y0-ny*w)}Z" fill="${fill}"/>`};
+const DR=(cx,cy,R,n,r)=>[...Array(n)].map((_,i)=>{const a=i/n*6.2832,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;return `<g transform="translate(${f(x)} ${f(y)}) rotate(${Math.round(a*57.3+90)})"><circle r="${r}" fill="#1d1d5e" stroke="#ffd23a" stroke-width=".9"/><circle r="${f(r*.62)}" fill="none" stroke="#fff3b0" stroke-width=".5"/>${[0,1,2].map(k=>`<circle cx="${f(Math.cos(k*2.094)*r*.3)}" cy="${f(Math.sin(k*2.094)*r*.3)}" r="${f(r*.17)}" fill="#ffe27a"/>`).join('')}</g>`}).join('');
+const HAIR=[[92,34,56,8,7,-6],[98,32,80,2,6,-3],[106,32,114,2,6,4],[112,36,152,12,7,5],[84,40,42,34,6,4],[116,42,158,40,6,-4],[84,50,50,66,5,3],[116,50,148,66,5,-3],[92,40,87,58,4,-1],[108,40,113,58,4,1],[100,38,100,56,3.5,0]].map(a=>spk(a[0],a[1],a[2],a[3],a[4],a[5],'url(#rzHair)')).join('');
+const WRAP=(()=>{const p=[];for(let i=0;i<=14;i++){const t=.1+i*.062,s=i%2?5:-5;p.push(f(58+134*t+.73*s)+','+f(158-144*t+.68*s))}return p.join(' ')})();
+const PT=[...Array(18)].map((_,i)=>`<circle class="rz-pt" cx="${(i*37+11)%190+5}" cy="${150+(i*53)%84}" r="${i%3?.8:1.4}" fill="#ffe27a" style="--d:${3+i%5*.9}s;--w:${(i%7)*.5}s;--dx:${(i%2?-1:1)*(6+i%4*6)}px"/>`).join('');
+CIL[id]=`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><style>
+.rz-rg{animation:rzspin 36s linear infinite;transform-origin:100px 80px}
+.rz-rg2{animation:rzspin 50s linear infinite reverse;transform-origin:100px 80px}
+.rz-hr{animation:rzsway 3.4s ease-in-out infinite;transform-origin:100px 40px}
+.rz-cp{animation:rzcape 4.4s ease-in-out infinite;transform-origin:100px 118px}
+.rz-eye{animation:rzeye 2.2s ease-in-out infinite}
+.rz-ar{animation:rzflick .9s steps(2,end) infinite}
+.rz-bg{animation:rzflick 2.6s steps(3,end) infinite}
+.rz-gl{animation:rzglint 3.2s ease-in-out infinite;transform-origin:192px 14px}
+.rz-pu{animation:rzpulse 1.6s ease-in-out infinite;transform-origin:100px 150px}
+.rz-pt{animation:rzrise var(--d,5s) linear infinite;animation-delay:var(--w,0s)}
+@keyframes rzspin{to{transform:rotate(360deg)}}
+@keyframes rzsway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.4deg) skewX(-1deg)}}
+@keyframes rzcape{0%,100%{transform:skewX(0)}50%{transform:skewX(-2deg) scaleX(1.02)}}
+@keyframes rzeye{0%,100%{opacity:.75}50%{opacity:1}}
+@keyframes rzflick{0%{opacity:1}50%{opacity:.35}100%{opacity:.9}}
+@keyframes rzglint{0%,60%,100%{opacity:0;transform:scale(.3)}75%{opacity:1;transform:scale(1)}90%{opacity:0;transform:scale(1.5)}}
+@keyframes rzpulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.25);opacity:1}}
+@keyframes rzrise{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx,8px),-120px);opacity:0}}
+</style><defs>
+<radialGradient id="rzAura" cx=".5" cy=".5" r=".5"><stop offset=".25" stop-color="#ffd23a" stop-opacity=".5"/><stop offset=".55" stop-color="#5a6aff" stop-opacity=".25"/><stop offset="1" stop-color="#5a6aff" stop-opacity="0"/></radialGradient>
+<linearGradient id="rzHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#cdd6ff"/><stop offset="1" stop-color="#6471c8"/></linearGradient>
+<linearGradient id="rzGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c4"/><stop offset=".45" stop-color="#ffc83a"/><stop offset="1" stop-color="#9a5a08"/></linearGradient>
+<linearGradient id="rzCoat" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3f8a"/><stop offset=".5" stop-color="#14163e"/><stop offset="1" stop-color="#05061a"/></linearGradient>
+<linearGradient id="rzCape" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e3490"/><stop offset=".6" stop-color="#10123a"/><stop offset="1" stop-color="#05061a"/></linearGradient>
+<linearGradient id="rzBlade" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8d9ad8"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#bfe8ff"/></linearGradient>
+<linearGradient id="rzSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2dcd2"/><stop offset=".6" stop-color="#c9a09c"/><stop offset="1" stop-color="#7e5a6a"/></linearGradient>
+<linearGradient id="rzFaceSh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05061a" stop-opacity=".85"/><stop offset=".4" stop-color="#05061a" stop-opacity=".4"/><stop offset=".7" stop-color="#05061a" stop-opacity="0"/></linearGradient>
+<radialGradient id="rzCore" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#ffe27a"/><stop offset="1" stop-color="#ff9a1f"/></radialGradient>
+<radialGradient id="rzEye" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#ffd23a"/><stop offset="1" stop-color="#ffb800" stop-opacity="0"/></radialGradient>
+<linearGradient id="rzFog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a30" stop-opacity="0"/><stop offset="1" stop-color="#05061a" stop-opacity=".9"/></linearGradient>
+<radialGradient id="rzVg" cx=".5" cy=".5" r=".72"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+<filter id="rzB2"><feGaussianBlur stdDeviation="2"/></filter><filter id="rzB4"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<circle cx="100" cy="86" r="108" fill="url(#rzAura)"/>
+<g class="rz-bg"><path d="M26 0L38 30L24 34L44 72L30 76L54 116" fill="none" stroke="#ffd23a" stroke-width="5" opacity=".5" filter="url(#rzB4)"/><path d="M26 0L38 30L24 34L44 72L30 76L54 116" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="bevel"/><path d="M180 44L168 62L178 66L158 100L168 102L150 128" fill="none" stroke="#ffd23a" stroke-width="4" opacity=".5" filter="url(#rzB4)"/><path d="M180 44L168 62L178 66L158 100L168 102L150 128" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="bevel"/></g>
+<g class="rz-rg"><circle cx="100" cy="80" r="66" fill="none" stroke="#ffd23a" stroke-width=".9" stroke-dasharray="2 4" opacity=".85"/>${DR(100,80,66,9,7.6)}</g>
+<g class="rz-rg2"><circle cx="100" cy="80" r="54" fill="none" stroke="#ffe27a" stroke-width=".7" opacity=".7"/><circle cx="100" cy="80" r="50" fill="none" stroke="#7a8bff" stroke-width=".6" stroke-dasharray="1 3.4" opacity=".8"/></g>
+<g class="rz-cp"><path d="M68 116Q22 128 6 196Q2 226 4 240L52 240Q50 196 72 150Z" fill="url(#rzCape)"/><path d="M6 196Q2 226 4 240" fill="none" stroke="url(#rzGold)" stroke-width="2"/><path d="M132 116Q172 128 190 190Q196 220 196 240L150 240Q152 196 130 150Z" fill="url(#rzCape)"/><path d="M190 190Q196 220 196 240" fill="none" stroke="url(#rzGold)" stroke-width="2"/></g>
+<path d="M62 118Q100 104 138 118L144 154Q148 200 152 240L48 240Q52 200 56 154Z" fill="url(#rzCoat)"/>
+<path d="M84 108L100 150L116 108L124 120L112 240L88 240L76 120Z" fill="#0a0b28"/>
+<path d="M84 108L100 150L116 108" fill="none" stroke="url(#rzGold)" stroke-width="1.8"/><path d="M76 120L88 240M124 120L112 240" stroke="url(#rzGold)" stroke-width=".9" opacity=".6"/>
+<circle cx="100" cy="150" r="14" fill="url(#rzAura)"/><circle class="rz-pu" cx="100" cy="150" r="7.5" fill="none" stroke="url(#rzGold)" stroke-width=".9"/><circle cx="100" cy="150" r="4.4" fill="url(#rzCore)"/>
+<path d="M50 200Q100 212 150 200L151 216Q100 228 49 216Z" fill="url(#rzGold)"/><circle cx="100" cy="212" r="6.5" fill="#1c2068" stroke="url(#rzGold)" stroke-width="1.6"/><path d="M96 212L104 212M100 208L100 216" stroke="#ffe27a" stroke-width="1"/>
+<path d="M52 204L48 240M148 204L152 240" stroke="url(#rzGold)" stroke-width="1.6"/>
+<g id="rzPd"><path d="M48 116Q58 98 84 108L82 126Q62 134 46 128Z" fill="url(#rzGold)"/><path d="M52 118Q62 106 80 112L79 122Q62 128 50 124Z" fill="#14163e"/><path d="M46 128Q62 134 82 126L80 138Q62 146 48 140Z" fill="url(#rzGold)" opacity=".85"/><path d="M56 114L74 112" stroke="#fff" stroke-width=".8" opacity=".7"/></g>
+<use href="#rzPd" transform="translate(200 0) scale(-1 1)"/>
+<path d="M132 120Q152 126 158 160L162 180Q150 186 142 176Q138 150 128 134Z" fill="url(#rzCoat)" stroke="url(#rzGold)" stroke-width="1.2"/><path d="M142 174Q152 186 162 180L160 188Q150 194 140 182Z" fill="url(#rzGold)"/><circle cx="152" cy="192" r="5.4" fill="#14163e" stroke="url(#rzGold)" stroke-width="1"/>
+<circle cx="155" cy="207" r="17" fill="url(#rzAura)"/><circle cx="155" cy="207" r="6.5" fill="url(#rzCore)"/><g class="rz-ar"><path d="M143 203L149 207L145 212L152 214M166 200L160 205L167 208L161 214" fill="none" stroke="#fff" stroke-width="1"/></g>
+<g transform="translate(-12 -10.3) scale(1.12)"><path d="M78 98L83 84Q100 92 117 84L122 98Q100 110 78 98Z" fill="#0a0b28" stroke="url(#rzGold)" stroke-width="1.2"/>
+<path d="M84 50Q84 34 100 32Q116 34 116 50L115 68Q108 84 100 86Q92 84 85 68Z" fill="url(#rzSkin)"/><path d="M84 50Q84 34 100 32Q116 34 116 50L115 68Q108 84 100 86Q92 84 85 68Z" fill="url(#rzFaceSh)"/>
+<path d="M116 50L115 68Q108 84 100 86" fill="none" stroke="#9ab0ff" stroke-width="1" opacity=".75"/>
+<path d="M99 57L97 66L103 66" fill="none" stroke="#7e5a6a" stroke-width=".8" opacity=".7"/><path d="M88 60L91 62L89 65" fill="none" stroke="#ffd23a" stroke-width=".9"/>
+<path d="M84 68Q100 75 116 68L118 86Q100 94 82 86Z" fill="#090a24" stroke="url(#rzGold)" stroke-width="1"/><path d="M90 78L100 82L110 78" fill="none" stroke="#ffd23a" stroke-width=".7" opacity=".8"/>
+<path d="M84 43Q100 37 116 43L116 48Q100 42 84 48Z" fill="url(#rzGold)"/><path d="M98 38L102 38L100 44Z" fill="#fff"/>
+<g class="rz-eye"><ellipse cx="94" cy="54" rx="8" ry="4" fill="url(#rzEye)"/><ellipse cx="106" cy="54" rx="8" ry="4" fill="url(#rzEye)"/></g>
+<path d="M87 54Q94 49 100 55Q93 56.6 87 54Z" fill="#fff5c8"/><path d="M100 55Q106 49 113 54Q107 56.6 100 55Z" fill="#fff5c8"/><circle cx="95.5" cy="53.8" r="2" fill="#ffb800"/><circle cx="104.5" cy="53.8" r="2" fill="#ffb800"/><circle cx="95.5" cy="53.8" r=".8" fill="#2a1800"/><circle cx="104.5" cy="53.8" r=".8" fill="#2a1800"/>
+<path d="M85 48L99 52.6M115 48L101 52.6" stroke="#cdd6ff" stroke-width="1.8" stroke-linecap="round"/>
+<g class="rz-hr"><path d="M82 52Q78 26 100 22Q122 26 118 52Q112 40 100 40Q88 40 82 52Z" fill="url(#rzHair)"/>${HAIR}</g></g>
+<path d="M62 120Q28 138 30 168L34 188Q52 194 60 178Q62 150 74 132Z" fill="url(#rzCoat)" stroke="url(#rzGold)" stroke-width="1.2"/><path d="M33 180Q50 192 61 176L59 171Q48 184 34 172Z" fill="url(#rzGold)"/>
+<path d="M62 153L38 181" stroke="#0a0b28" stroke-width="5.6" stroke-linecap="round"/><path d="M62 153L38 181" stroke="url(#rzGold)" stroke-width="5.6" stroke-dasharray="1.4 3.2" opacity=".9"/><circle cx="37" cy="182" r="3.2" fill="url(#rzGold)"/>
+<path d="M63 153L192 14" stroke="#ffe27a" stroke-width="7" opacity=".55" filter="url(#rzB2)"/>
+<path d="M60.7 151.3L181.8 20.6L194 12L186.2 24.6L64.5 154.9Z" fill="url(#rzBlade)"/><path d="M63 153L190 15" stroke="#fff" stroke-width=".9"/><path d="M65 154L186 25" stroke="#fff" stroke-width=".5" stroke-dasharray="3 2.2" opacity=".6"/>
+<ellipse cx="63.5" cy="152" rx="9.5" ry="3.4" transform="rotate(43 63.5 152)" fill="url(#rzGold)" stroke="#5a3204" stroke-width=".6"/>
+<circle cx="49" cy="168" r="7.4" fill="#14163e" stroke="url(#rzGold)" stroke-width="1.1"/><path d="M44 164L54 171M43 168L52 175M46 161L56 167" stroke="#4a50a8" stroke-width=".9"/><path d="M44 172L52 176" stroke="url(#rzGold)" stroke-width="1.6"/>
+<g class="rz-ar"><polyline points="${WRAP}" fill="none" stroke="#ffd23a" stroke-width="4" opacity=".55" filter="url(#rzB2)"/><polyline points="${WRAP}" fill="none" stroke="#fff" stroke-width="1.2" stroke-linejoin="bevel"/></g>
+<g class="rz-bg"><path d="M150 0L158 16L150 18L166 40" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="bevel"/></g>
+<path class="rz-gl" d="M192 2L194 12L204 14L194 16L192 26L190 16L180 14L190 12Z" fill="#fff"/>
+${PT}
+<rect y="196" width="200" height="44" fill="url(#rzFog)"/></svg>`;
+/* ── 스킬 / 정보 ── */
+SK[id]={b:{n:'뇌참',c:'n',cd:0},s:{n:'낙뢰',c:'e',cd:2},x:{n:'연쇄 뇌격',c:'e',cd:3},u:{n:'벽력일섬 · 천뢰',c:'u',cd:4}};
+DM[id]={b:50*MUL,s:120*MUL,x:60*MUL,u:65*MUL};
+DT[id]={role:'뇌정의 검제 · 충전 폭발형 딜러',sk:[
+['뇌참','일반','쿨 0','단일 50% ×2.5 = 125% 2연타 · 충전 +1 · [감전] 대상이면 추가 낙뢰 70% ×2.5 = 175% + 충전 +1','검 끝에 번개를 얹어 두 번 벤다. 이미 감전된 자에게는 하늘이 한 번 더 내려친다.'],
+['낙뢰','스킬','쿨 2','단일 120% ×2.5 = 300% · [감전] 3라운드 · 충전 +1 (이미 감전 상태였다면 +2)','북소리가 멎는 순간, 하늘이 갈라진다.'],
+['연쇄 뇌격','스킬','쿨 3','[감전] 대상부터 연쇄 3 + (충전÷2)회 · 점프마다 60%에서 +8%씩 ×2.5 · 방어 20% 무시 · 맞은 적 감전 2라운드 · 충전 +1','번개는 길을 고르지 않는다. 가까운 자에게서 다음 자에게로.'],
+['벽력일섬 · 천뢰','궁극기','쿨 4 · 시작 2','적 전체 3연참 각 65% ×2.5 · 방어 35% 무시 → 전체 [감전] 후 최종 낙뢰 (80% + 충전당 25%) ×2.5 · 충전 전부 소모 · 2라운드 [과부하]','천둥이 들리기 전에, 칼은 이미 지나갔다.'],
+['정전기','패시브','상시','[충전] 최대 6 · 모든 공격이 적중할 때마다 쌓임 · 충전 1당 피해 +6% · 전투 시작 시 충전 2','' ],
+['감전 전도','패시브','[감전] 대상 타격 시','[감전] 대상에게 피해 +25% · 타격할 때마다 다른 적 1체에 피해의 25%를 전도하고 감전 2라운드 부여','' ],
+['과충전','패시브','충전 6 도달','[과부하] 2라운드: 피해 +30% · 방어 30% 무시 · 궁극기 쿨다운 -1 · 충전은 3으로 감소','' ],
+['피뢰침','패시브','피격 시','받는 피해 -8% · 피격될 때마다 [충전] +1 (라운드당 2회)','' ],
+['뇌폭','패시브','[감전] 적 처치 시','나머지 적 전체에 (20% + 충전당 8%) ×2.5 폭발 피해','' ],
+['최후의 방전','패시브','전투당 1회','쓰러질 때 HP 30%로 부활 · [충전]을 전부 방출해 적 전체에 (30% + 충전당 15%) ×2.5 피해 · 2라운드 [과부하]','' ]]};
+LBX[id]=u=>{const L={b:'2연격 · 감전 추가타',s:'감전 · 충전 +',x:'연쇄 · 충전 비례',u:'전체 3연참 · 최종 낙뢰'};return {b:L.b,s:L.s,u:L.x,undefined:L.u}};
+STT[id]=u=>{const a=[];if(u._rzC>0)a.push('충전 '+u._rzC);if(u._rzOv>0)a.push('과부하 '+u._rzOv);return a.join(' · ')};
+/* ── 대사 / 목소리 / 효과음 ── */
+VP['라이젠']=[.9,1.05,3];SH[id]='…번개가 먼저다.';
+VL[id]={b:['하앗!','가라.','스읍.'],s:['떨어져라!','낙뢰!'],x:['이어져라.','끝없이.']};
+GL[id]=['…북소리가 들리나? 내 심장 소리다.'];WL[id]=['…고요해졌군. 비가 그치겠어.'];
+X[id+'_b']=()=>{sw(1600,260,.12,.09,0,'sawtooth');tn(1400,.05,'square',.05,.04,2400)};
+X[id+'_s']=()=>{tn(70,.5,'sine',.14,0,40);sw(2400,120,.35,.1,.05,'sawtooth');ring(900,.5,.06,.1)};
+X[id+'_x']=()=>{[0,.09,.18,.27].forEach((d,i)=>{sw(2800-i*260,200,.12,.09,d,'sawtooth');ring(1100+i*200,.4,.05,d)})};
+USX[id]={1:()=>{[0,.3,.55].forEach(d=>tn(52,.4,'sine',.2,d,34));ring(330,1.4,.05,0)},2:()=>{sw(180,2200,.9,.1,0,'sawtooth');ring(880,1,.06,.2)},3:()=>{[0,.1,.2].forEach(d=>{sw(3200,160,.2,.12,d,'sawtooth');ring(1800+d*900,.5,.06,d)})},4:()=>{tn(40,1.4,'sine',.26,0,22);sw(3600,100,.6,.14,0,'sawtooth');ring(2093,1.8,.08,.05)}};
+/* ── 전투 로직: 충전 ⇄ 감전 ⇄ 과부하 ── */
+const AE=()=>S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0);
+const dm=(u,e,p,ig)=>{if(!e||!e.alive||e.hp<=0)return 0;const d=deal(u,e,p*MUL,ig||0);pop(e.id,'-'+d);return d};
+const gain=(u,n)=>{const o=u._rzC||0;u._rzC=Math.min(6,o+n);if(u._rzC>o)pop(u.id,'⚡'+u._rzC);
+ if(u._rzC>=6&&!(u._rzOv>0)){u._rzOv=2;u._rzC=3;u.cd.u=Math.max(0,(u.cd.u||0)-1);pop(u.id,'⚡과부하');log('⚡ 라이젠: 과충전 — 과부하 돌입! 2라운드간 피해·관통 상승');try{fxFlash()}catch(er){}}};
+{const D0=deal;deal=function(u,e,pct,ig){
+ try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'){let m=1+.06*(u._rzC||0);if(e._rzSh>0)m*=1.25;if(u._rzOv>0){m*=1.3;ig=Math.max(ig||0,.3)}else ig=Math.max(ig||0,.1);pct=pct*m}}catch(er){}
+ const r=D0.call(this,u,e,pct,ig);
+ try{if(S&&u&&u.id===id&&u.side==='a'&&e&&e.side==='b'&&!u._rzIn){
+  if(e._rzSh>0&&e.hp>0){const o=AE().filter(x=>x!==e);if(o.length){const t=o[Math.random()*o.length|0];u._rzIn=1;try{D0.call(this,u,t,pct*.25,ig)}finally{u._rzIn=0}if(!(t._rzSh>0)){t._rzSh=2;shockLoop()}pop(t.id,'⚡전도');fxArc(cardRect(e),cardRect(t))}}
+  if(e.hp<=0&&e._rzSh>0&&!e._rzK){e._rzK=1;const n=u._rzC||0;u._rzIn=1;try{AE().forEach(x=>{D0.call(this,u,x,(20+8*n)*MUL,.2);fxBolt(cardRect(x));pop(x.id,'💥뇌폭')})}finally{u._rzIn=0}pop(u.id,'⚡뇌폭');log(`⚡ 뇌폭 — 감전된 적이 쓰러지며 전기가 폭발한다 (충전 ${n})`)}
+ }}catch(er){}
+ return r}}
+{const H0=hurt;hurt=function(t,v){
+ try{if(S&&S.U&&t&&t.id===id&&t.side==='a'&&v>0){v=Math.max(1,Math.round(v*.92));if((t._rzG||0)<2){t._rzG=(t._rzG||0)+1;gain(t,1)}}}catch(er){}
+ const r=H0.call(this,t,v);
+ try{if(t&&t.id===id&&t.side==='a'&&!t._rzRv&&(t.hp<=0||!t.alive)){t._rzRv=1;const n=t._rzC||0;t.alive=1;t.hp=Math.round(t.maxhp*.3);t._rzOv=2;
+  AE().forEach(x=>{const d=deal(t,x,(30+15*n)*MUL,.35);pop(x.id,'-'+d);fxBolt(cardRect(x),1)});t._rzC=0;fxFlash();pop(t.id,'⚡방전');
+  log(`⚡ 최후의 방전 — 라이젠이 충전 ${n}을 전부 터뜨리며 다시 일어선다!`);if(S.q&&S.q.indexOf&&S.q.indexOf(t.id)<0)S.q.push(t.id)}}catch(er){}
+ return r}}
+{const N0=nr;nr=function(){N0.apply(this,arguments);try{S.U.forEach(x=>{if(x._rzSh>0)x._rzSh--});
+ const A=S.U.find(x=>x.id===id&&x.side==='a'&&x.alive&&x.hp>0);
+ if(A){A._rzG=0;if(A._rzOv>0)A._rzOv--;if(!A._rzInit){A._rzInit=1;A._rzC=2;pop(A.id,'⚡2')}}}catch(er){}}}
+/* ── 이펙트 ── */
+const fxL=()=>{let l=document.getElementById('rzfx');if(!l){l=document.createElement('div');l.id='rzfx';document.body.appendChild(l)}return l};
+const fxAdd=(html,ms)=>{const t=document.createElement('template');t.innerHTML=html.trim();const e=t.content.firstElementChild;fxL().appendChild(e);setTimeout(()=>e.remove(),ms||1000);return e};
+const cr=r=>r?{l:r.left,t:r.top,w:r.width,h:r.height}:{l:innerWidth*.45,t:innerHeight*.2,w:200,h:130};
+const ctr=r=>[r.l+r.w/2,r.t+r.h/2];
+const shk=ms=>{document.body.classList.add('shk');setTimeout(()=>document.body.classList.remove('shk'),ms)};
+const enemyCards=()=>[...document.querySelectorAll('#bt .bsw .bs')].map(c=>cr(c.getBoundingClientRect()));
+const cardRect=e=>{const i=AE().indexOf(e),cs=enemyCards();return cs[i]||cs[0]||cr(null)};
+const burst=(x,y,n)=>{for(let i=0;i<n;i++){const a=Math.PI*2*i/n+Math.random()*.5,d=30+Math.random()*50;fxAdd(`<i class="rz-sp" style="left:${x}px;top:${y}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px"></i>`,600)}};
+const fxFlash=()=>fxAdd('<i class="rz-fl"></i>',500);
+const fxSlash=(r,rot,big)=>{const[x,y]=ctr(r),L=Math.max(r.w,140)*(big?1.5:1.15);fxAdd(`<i class="rz-sl" style="left:${x}px;top:${y}px;width:${L}px;--r:${rot}deg"></i>`,400);burst(x,y,big?12:6);fxAdd(`<i class="rz-ring" style="left:${x}px;top:${y}px;width:${big?140:80}px;height:${big?140:80}px"></i>`,520)};
+const fxBolt=(r,big)=>{const[x,y]=ctr(r),w=big?150:96;fxAdd(`<div class="rz-bw" style="--x:${x}px;--y:${y+10}px;--w:${w}px"><i class="rzB"></i></div>`,520);setTimeout(()=>{burst(x,y,big?14:8);fxAdd(`<i class="rz-ring" style="left:${x}px;top:${y}px;width:${big?170:100}px;height:${big?170:100}px"></i>`,520)},110)};
+const fxArc=(a,b)=>{const[x1,y1]=ctr(a),[x2,y2]=ctr(b),p=[[x1,y1]];for(let i=1;i<6;i++){const t=i/6;p.push([x1+(x2-x1)*t+(Math.random()-.5)*34,y1+(y2-y1)*t+(Math.random()-.5)*34])}p.push([x2,y2]);fxAdd(`<svg class="rz-arc" viewBox="0 0 ${innerWidth} ${innerHeight}"><polyline points="${p.map(q=>q.map(Math.round).join(',')).join(' ')}"/></svg>`,450)};
+let mkRaf=0;const mkEls=new Map();
+const shockLoop=()=>{if(mkRaf)return;const tick=()=>{try{const en=S&&S.U?S.U.filter(x=>x.side==='b'&&x.alive&&x.hp>0):[];const cs=[...document.querySelectorAll('#bt .bsw .bs')];let any=false;
+ en.forEach((x,i)=>{if(x._rzSh>0&&cs[i]){any=true;let el=mkEls.get(x);if(!el){el=document.createElement('div');el.className='rz-mk';el.textContent='⚡';fxL().appendChild(el);mkEls.set(x,el)}const r=cs[i].getBoundingClientRect();el.style.left=(r.right-22)+'px';el.style.top=(r.top+22)+'px'}});
+ for(const[x,el]of mkEls){if(!(x._rzSh>0&&x.alive&&x.hp>0)||!S||S.over){el.remove();mkEls.delete(x)}else any=true}
+ if(any)mkRaf=requestAnimationFrame(tick);else{mkRaf=0;mkEls.forEach(el=>el.remove());mkEls.clear()}}catch(er){mkRaf=0}};mkRaf=requestAnimationFrame(tick)};
+const shock=(e,n)=>{if(e&&e.hp>0){e._rzSh=Math.max(e._rzSh||0,n);pop(e.id,'⚡ 감전');shockLoop()}};
+/* ── 스킬 ── */
+H[id]={
+ b:async(u,e)=>{const rc=cardRect(e);fxSlash(rc,-30,false);await sl(100);let t=dm(u,e,50);shk(120);gain(u,1);await sl(110);fxSlash(rc,26,false);if(e.hp>0)t+=dm(u,e,50);
+  if(e.hp>0&&e._rzSh>0){await sl(110);fxBolt(rc);t+=dm(u,e,70);gain(u,1);pop(e.id,'⚡추가 낙뢰');shk(220)}
+  log(`⚡ ${u.n}: 뇌참 → ${e.n} ${t} 피해`)},
+ s:async(u,e)=>{const rc=cardRect(e);fxAdd('<div class="rz-dim" style="--t:.8s"></div>',900);await sl(140);fxBolt(rc,1);await sl(190);const was=e._rzSh>0;const d=dm(u,e,120);shk(200);fxFlash();shock(e,3);gain(u,was?2:1);
+  log(`⚡ ${u.n}: 낙뢰 → ${e.n} ${d} 피해 · 감전 3라운드${was?' (재감전 · 충전 +2)':''}`)},
+ x:async(u,e)=>{fxAdd('<div class="rz-dim" style="--t:1.2s"></div>',1250);await sl(200);let en=AE();if(!en.length)return;let cur=en.find(x=>x._rzSh>0)||(e&&e.hp>0?e:en[0]);const J=3+Math.floor((u._rzC||0)/2);let t=0,prev=null;
+  for(let i=0;i<J;i++){if(!cur||cur.hp<=0){const p=AE();if(!p.length)break;cur=p[Math.random()*p.length|0]}
+   const rc=cardRect(cur);if(prev)fxArc(prev,rc);fxBolt(rc);t+=dm(u,cur,60+i*8,.2);shk(90);shock(cur,2);prev=rc;await sl(130);
+   const p=AE().filter(x=>x!==cur);if(p.length)cur=p.find(x=>!(x._rzSh>0))||p[Math.random()*p.length|0]}
+  gain(u,1);log(`⚡ ${u.n}: 연쇄 뇌격 → ${J}연쇄 총 ${t} 피해`)},
+ u:async(u,e,s)=>{await cutin(u,s);const n=u._rzC||0;let t=0;
+  for(let i=0;i<3;i++){fxAdd(`<i class="rz-bw" style="--x:${innerWidth*(.25+i*.25)}px;--y:${innerHeight}px;--w:180px"><i class="rzB"></i></i>`,520);AE().forEach(en=>{t+=dm(u,en,65,.35);fxSlash(cardRect(en),[-26,20,-8][i],i==2)});shk(180);await sl(170)}
+  fxFlash();await sl(150);AE().forEach(en=>shock(en,3));await sl(80);
+  AE().forEach(en=>{fxBolt(cardRect(en),1);t+=dm(u,en,80+25*n,.35)});shk(420);fxFlash();
+  u._rzC=0;u._rzOv=3;pop(u.id,'⚡과부하');
+  log(`⚡ ${u.n}: 벽력일섬 · 천뢰 → 적 전체 ${t} 피해 · 충전 ${n} 전부 방출 · 2라운드 과부하`)}};
+/* ── 궁극기 컷인 ── */
+const DRM=DR(100,100,78,12,9)+'<circle cx="100" cy="100" r="78" fill="none" stroke="#ffd23a" stroke-width="1.2" stroke-dasharray="2 5"/><circle cx="100" cy="100" r="60" fill="none" stroke="#ffe27a" stroke-width=".8"/><circle cx="100" cy="100" r="56" fill="none" stroke="#7a8bff" stroke-width=".7" stroke-dasharray="1 3"/>';
+const BO=[[4,0],[24,.15],[50,.3],[74,.08],[90,.4]].map(a=>`<div class="rzcb" style="--x:${a[0]}vw;--d:${a[1]}s"><i class="rzB"></i></div>`).join('');
+const SPK=n=>[...Array(n)].map((_,i)=>`<i class="rzsp" style="--x:${(i*4.7+3)%98}%;--s:${.5+i%3*.35}vh;--d:${2.4+i%4*.7}s;--w:${(i%7)*.3}s;--dx:${(i%2?-1:1)*(3+i%5*3)}vh"></i>`).join('');
+const F={q:'…천둥보다 빠르게, 벽력보다 깊게.',cc:'#ffd23a',fx:`<div class="rzd"><svg viewBox="0 0 200 200">${DRM}</svg></div>`+BO+SPK(22)+'<i class="rzcs" style="--y:30vh;--r:-16deg;--d:0s"></i><i class="rzcs" style="--y:50vh;--r:12deg;--d:.16s"></i><i class="rzcs" style="--y:68vh;--r:-6deg;--d:.32s"></i>'};
+{const C3=cutin;cutin=async function(u,s){if(u.id!==id)return C3(u,s);skip=false;let o=document.getElementById('fs');if(!o){o=document.createElement('div');o.id='fs';o.onclick=()=>{skip=true};document.body.appendChild(o)}
+ o.className='on '+id;o.dataset.p=0;o.style.setProperty('--cc',F.cc);
+ o.innerHTML=`<div class="bg"></div><div class="rays"></div>${F.fx}<div class="ch">${CIL[id]}</div><div class="tt"><b>${s.n}</b><small>${u.n}</small></div><div class="qt">${F.q}</div><div class="fl"></div><div class="bar b1"></div><div class="bar b2"></div><em>탭하여 연출 건너뛰기</em>`;
+ void o.offsetWidth;for(const[p,t]of[[1,900],[2,1000],[3,850],[4,1100]]){o.dataset.p=p;sfxU(id,p);if(p==1&&!skip)say(u.n,F.q);if(p==4)document.body.classList.add('shk');await sl(t)}
+ document.body.classList.remove('shk');o.className='';o.innerHTML='';skip=false}}
+/* ── 뽑기: SSS 확률 0.01% ── */
+{const R=rollG;rollG=function(){if(Math.random()<GP[NG]){try{if(typeof PB!=='undefined'){PB.i=(PB.i||0)+1;PB.ok=1}G.ps=0}catch(er){}return id}return R.apply(this,arguments)}}
+/* ── SSS 전용 뽑기 연출 ── */
+const PB5=[[10,0],[30,.12],[50,.2],[70,.06],[90,.3]].map(a=>`<div class="rzpb" style="--x:${a[0]}%;--d:${a[1]}s"><i class="rzB"></i></div>`).join('');
+const rzPullCine=async()=>{
+ const o=document.createElement('div');o.id='rzpull';o.dataset.p=0;
+ o.innerHTML=`<div class="rzc"></div><div class="rzpd"><svg viewBox="0 0 200 200">${DRM}</svg></div>${PB5}<div class="fl"></div><i class="rzpr"></i><i class="rzpr" style="--d:.18s"></i><div class="stg"><div class="art">${CIL[id]}</div><div class="ttl"><span class="sss">SSS</span><b>라이젠</b><small>뇌정(雷霆)의 검제</small></div>${SPK(24)}</div><em>탭하여 건너뛰기</em>`;
+ document.body.appendChild(o);let sk=false;o.onclick=()=>{sk=true};
+ const w=async ms=>{const t0=performance.now();while(!sk&&performance.now()-t0<ms)await new Promise(r=>setTimeout(r,30))};
+ const snd=p=>{try{if(p==1){[0,.3,.55].forEach(d=>tn(50,.4,'sine',.22,d,32))}else if(p==2){sw(160,2000,1,.1,0,'sawtooth');ring(260,1.2,.05,.2)}else if(p==3){[0,.1,.2,.3].forEach(d=>{sw(3400,140,.2,.13,d,'sawtooth')});tn(40,1,'sine',.3,.3,22)}else if(p==4){[523,659,784,1047,1319].forEach((fq,i)=>ring(fq,2,.06,i*.1));tn(52,1.2,'sine',.16,0,38)}}catch(er){}};
+ for(const[p,ms]of[[1,1100],[2,1000],[3,900],[4,2300]]){if(sk)break;o.dataset.p=p;snd(p);await w(ms)}
+ o.dataset.p=5;await new Promise(r=>setTimeout(r,sk?160:450));o.remove()};
+window.__rzPull=rzPullCine;
+{const RS=rvShow;rvShow=function(i){try{const r=RV.L[i];if(r&&r.id===id&&!window.__rzPulling){window.__rzPulling=1;rzPullCine().catch(()=>{}).then(()=>{window.__rzPulling=0;RS.call(window,i)});return}}catch(er){}return RS.apply(this,arguments)}}
+/* ── 치트: 테스트용 지급 ── */
+const cp=document.getElementById('chp');if(cp&&!document.getElementById('rzcheat')){const b=document.createElement('button');b.id='rzcheat';b.textContent='⚡ 라이젠 지급';b.onclick=()=>{try{G.j[id]=1;if(typeof save==='function')save();location.reload()}catch(er){alert('지급 실패: '+er.message)}};cp.appendChild(b)}
+console.log('raizen: 라이젠(SSS) 등록 완료');
+}catch(err){console.error('[raizen-patch]',err)}})();
+</script>
+
+<style id="dxopp-css">
+#dxtray .dxopp{height:32px;padding:0 10px;border-radius:8px;border:1px solid #c9a15b;background:#1b1d24;color:#f0e2bf;font-size:12px;cursor:pointer;white-space:nowrap;margin-left:6px}
+#dxo{display:none;position:fixed;inset:0;z-index:100000;background:#000b;align-items:center;justify-content:center}
+#dxo.on{display:flex}
+#dxo .dxob{width:min(94vw,560px);max-height:88vh;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:#14161c;border:1px solid #c9a15b;color:#eee}
+#dxo .dxoh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#dxo .dxoh small{color:#9aa0a8;flex:1;min-width:140px;font-size:11px}
+#dxo button{height:32px;padding:0 12px;border-radius:8px;border:1px solid #555;background:#20232b;color:#eee;cursor:pointer}
+#dxo button.pri{background:#c9a15b;color:#1a1408;border-color:#c9a15b;font-weight:700}
+#dxo input{height:32px;border-radius:8px;border:1px solid #444;background:#0e1014;color:#eee;padding:0 10px}
+#dxo .dxos{display:flex;gap:6px;flex-wrap:wrap;min-height:30px;align-items:center;font-size:12px}
+#dxo .dxos .sel{padding:4px 8px;border-radius:14px;background:#2a2418;border:1px solid #c9a15b;cursor:pointer}
+#dxo .dxog{overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;flex:1;min-height:120px}
+#dxo .dxoc{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:8px;border:1px solid #333;background:#1b1d24;cursor:pointer;font-size:12px}
+#dxo .dxoc.on{border-color:#ffd23a;background:#2a2418;box-shadow:0 0 8px #ffd23a66}
+#dxo .dxoc .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+#dxo .dxof{display:flex;gap:8px;justify-content:flex-end}
+</style>
+<script id="dxopp-patch">/*#### [115_dx-opponent] 훈련소: 허수아비 대신 상대 캐릭터 선택 (연습 대전 엔진 사용) ####*/
+(function(){try{
+if(!window.DEX||typeof show!=='function'||typeof ALL==='undefined'){console.warn('dx-opp: 필요한 데이터가 없어 건너뜀');return}
+const O={ids:[]};window.DXOPP=O;
+const GNM={0:'D',1:'C',2:'B',3:'A',4:'S',5:'SS',6:'N',7:'M',8:'SSS'},GCL={0:'#6b6f76',1:'#9aa0a8',2:'#5c9ec7',3:'#a78bd6',4:'#e0b44a',5:'#ff4d6d',6:'#b58a5a',7:'#b28cff',8:'#ffd24a'};
+const gname=i=>GNM[Number(GR[i])]||GN[GR[i]]||'?',gcol=i=>GCL[Number(GR[i])]||'#888';
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const rk=i=>typeof GRK==='function'?GRK(i):Number(GR[i]);
+const pool=()=>ALL.filter(i=>C[i]&&SK[i]).sort((a,b)=>rk(b)-rk(a)||(C[a].n>C[b].n?1:-1));
+const lab=()=>O.ids.length?`⚔ 상대: ${C[O.ids[0]].ic} ${C[O.ids[0]].n}${''}`:'⚔ 상대: 🎯 허수아비';
+/* ── 훈련 팀 바에 상대 버튼 ── */
+const ensure=()=>{const t=document.getElementById('dxtray');if(!t)return;
+ if(!t._o){t._o=new MutationObserver(()=>{if(!t.querySelector('.dxopp'))ensure()});t._o.observe(t,{childList:true})}
+ const g=t.querySelector('.go');if(!g)return;let b=t.querySelector('.dxopp');
+ if(!b){b=document.createElement('button');b.className='dxopp';b.onclick=openPick;g.parentNode.insertBefore(b,g)}b.textContent=lab()};
+{const S0=show;show=function(n){const r=S0.apply(this,arguments);if(n==='dex')setTimeout(ensure,0);return r}}
+/* ── 상대 선택 창 ── */
+function refresh(m){const q=(m.querySelector('#dxoq').value||'').trim();
+ m.querySelector('.dxos').innerHTML=O.ids.length?O.ids.map(i=>`<span class="sel" data-s="${i}">${C[i].ic} ${esc(C[i].n)} ✕</span>`).join(''):'<em>🎯 허수아비 (캐릭터를 고르면 그 캐릭터와 대전해요)</em>';
+ m.querySelector('.dxog').innerHTML=pool().filter(i=>!q||C[i].n.includes(q)||i.includes(q)).map(i=>`<div class="dxoc${O.ids.includes(i)?' on':''}" data-i="${i}"><span class="ic" style="background:${C[i].col}">${C[i].ic}</span><b>${esc(C[i].n)}</b><small style="color:${gcol(i)}">${gname(i)}등급</small></div>`).join('')||'<div style="grid-column:1/-1;text-align:center;color:#888;padding:24px">검색 결과가 없어요</div>'}
+function openPick(){let m=document.getElementById('dxo');
+ if(!m){m=document.createElement('div');m.id='dxo';
+  m.innerHTML='<div class="dxob"><div class="dxoh"><b>⚔ 훈련 상대 선택</b><small>선택한 캐릭터와 실제 스킬로 대전해요 · 상대 Lv은 내 훈련 팀과 같아요</small><button data-a="x">✕</button></div><input id="dxoq" placeholder="이름 검색" autocomplete="off"><div class="dxos"></div><div class="dxog"></div><div class="dxof"><button data-a="clr">🎯 허수아비로</button><button data-a="ok" class="pri">확인</button></div></div>';
+  document.body.appendChild(m);
+  m.querySelector('#dxoq').oninput=()=>refresh(m);
+  m.addEventListener('click',e=>{
+   if(e.target===m){m.classList.remove('on');ensure();return}
+   const a=e.target.closest('[data-a]');if(a){if(a.dataset.a==='clr'){O.ids=[];refresh(m);return}m.classList.remove('on');ensure();return}
+   const s=e.target.closest('[data-s]');if(s){O.ids=O.ids.filter(x=>x!==s.dataset.s);refresh(m);return}
+   const c=e.target.closest('.dxoc');if(c){const i=c.dataset.i,k=O.ids.indexOf(i);if(k>=0)O.ids.splice(k,1);else{O.ids=[i]}refresh(m)}})}
+ refresh(m);m.classList.add('on')}
+/* ── 훈련장 엔진(스토리 전투) 그대로: 허수아비 자리에 선택한 캐릭터가 실제 스킬로 싸운다 ──
+   상대 차례에만 진영을 잠깐 뒤집어(상대=아군 쪽, 내 팀=적 쪽) 캐릭터 본래 스킬 처리를 그대로 재사용한다. */
+const swap=()=>S.U.forEach(u=>{u.side=u.side==='a'?'b':'a'});
+{const P0=spawn;spawn=function(){const r=P0.apply(this,arguments);
+  try{if(window.__gTrain&&O.ids.length&&S&&!S.rp0){const id=O.ids[0];
+   if(S.U.some(u=>u.id===id&&u.side==='a')){toast('내 훈련 팀과 같은 캐릭터는 상대로 쓸 수 없어요 · 허수아비로 진행');return r}
+   G.lv[id]=window.DEX.lv;const o=mk(id);o.side='b';o._op=1;o.alive=1;if(o.def==null)o.def=0;o.sn=(SK[id]&&SK[id].s&&SK[id].s.n)||'스킬';S.lg=S.lg.filter(l=>!/허수아비 등장/.test(l));
+   let hv=o.hp;Object.defineProperty(o,'hp',{configurable:true,enumerable:true,get(){return hv},set(v){const x=hv-v;hv=v;if(x>0){const D=window.DEX,k=(S.cur&&S.cur.id)+':'+S.rd;if(D.key!==k){D.key=k;D.burst=0;D.hits=0}D.last=x;D.burst+=x;D.hits++;D.total+=x;try{window.__dxHud&&window.__dxHud()}catch(e){}}}});
+   S.U=S.U.filter(u=>u.side==='a');S.U.push(o);S.tg=null;S._opChar=id;log('⚔ 훈련 상대: '+o.n+' (Lv.'+window.DEX.lv+')')}}catch(e){console.error('[dx-opp spawn]',e)}
+  return r}}
+{const R0=render;render=function(){if(window.S&&S._flip){swap();try{return R0.apply(this,arguments)}finally{swap()}}return R0.apply(this,arguments)}}
+{const B0=bossAct;bossAct=async function(b){
+  if(!(b&&b._op&&S&&S._opChar))return B0.apply(this,arguments);
+  const A=S.U.filter(u=>u.side==='a'&&u.alive);if(!A.length)return;
+  const ok=k=>SK[b.id]&&SK[b.id][k]&&!((b.cd&&b.cd[k])>0);
+  const k=ok('u')?'u':ok('s')?'s':'b';
+  const n0=next,c0=chk;let fin;const done=new Promise(r=>fin=r);
+  S.U.forEach(u=>{if(u.def==null)u.def=0});
+  S._flip=1;swap();S.tg=A[Math.random()*A.length|0].id;S.cur=b;S.busy=0;
+  next=async function(){fin()};
+  chk=function(){S.U.forEach(u=>{if(u!==b&&u.alive&&u.hp<=0){u.alive=0;log(u.n+' 쓰러졌다')}});return 0};
+  try{
+    const run=act(k);if(S.pk&&S.pk.u===b.id)pkChoose(b.id);
+    await Promise.race([Promise.resolve(run).then(()=>done),done,new Promise(r=>setTimeout(r,12000))]);
+  }catch(e){console.error('[dx-opp act]',e)}
+  finally{next=n0;chk=c0;swap();S._flip=0;S.busy=1;S.pk=null}
+ }}
+{const E0=end;end=function(w){if(S&&S._opChar&&!S.ended){try{toast(w?'🏆 훈련 상대를 쓰러뜨렸어요!':'훈련 상대에게 패배했어요')}catch(e){}}return E0.apply(this,arguments)}}
+document.addEventListener('click',e=>{if(!O.ids.length)return;const g=e.target.closest&&e.target.closest('#dxtray .go,#dxd .solo');if(!g)return;
+ const D=window.DEX;let ids;
+ if(g.classList.contains('solo')){const h=document.querySelector('#dxd h3'),nm=h&&h.firstChild?h.firstChild.textContent.trim():'',i=ALL.find(x=>C[x]&&C[x].n===nm);if(!i)return;ids=D.team.includes(i)?D.team.slice():[i]}
+ else ids=D.team.slice();
+ if(ids.includes(O.ids[0])){e.stopImmediatePropagation();e.preventDefault();toast('내 훈련 팀과 같은 캐릭터는 상대로 고를 수 없어요')}},true);
+ensure();console.log('dx-opp: 훈련소 상대 선택 등록 완료');
+}catch(err){console.error('[dx-opp-patch]',err)}})();
+</script>
+
 <style id="grade-shimmer-css">/*#### [112_grade-shimmer] S·SS·SSS 등급 반짝임 (아이콘 · 일러스트) ####*/
 .gl-s,.gl-ss,.gl-sss,.gl-m{position:relative}
 @keyframes glrot{to{transform:rotate(360deg)}}
@@ -12897,14 +13769,18 @@ const cp=document.getElementById('chp');if(cp&&!document.getElementById('aurchea
 .dpt.gl-sss::after{opacity:.8;animation-duration:2.8s;background:linear-gradient(100deg,transparent,rgba(255,240,170,.85),transparent)}
 .dpt.gl-ss{box-shadow:inset 0 0 18px rgba(255,77,109,.25)}
 .dpt.gl-sss{box-shadow:inset 0 0 22px rgba(255,210,74,.35)}
-/* M등급: 약하게 타오르는 불꽃 */
-@keyframes glflame{0%{opacity:.30;transform:scaleY(.9) scaleX(1)}35%{opacity:.58;transform:scaleY(1.08) scaleX(.97)}60%{opacity:.38;transform:scaleY(.95) scaleX(1.02)}100%{opacity:.55;transform:scaleY(1.1) scaleX(.98)}}
-@keyframes glpM{0%,100%{box-shadow:0 0 3px 0 rgba(255,110,30,.22)}30%{box-shadow:0 0 7px 1px rgba(255,130,40,.50)}55%{box-shadow:0 0 4px 0 rgba(255,100,25,.30)}80%{box-shadow:0 0 8px 1px rgba(255,140,50,.55)}}
-.ic.gl-m::before,.ch.gl-m::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;transform-origin:50% 100%;animation:glflame 1.4s ease-in-out infinite;background:radial-gradient(ellipse 75% 65% at 50% 108%,rgba(255,140,40,.95),rgba(255,70,10,.45) 55%,transparent 78%)}
-.ic.gl-m{animation:glpM 1.9s ease-in-out infinite}
-.dpt.gl-m::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;pointer-events:none;transform-origin:50% 100%;animation:glflame 1.6s ease-in-out infinite;background:radial-gradient(ellipse 85% 100% at 50% 100%,rgba(255,130,40,.6),rgba(255,70,10,.22) 55%,transparent 78%)}
-.dpt.gl-m{box-shadow:inset 0 0 16px rgba(255,100,30,.22)}
-@media (prefers-reduced-motion:reduce){.ic.gl-s::before,.ic.gl-ss::before,.ic.gl-sss::before,.ch.gl-s::before,.ch.gl-ss::before,.ch.gl-sss::before,.ic.gl-ss,.ic.gl-sss,.ic.gl-m,.ic.gl-m::before,.ch.gl-m::before,.dpt.gl-m::after,.dpt.gl-s::after,.dpt.gl-ss::after,.dpt.gl-sss::after{animation:none}}
+/* M등급: 타오르는 불꽃 (불길 + 불씨 + 주황 열기) */
+@keyframes glflame{0%{opacity:.62;transform:scaleY(.86) scaleX(1) skewX(0)}25%{opacity:.95;transform:scaleY(1.14) scaleX(.96) skewX(-4deg)}50%{opacity:.7;transform:scaleY(.94) scaleX(1.03) skewX(3deg)}75%{opacity:1;transform:scaleY(1.2) scaleX(.95) skewX(-3deg)}100%{opacity:.66;transform:scaleY(.9) scaleX(1) skewX(2deg)}}
+@keyframes glember{0%{transform:translateY(7px);opacity:0}25%{opacity:1}100%{transform:translateY(-13px);opacity:0}}
+@keyframes glpM{0%,100%{box-shadow:0 -2px 6px 1px rgba(255,120,20,.55),0 0 4px 0 rgba(255,60,0,.5)}30%{box-shadow:0 -5px 12px 3px rgba(255,150,40,.9),0 0 7px 1px rgba(255,80,10,.75)}55%{box-shadow:0 -3px 8px 1px rgba(255,110,20,.6),0 0 5px 0 rgba(255,60,0,.55)}80%{box-shadow:0 -6px 13px 3px rgba(255,160,50,.95),0 0 8px 1px rgba(255,90,10,.8)}}
+.ic.gl-m::before,.ch.gl-m::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;transform-origin:50% 100%;animation:glflame .9s ease-in-out infinite;background:radial-gradient(ellipse 82% 78% at 50% 112%,#ffe27a 0%,#ff9a1f 32%,rgba(255,60,0,.8) 58%,transparent 82%)}
+.ic.gl-m::after,.ch.gl-m::after{content:"";position:absolute;left:0;right:0;top:-9px;height:100%;pointer-events:none;animation:glember 1.2s linear infinite;background:radial-gradient(circle at 24% 78%,#ffd070 0 1.5px,transparent 2.3px),radial-gradient(circle at 52% 92%,#ffb040 0 1.8px,transparent 2.6px),radial-gradient(circle at 78% 70%,#ffd070 0 1.4px,transparent 2.2px)}
+.ic.gl-m{animation:glpM 1.1s ease-in-out infinite}
+.tu .ic.gl-m::after{content:"i";left:auto;right:-3px;top:auto;height:13px;animation:none;background:rgba(0,0,0,.733)}
+.dpt.gl-m::after{content:"";position:absolute;left:0;right:0;bottom:0;height:62%;pointer-events:none;transform-origin:50% 100%;animation:glflame 1.1s ease-in-out infinite;background:radial-gradient(ellipse 90% 100% at 50% 108%,rgba(255,215,90,.85),rgba(255,120,20,.6) 38%,rgba(255,60,0,.3) 62%,transparent 82%)}
+.dpt.gl-m::before{content:"";position:absolute;left:0;right:0;bottom:0;height:90%;pointer-events:none;z-index:1;animation:glember 1.7s linear infinite;background:radial-gradient(circle at 14% 82%,#ffd070 0 2px,transparent 3px),radial-gradient(circle at 36% 92%,#ffb040 0 2.4px,transparent 3.4px),radial-gradient(circle at 60% 76%,#ffd070 0 2px,transparent 3px),radial-gradient(circle at 84% 90%,#ffb040 0 2.4px,transparent 3.4px)}
+.dpt.gl-m{box-shadow:inset 0 -14px 24px rgba(255,100,20,.45),inset 0 0 14px rgba(255,80,10,.25)}
+@media (prefers-reduced-motion:reduce){.ic.gl-s::before,.ic.gl-ss::before,.ic.gl-sss::before,.ch.gl-s::before,.ch.gl-ss::before,.ch.gl-sss::before,.ic.gl-ss,.ic.gl-sss,.ic.gl-m,.ic.gl-m::before,.ic.gl-m::after,.ch.gl-m::before,.ch.gl-m::after,.dpt.gl-m::before,.dpt.gl-m::after,.dpt.gl-s::after,.dpt.gl-ss::after,.dpt.gl-sss::after{animation:none}}
 </style>
 <script id="grade-shimmer">/*#### [112_grade-shimmer-js] ####*/
 (function(){try{
